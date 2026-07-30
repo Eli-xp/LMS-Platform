@@ -1,0 +1,17 @@
+{
+  "name": "lms-platform",
+  "version": "1.0.0",
+  "description": "this is a learning project for using nextJs/nestJs",
+  "main": "server/distFile",
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eli-xp/LMS-Platform.git"
+  },
+  "author": "Hadi Bahadori (back-end) & Alireza Noshad (front-end)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Eli-xp/LMS-Platform/issues"
+  },
+  "homepage": "https://github.com/Eli-xp/LMS-Platform#readme"
+}
