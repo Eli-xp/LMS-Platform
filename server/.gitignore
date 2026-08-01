@@ -2,7 +2,7 @@
 /dist
 /node_modules
 /build
-
+/dbInfo.txt
 # Logs
 logs
 *.log
