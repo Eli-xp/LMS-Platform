@@ -3,6 +3,7 @@
 /node_modules
 /build
 /dbInfo.txt
+/config
 # Logs
 logs
 *.log

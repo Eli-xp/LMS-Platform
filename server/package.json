@@ -25,7 +25,9 @@
     "@nestjs/core": "^11.0.1",
     "@nestjs/mongoose": "^11.0.4",
     "@nestjs/platform-express": "^11.0.1",
+    "@types/config": "^3.3.5",
     "@types/mongoose": "^5.11.96",
+    "config": "^4.4.2",
     "mongoose": "^9.9.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
