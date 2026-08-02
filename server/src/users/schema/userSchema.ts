@@ -6,7 +6,7 @@ export class User extends Document {
   name!: string;
   @Prop({ type: String, required: true })
   email!: string;
-  @Prop({ type: Boolean, required: true })
+  @Prop({ type: Boolean, required: true, default: false })
   emailVerified!: boolean;
   @Prop({ type: String })
   image?: string;
