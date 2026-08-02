@@ -9,6 +9,10 @@ import config from 'config';
 
 @Module({
   imports: [
+    JwtModule.register({
+      secret: config.get<string>('server.jwt.SECRET'),
+      signOptions: { expiresIn: config.get<number>('server.jwt.EXPIRES_IN') },
+    }),
     MongooseModule.forFeature([
       {
         name: User.name,
