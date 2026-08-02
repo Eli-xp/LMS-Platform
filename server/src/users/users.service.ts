@@ -1,11 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { User } from './schema/userSchema';
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(
+    @InjectModel(User.name) private readonly UserModel: Model<User>,
+  ) {}
+  async create(createUserDto: CreateUserDto) {
+    const newUser = new this.UserModel(createUserDto);
+    await newUser.save();
+    return newUser;
   }
 
   findAll() {
@@ -22,5 +30,9 @@ export class UsersService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  async findByEmail(email: string) {
+    return await this.UserModel.findOne({ email });
   }
 }
