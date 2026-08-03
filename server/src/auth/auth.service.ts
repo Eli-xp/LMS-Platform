@@ -31,7 +31,7 @@ export class AuthService {
     }
     // signing jwt token
     const token = this.jwtService.sign({
-      sub: user.id,
+      sub: user._id,
     });
     return { user, token };
   }

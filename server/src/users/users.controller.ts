@@ -14,12 +14,6 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @Get('/test')
-  @UseGuards(JwtAuthGuard)
-  test(@Req() req:Request) {
-    return req.user;
-  }
-
   @Get()
   findAll() {
     return this.usersService.findAll();
@@ -27,7 +21,7 @@ export class UsersController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+    return this.usersService.findOne(id);
   }
 
   @Patch(':id')
