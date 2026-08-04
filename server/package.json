@@ -28,6 +28,7 @@
     "@nestjs/mongoose": "^11.0.4",
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/throttler": "^6.5.0",
     "@types/config": "^3.3.5",
     "@types/ioredis": "^4.28.10",
     "@types/mongoose": "^5.11.96",
