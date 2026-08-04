@@ -32,7 +32,7 @@ export class UsersService {
     return `This action removes a #${id} user`;
   }
 
-  async findByEmail(email: string) {
-    return await this.UserModel.findOne({ email });
+  async findByPhone(phone: string) {
+    return await this.UserModel.findOne({ phone });
   }
 }

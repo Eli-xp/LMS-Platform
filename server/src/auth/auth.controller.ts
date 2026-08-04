@@ -15,12 +15,14 @@ import { CreateOtp } from './dto/createOpt-Dto';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
-  
+
   @Post('/verifyOtp')
   otpVerify(@Body() otpVerify: OtpVerify) {
     return this.authService.otpVerify(otpVerify);
   }
 
   @Post('/sendOtp')
-  sendOtp(@Body() createOtp: CreateOtp) {}
+  sendOtp(@Body() createOtp: CreateOtp) {
+    return this.authService.sendOtp(createOtp)
+  }
 }

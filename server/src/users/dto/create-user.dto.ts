@@ -1,3 +1,7 @@
+import { IsNotEmpty, IsString } from "class-validator";
+
 export class CreateUserDto {
-    phone!: number
+    @IsString()
+    @IsNotEmpty()
+    phone!: string
 }
