@@ -1,19 +1,24 @@
 import {
   ConflictException,
   Injectable,
-  NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { RegisterDto } from './dto/registerDto';
-import { LoginDto } from './dto/loginDto';
 import { UsersService } from 'src/users/users.service';
-import bcrypt from 'node_modules/bcryptjs';
 import { JwtService } from '@nestjs/jwt';
+import { CreateOtp } from './dto/createOpt-Dto';
+import { OtpVerify } from './dto/OtpVerify-Dto';
+import { randomInt } from 'crypto';
+import { RedisService } from 'src/redis/redis.service';
+import { SmsService } from 'src/sms/sms.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UsersService,
     private readonly jwtService: JwtService,
+    private readonly redisService: RedisService,
+    private readonly smsService: SmsService,
   ) {}
   async register(registerDto: RegisterDto) {
     // finding user by userService method
@@ -24,15 +29,31 @@ export class AuthService {
     return await this.userService.create(registerDto);
   }
 
-  async login(loginDto: LoginDto) {
-    const user = await this.userService.findByEmail(loginDto.email);
-    if (!user) {
-      throw new NotFoundException('User not found');
+  async otpVerify(otpVerify: OtpVerify) {
+    const storedCode = await this.redisService.get(otpVerify.phone);
+    if(!storedCode){
+      throw new UnauthorizedException('OTP expired')
     }
+    if(storedCode !== otpVerify.code){
+      throw new UnauthorizedException('Invalid OTP');
+    }
+    await this.redisService.del(otpVerify.phone);
     // signing jwt token
     const token = this.jwtService.sign({
-      sub: user._id,
+      sub: otpVerify.phone,
     });
-    return { user, token };
+    return { message:'user logged in successfully',token };
+  }
+
+  async sendTop(createOtp: CreateOtp) {
+    const code = randomInt(100000, 1000000).toString();
+    await this.redisService.set(createOtp.phone, code, 120);
+    try {
+      await this.smsService.sendOpt(createOtp.phone, code);
+    } catch (error) {
+      await this.redisService.del(createOtp.phone);
+      throw error;
+    }
+    return 'OTP send successfully';
   }
 }

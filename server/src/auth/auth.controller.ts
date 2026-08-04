@@ -9,7 +9,8 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/registerDto';
-import { LoginDto } from './dto/loginDto';
+import { OtpVerify } from './dto/OtpVerify-Dto';
+import { CreateOtp } from './dto/createOpt-Dto';
 
 @Controller('auth')
 export class AuthController {
@@ -20,8 +21,11 @@ export class AuthController {
     return this.authService.register(registerDto);
   }
 
-  @Post('/login')
-  login(@Body() loginDto: LoginDto) {
-    return this.authService.login(loginDto);
+  @Post('/verifyOtp')
+  otpVerify(@Body() otpVerify: OtpVerify) {
+    return this.authService.otpVerify(otpVerify);
   }
+
+  @Post('/sendOtp')
+  sendOtp(@Body() createOtp: CreateOtp) {}
 }
