@@ -9,6 +9,7 @@ import config from 'config';
 import { JwtStrategy } from './strategies/jwt-strategy';
 import { RedisService } from 'src/redis/redis.service';
 import { SmsService } from 'src/sms/sms.service';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -21,7 +22,13 @@ import { SmsService } from 'src/sms/sms.service';
         name: User.name,
         schema: UserSchema,
       }
-    ])
+    ]),
+    ThrottlerModule.forRoot([
+          {
+            ttl: 10000,
+            limit: 2,
+          },
+        ]),
   ],
   controllers: [AuthController],
   providers: [AuthService, UsersService, JwtStrategy, RedisService, SmsService]

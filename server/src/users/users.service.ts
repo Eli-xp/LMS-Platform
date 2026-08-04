@@ -15,23 +15,12 @@ export class UsersService {
     await newUser.save();
     return newUser;
   }
-
-  findAll() {
-    return `This action returns all users`;
-  }
-
   async findOne(id: string) {
     return await this.UserModel.findById(id)
   }
-
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
-  }
-
   async findByPhone(phone: string) {
     return await this.UserModel.findOne({ phone });
   }
