@@ -20,15 +20,6 @@ export class AuthService {
     private readonly redisService: RedisService,
     private readonly smsService: SmsService,
   ) {}
-  async register(registerDto: RegisterDto) {
-    // finding user by userService method
-    const user = await this.userService.findByEmail(registerDto.email);
-    if (user) {
-      throw new ConflictException('User already exists');
-    }
-    return await this.userService.create(registerDto);
-  }
-
   async otpVerify(otpVerify: OtpVerify) {
     const storedCode = await this.redisService.get(otpVerify.phone);
     if(!storedCode){
@@ -40,12 +31,12 @@ export class AuthService {
     await this.redisService.del(otpVerify.phone);
     // signing jwt token
     const token = this.jwtService.sign({
-      sub: otpVerify.phone,
+      sub: otpVerify.phone
     });
     return { message:'user logged in successfully',token };
   }
 
-  async sendTop(createOtp: CreateOtp) {
+  async sendOtp(createOtp: CreateOtp) {
     const code = randomInt(100000, 1000000).toString();
     await this.redisService.set(createOtp.phone, code, 120);
     try {

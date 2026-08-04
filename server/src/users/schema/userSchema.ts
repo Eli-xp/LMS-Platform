@@ -2,7 +2,7 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 @Schema({ timestamps: true })
 export class User extends Document {
-  @Prop({ type: String, required: true, default: 'guest-user' })
+  @Prop({ type: String, default: 'guest-user' })
   name!: string;
   @Prop({ type: String})
   email?: string;
@@ -10,7 +10,7 @@ export class User extends Document {
   emailVerified!: boolean;
   @Prop({ type: String })
   image?: string;
-  @Prop({type: Number, required: true})
-  phone!:number
+  @Prop({type: String, required: true, unique: true})
+  phone!:string
 }
 export const UserSchema = SchemaFactory.createForClass(User);

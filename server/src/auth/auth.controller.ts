@@ -15,12 +15,7 @@ import { CreateOtp } from './dto/createOpt-Dto';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
-
-  @Post('/register')
-  register(@Body() registerDto: RegisterDto) {
-    return this.authService.register(registerDto);
-  }
-
+  
   @Post('/verifyOtp')
   otpVerify(@Body() otpVerify: OtpVerify) {
     return this.authService.otpVerify(otpVerify);
