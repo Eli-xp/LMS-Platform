@@ -28,15 +28,14 @@ export class AuthService {
       throw new UnauthorizedException('Invalid OTP');
     }
     await this.redisService.del(otpVerify.phone);
-    // check if user exists
     const existedUser = await this.userService.findByPhone(otpVerify.phone);
-    if(existedUser){
-      throw new ConflictException('user already exists')
+    let user = existedUser;
+    if(!user){
+      user = await this.userService.create({phone: otpVerify.phone})
     }
-    await this.userService.create({phone: otpVerify.phone})
     // signing jwt token
     const token = this.jwtService.sign({
-      sub: otpVerify.phone,
+      sub: user._id
     });
     return { message: 'user logged in successfully', token };
   }
