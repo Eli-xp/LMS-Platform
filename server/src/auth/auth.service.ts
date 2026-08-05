@@ -48,7 +48,7 @@ export class AuthService {
     const refreshTokenHash = await bcrypt.hash(refreshToken, 10);
     // saving refresh token in db
     await this.userService.updateRefreshToken(user.id, refreshTokenHash);
-    return { token, refreshToken };
+    return { user, token, refreshToken };
   }
 
   async sendOtp(createOtp: CreateOtp) {
