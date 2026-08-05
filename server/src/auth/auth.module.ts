@@ -10,6 +10,7 @@ import { JwtStrategy } from './strategies/jwt-strategy';
 import { RedisService } from 'src/redis/redis.service';
 import { SmsService } from 'src/sms/sms.service';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
             limit: 2,
           },
         ]),
+    HttpModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, UsersService, JwtStrategy, RedisService, SmsService]
