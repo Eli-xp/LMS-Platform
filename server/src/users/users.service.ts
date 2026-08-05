@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { User } from './schema/userSchema';
 
 @Injectable()
@@ -15,13 +15,16 @@ export class UsersService {
     await newUser.save();
     return newUser;
   }
-  async findOne(id: string) {
+  async findById(id: string) {
     return await this.UserModel.findById(id)
   }
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string) {
+    return await this.UserModel.findByIdAndUpdate(id);
   }
   async findByPhone(phone: string) {
     return await this.UserModel.findOne({ phone });
+  }
+  async updateRefreshToken(id: string, refreshToken: string){
+    return await this.UserModel.findByIdAndUpdate(id, {refreshToken});
   }
 }

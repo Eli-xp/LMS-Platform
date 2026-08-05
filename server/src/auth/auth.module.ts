@@ -14,8 +14,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 @Module({
   imports: [
     JwtModule.register({
-      secret: config.get<string>('server.jwt.SECRET'),
-      signOptions: { expiresIn: config.get<number>('server.jwt.EXPIRES_IN') },
+      secret: config.get<string>('server.jwt.SECRET')
     }),
     MongooseModule.forFeature([
       {

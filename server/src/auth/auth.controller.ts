@@ -3,26 +3,41 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
+  UseGuards,
+  Req,
+  Res,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/registerDto';
 import { OtpVerify } from './dto/OtpVerify-Dto';
 import { CreateOtp } from './dto/createOpt-Dto';
+import type { Request, Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('/verifyOtp')
-  otpVerify(@Body() otpVerify: OtpVerify) {
-    return this.authService.otpVerify(otpVerify);
+  async otpVerify(
+    @Body() otpVerify: OtpVerify,
+    @Res({passthrough: true}) res: Response
+  ) {
+    const {token, refreshToken} = await this.authService.otpVerify(otpVerify);
+    // send as cookies
+    res.cookie('refresh_token', refreshToken, {httpOnly: true, secure: true});
+    // return access token
+    return {token};
   }
 
   @Post('/sendOtp')
   sendOtp(@Body() createOtp: CreateOtp) {
-    return this.authService.sendOtp(createOtp)
+    return this.authService.sendOtp(createOtp);
+  }
+
+  @Post('/refresh')
+  refresh(@Req() req: Request) {
+    return this.authService.refresh(req.cookies.refresh_token);
   }
 }

@@ -12,5 +12,7 @@ export class User extends Document {
   image?: string;
   @Prop({type: String, required: true, unique: true})
   phone!:string
+  @Prop({ type: String })
+  refreshToken!: string
 }
 export const UserSchema = SchemaFactory.createForClass(User);
