@@ -55,7 +55,7 @@ export class AuthService {
     const code = randomInt(100000, 1000000).toString();
     await this.redisService.set(createOtp.phone, code, 360);
     await this.smsService.sendOpt(createOtp.phone, code);
-    return 'OTP send successfully';
+    return {message: 'OTP send successfully'};
   }
 
   async refresh(refreshToken: string) {
