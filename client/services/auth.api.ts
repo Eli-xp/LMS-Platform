@@ -6,6 +6,7 @@ export const login = async (data: z.infer<typeof loginSchema>) => {
     method: "POST",
     headers: { "Content-type": "application/json" },
     body: JSON.stringify(data),
+    credentials: "include",
   });
 
   if (!res.ok) {
@@ -22,6 +23,7 @@ export const otpVerify = async (data: z.infer<typeof otpEntrySchema>) => {
     method: "POST",
     headers: { "Content-type": "application/json" },
     body: JSON.stringify(data),
+    credentials: "include",
   });
 
   if (!res.ok) {
