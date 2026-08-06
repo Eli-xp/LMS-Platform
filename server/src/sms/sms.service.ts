@@ -6,36 +6,36 @@ import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class SmsService {
-  // private readonly sms: Smsir;
+  private readonly sms: Smsir;
   constructor(private readonly httpService: HttpService) {
-    // this.sms = new Smsir(
-    //   config.get<string>('server.sms.SMS_API_KEY'),
-    //   config.get<number>('server.sms.SMS_NUMBER'),
-    // );
+    this.sms = new Smsir(
+      config.get<string>('server.sms.SMS_API_KEY'),
+      config.get<number>('server.sms.SMS_NUMBER'),
+    );
   }
   async sendOpt(phone: string, code: string) {
-    // return this.sms.sendBulk(`کد ورود شما: ${code}`, [phone]);
-    return firstValueFrom(
-      this.httpService.post(
-        "https://api.sms.ir/v1/send/verify",
-        {
-          Mobile: phone,
-          TemplateId: 640974,
-          Parameters: 
-          [
-            {
-              Name:'CODE',
-              Value: code
-            }
-          ]
-        },
-        {
-          headers: {
-            'x-api-key': config.get<string>('server.sms.SMS_API_KEY'),
-            'Content-Type': 'application/json',
-          }
-        }
-      )
-    )
+    return this.sms.sendBulk(`کد ورود شما: ${code}`, [phone]);
+    // return firstValueFrom(
+    //   this.httpService.post(
+    //     "https://api.sms.ir/v1/send/verify",
+    //     {
+    //       Mobile: phone,
+    //       TemplateId: 123456,
+    //       Parameters: 
+    //       [
+    //         {
+    //           Name:'CODE',
+    //           Value: code
+    //         }
+    //       ]
+    //     },
+    //     {
+    //       headers: {
+    //         'x-api-key': config.get<string>('server.sms.SMS_API_KEY'),
+    //         'Content-Type': 'application/json',
+    //       }
+    //     }
+    //   )
+    // )
   }
 }
