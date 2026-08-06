@@ -1,7 +1,7 @@
 import z from "zod";
 import { loginSchema, otpEntrySchema } from "@/schemas/auth.schema";
 
-export const loginAPI = async (data: z.infer<typeof loginSchema>) => {
+export const login = async (data: z.infer<typeof loginSchema>) => {
   console.log("loginAPI CALLED, DATA:", data);
 
   try {
@@ -23,7 +23,7 @@ export const loginAPI = async (data: z.infer<typeof loginSchema>) => {
   }
 };
 
-export const otpVerifyAPI = async (data: z.infer<typeof otpEntrySchema>) => {
+export const otpVerify = async (data: z.infer<typeof otpEntrySchema>) => {
   console.log("otpVerifyAPI CALLED, DATA:", data);
 
   try {
@@ -40,6 +40,25 @@ export const otpVerifyAPI = async (data: z.infer<typeof otpEntrySchema>) => {
     const loginInfo = await res.json();
     console.log(loginInfo);
     return loginInfo;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const logout = async (data) => {
+  try {
+    const res = await fetch("/auth/logout", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to logout");
+    }
+
+    const logoutInfo = await res.json();
+    console.log(logoutInfo);
+    return logoutInfo;
   } catch (error) {
     console.error(error);
   }
