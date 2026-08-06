@@ -12,31 +12,39 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import z from "zod";
 import { login } from "@/services/auth.api";
+import { useRouter } from "next/navigation";
 
 const PhoneNumForm = () => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      phoneNum: "",
+      phone: "",
     },
   });
 
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    await login(data);
+    try {
+      const result: { message: string } = await login(data);
+      console.log(result.message);
+      router.push(`/verify-request?phone=${data.phone}`);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <form id="myFooorm" onSubmit={form.handleSubmit(onSubmit)}>
       <FieldGroup>
         <Controller
-          name="phoneNum"
+          name="phone"
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="loginPhoneNum">Phone Number</FieldLabel>
+              <FieldLabel htmlFor="loginPhone">Phone Number</FieldLabel>
               <Input
                 {...field}
-                id="loginPhoneNum"
+                id="loginPhone"
                 inputMode="numeric"
                 type="tel"
                 placeholder="09173728290"
