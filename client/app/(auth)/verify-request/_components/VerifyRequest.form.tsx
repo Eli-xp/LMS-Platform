@@ -10,29 +10,38 @@ import {
 import { otpEntrySchema } from "@/schemas/auth.schema";
 import { otpVerify } from "@/services/auth.api";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import z from "zod";
 
-const VerifyRequestForm = () => {
+const VerifyRequestForm = ({ phone }: { phone: string }) => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof otpEntrySchema>>({
     resolver: zodResolver(otpEntrySchema),
-    defaultValues: { otpEntry: "" },
+    defaultValues: { code: "", phone: phone },
   });
 
   const onSubmit = async (data: z.infer<typeof otpEntrySchema>) => {
-    console.log("onSubmit, data:", data);
-    await otpVerify(data);
+    try {
+      const result = await otpVerify(data);
+      console.log(result);
+      router.push("/");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
       <FieldGroup>
         <Controller
-          name="otpEntry"
+          name="code"
           control={form.control}
           render={({ field, fieldState }) => (
             <div className="flex flex-col items-center justify-center space-y-2">
               <InputOTP
+                autoFocus
                 maxLength={6}
                 value={field.value}
                 onChange={(value) => {
