@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import z from "zod";
-import { loginAPI } from "@/services/auth.api";
+import { login } from "@/services/auth.api";
 
 const PhoneNumForm = () => {
   const form = useForm<z.infer<typeof loginSchema>>({
@@ -22,7 +22,7 @@ const PhoneNumForm = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    await loginAPI(data);
+    await login(data);
   };
 
   return (
