@@ -18,20 +18,24 @@ import {
 } from "@/components/ui/sidebar";
 import {
   EllipsisVerticalIcon,
-  CircleUserRoundIcon,
-  CreditCardIcon,
-  BellIcon,
   LogOutIcon,
+  HomeIcon,
+  LayoutDashboardIcon,
+  Tv2,
 } from "lucide-react";
+import Link from "next/link";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
 
   // Get user data from redux
+  // ...
+
+  // sample data
   const user = {
-    name: "ff",
-    email: "ff@ff",
-    avatar: "ff",
+    name: "alireza",
+    phoneNum: "09330887474",
+    avatar: null,
   };
 
   return (
@@ -44,13 +48,16 @@ export function NavUser() {
             }
           >
             <Avatar className="size-8 rounded-lg grayscale">
-              <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+              <AvatarImage
+                src={user.avatar || "/user-profile-default.svg"}
+                alt={user.name}
+              />
+              <AvatarFallback className="rounded-lg">US</AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
               <span className="truncate font-medium">{user.name}</span>
               <span className="truncate text-xs text-foreground/70">
-                {user.email}
+                {user.phoneNum}
               </span>
             </div>
             <EllipsisVerticalIcon className="ml-auto size-4" />
@@ -65,13 +72,16 @@ export function NavUser() {
               <DropdownMenuLabel className="p-0 font-normal">
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                   <Avatar className="size-8">
-                    <AvatarImage src={user.avatar} alt={user.name} />
+                    <AvatarImage
+                      src={user.avatar || "/user-profile-default.svg"}
+                      alt={user.name || "defaultName"}
+                    />
                     <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-medium">{user.name}</span>
                     <span className="truncate text-xs text-muted-foreground">
-                      {user.email}
+                      {user.phoneNum}
                     </span>
                   </div>
                 </div>
@@ -79,21 +89,49 @@ export function NavUser() {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <CircleUserRoundIcon />
-                Account
+              <DropdownMenuItem
+                render={
+                  <Link
+                    href="/"
+                    className="cursor-pointer hover:text-muted-foreground"
+                  />
+                }
+              >
+                <HomeIcon />
+                Homepage
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCardIcon />
-                Billing
+              <DropdownMenuItem
+                render={
+                  <Link
+                    href="/admin"
+                    className="cursor-pointer hover:text-muted-foreground"
+                  />
+                }
+              >
+                <LayoutDashboardIcon />
+                Dashboard
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <BellIcon />
-                Notifications
+              <DropdownMenuItem
+                render={
+                  <Link
+                    href="/courses"
+                    className="cursor-pointer hover:text-muted-foreground"
+                  />
+                }
+              >
+                <Tv2 />
+                Courses
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              render={
+                <Link
+                  href="/"
+                  className="cursor-pointer hover:text-destructive"
+                />
+              }
+            >
               <LogOutIcon />
               Log out
             </DropdownMenuItem>
