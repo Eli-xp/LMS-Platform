@@ -28,8 +28,8 @@ export class AuthController {
     const { token, refreshToken, user } =
       await this.authService.otpVerify(otpVerify);
     // send as cookies
-    res.cookie('refresh_token', refreshToken, { httpOnly: true,});
-    res.cookie('access_token', token, { httpOnly: true });
+    res.cookie('refresh_token', refreshToken, { httpOnly: false,});
+    res.cookie('access_token', token, { httpOnly: false });
     // return user
     return { user };
   }

@@ -10,7 +10,7 @@ async function bootstrap() {
   // cors
   app.enableCors({
     origin: 'http://localhost:3000',
-    Credential: true
+    credentials: true
   });
   // cookie parser so nest can read cookies from req.cookies
   app.use(cookieParser());
