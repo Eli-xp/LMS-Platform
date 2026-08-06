@@ -22,6 +22,7 @@ export class AuthController {
   @Post('/verifyOtp')
   async otpVerify(
     @Body() otpVerify: OtpVerify,
+    // passthrough let you send set cookie using res while returning another data
     @Res({passthrough: true}) res: Response
   ) {
     const {token, refreshToken} = await this.authService.otpVerify(otpVerify);
