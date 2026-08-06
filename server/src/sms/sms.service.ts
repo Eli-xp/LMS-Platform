@@ -20,7 +20,7 @@ export class SmsService {
         "https://api.sms.ir/v1/send/verify",
         {
           Mobile: phone,
-          TemplateId: 100000,
+          TemplateId: 640974,
           Parameters: 
           [
             {
