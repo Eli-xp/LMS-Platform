@@ -23,13 +23,15 @@ export class AuthController {
   async otpVerify(
     @Body() otpVerify: OtpVerify,
     // passthrough let you send set cookie using res while returning another data
-    @Res({passthrough: true}) res: Response
+    @Res({ passthrough: true }) res: Response,
   ) {
-    const {token, refreshToken} = await this.authService.otpVerify(otpVerify);
+    const { token, refreshToken, user } =
+      await this.authService.otpVerify(otpVerify);
     // send as cookies
-    res.cookie('refresh_token', refreshToken, {httpOnly: true, secure: true});
-    // return access token
-    return {token};
+    res.cookie('refresh_token', refreshToken, { httpOnly: true, secure: true });
+    res.cookie('access_token', token, { httpOnly: true, secure: true });
+    // return user
+    return { user };
   }
 
   @Post('/sendOtp')
