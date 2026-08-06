@@ -8,7 +8,10 @@ import cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // cors
-  app.enableCors();
+  app.enableCors({
+    origin: 'http://localhost:3000',
+    Credential: true
+  });
   // cookie parser so nest can read cookies from req.cookies
   app.use(cookieParser());
   // pipes and dto validation
