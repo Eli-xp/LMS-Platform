@@ -2,64 +2,31 @@ import z from "zod";
 import { loginSchema, otpEntrySchema } from "@/schemas/auth.schema";
 
 export const login = async (data: z.infer<typeof loginSchema>) => {
-  console.log("loginAPI CALLED, DATA:", data);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/sendOtp`, {
+    method: "POST",
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify(data),
+  });
 
-  try {
-    const res = await fetch("/auth/login", {
-      method: "POST",
-      body: JSON.stringify(data),
-      //   headers: { "Content-type": "application/json" },
-    });
-
-    if (!res.ok) {
-      throw new Error("Failde to Login");
-    }
-
-    const loginInfo = await res.json();
-    console.log(loginInfo);
-    return loginInfo;
-  } catch (error) {
-    console.error(error);
+  if (!res.ok) {
+    throw new Error("Failde to Login");
   }
+
+  return await res.json();
 };
 
 export const otpVerify = async (data: z.infer<typeof otpEntrySchema>) => {
   console.log("otpVerifyAPI CALLED, DATA:", data);
 
-  try {
-    const res = await fetch("/auth/otp-verify", {
-      method: "POST",
-      body: JSON.stringify(data),
-      //   headers: { "Content-type": "application/json" },
-    });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/verifyOtp`, {
+    method: "POST",
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify(data),
+  });
 
-    if (!res.ok) {
-      throw new Error("Failde to Verify OTP");
-    }
-
-    const loginInfo = await res.json();
-    console.log(loginInfo);
-    return loginInfo;
-  } catch (error) {
-    console.error(error);
+  if (!res.ok) {
+    throw new Error("Failde to Verify OTP");
   }
-};
 
-export const logout = async (data) => {
-  try {
-    const res = await fetch("/auth/logout", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-
-    if (!res.ok) {
-      throw new Error("Failed to logout");
-    }
-
-    const logoutInfo = await res.json();
-    console.log(logoutInfo);
-    return logoutInfo;
-  } catch (error) {
-    console.error(error);
-  }
+  return await res.json();
 };
