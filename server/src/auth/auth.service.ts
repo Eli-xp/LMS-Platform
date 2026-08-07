@@ -65,7 +65,7 @@ export class AuthService {
         secret: config.get<string>('server.jwt.REFRESH_SECRET'),
       });
       // finding user by id
-      const user = await this.userService.findById(payload.id);
+      const user = await this.userService.findById(payload.sub);
       // check if token valid
       if (!user || !user.refreshToken) {
         throw new UnauthorizedException('Invalid refresh token');
@@ -80,7 +80,7 @@ export class AuthService {
         { sub: user._id },
         { expiresIn: '15m' },
       );
-      return { token };
+      return  {token} ;
     } catch (error) {
       throw new UnauthorizedException('Invalid refresh token');
     }

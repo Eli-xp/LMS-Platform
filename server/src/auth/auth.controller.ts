@@ -15,6 +15,7 @@ import { OtpVerify } from './dto/OtpVerify-Dto';
 import { CreateOtp } from './dto/createOpt-Dto';
 import type { Request, Response } from 'express';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -65,7 +66,13 @@ export class AuthController {
 
   @Post('/refresh')
   @ApiOperation({ summary: 'regenerate access token' })
-  refresh(@Req() req: Request) {
-    return this.authService.refresh(req.cookies.refresh_token);
+  async refresh(@Req() req: Request, @Res() res: Response) {
+    const { token } = await this.authService.refresh(req.cookies.refresh_token);
+    res.cookie('access_token', token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',
+    });
+    return { message: 'new access_token generated' };
   }
 }
