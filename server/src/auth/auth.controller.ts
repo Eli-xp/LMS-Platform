@@ -22,6 +22,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('/verifyOtp')
+  @ApiOperation({ summary: 'verify OTP Code' })
   @ApiResponse({
     type: Object,
     status: 201,
@@ -33,8 +34,12 @@ export class AuthController {
         refreshToken: 'user hashed refreshToken',
       },
     },
+    headers: {
+      'set-cookies': {
+        description: 'access_token & refresh_token',
+      },
+    },
   })
-  @ApiOperation({ summary: 'verify OTP Code' })
   async otpVerify(
     @Body() otpVerify: OtpVerify,
     // passthrough let you send set cookie using res while returning another data
@@ -58,14 +63,31 @@ export class AuthController {
   }
 
   @Post('/sendOtp')
-  @ApiResponse({ type: String, status: 201, example: 'OTP send successfully' })
+  
   @ApiOperation({ summary: 'Send OTP Code to Users phone number' })
+  @ApiResponse({
+  type: String,
+    status: 201,
+    example: { message: 'OTP send successfully' },
+  })
   sendOtp(@Body() createOtp: CreateOtp) {
     return this.authService.sendOtp(createOtp);
   }
 
   @Post('/refresh')
   @ApiOperation({ summary: 'regenerate access token' })
+  @ApiResponse({
+    type: Object,
+    status: 201,
+    headers: {
+      'set-cookies': {
+        description: 'access_token',
+      },
+    },
+    example: {
+      message: 'new access_token generated',
+    },
+  })
   async refresh(@Req() req: Request, @Res() res: Response) {
     const { token } = await this.authService.refresh(req.cookies.refresh_token);
     res.cookie('access_token', token, {
