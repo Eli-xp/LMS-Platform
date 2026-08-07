@@ -8,6 +8,10 @@ import config from 'config';
 const cookieExtractor = (req: Request): string | null => {
   return req?.cookies?.access_token || null;
 };
+// interface
+interface JwtPayload {
+  sub: string;
+}
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy){
@@ -18,7 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy){
             secretOrKey: config.get<string>('server.jwt.SECRET')
         })
     }
-    async validate(payload: string) {
+    async validate(payload: JwtPayload) {
         return { userId: payload.sub };
       }
 }

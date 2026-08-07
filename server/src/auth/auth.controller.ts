@@ -3,23 +3,28 @@ import {
   Get,
   Post,
   Body,
-  Param,
-  Delete,
   UseGuards,
   Req,
   Res,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { RegisterDto } from './dto/registerDto';
 import { OtpVerify } from './dto/OtpVerify-Dto';
 import { CreateOtp } from './dto/createOpt-Dto';
 import type { Request, Response } from 'express';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { UsersService } from 'src/users/users.service';
 
+
+interface JwtUser {
+  userId: string;
+}
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly usersService: UsersService
+  ) {}
 
   @Post('/verifyOtp')
   @ApiOperation({ summary: 'verify OTP Code' })
@@ -63,7 +68,6 @@ export class AuthController {
   }
 
   @Post('/sendOtp')
-  
   @ApiOperation({ summary: 'Send OTP Code to Users phone number' })
   @ApiResponse({
   type: String,
@@ -88,7 +92,7 @@ export class AuthController {
       message: 'new access_token generated',
     },
   })
-  async refresh(@Req() req: Request, @Res() res: Response) {
+  async refresh(@Req() req: Request, @Res({passthrough: true}) res: Response) {
     const { token } = await this.authService.refresh(req.cookies.refresh_token);
     res.cookie('access_token', token, {
       httpOnly: true,
@@ -97,4 +101,13 @@ export class AuthController {
     });
     return { message: 'new access_token generated' };
   }
+
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me')
+    async findMe(@Req() req: Request){
+      const {userId} = req.user as JwtUser
+      const user = await this.usersService.findById(userId)
+      return user;
+    }
 }
