@@ -3,7 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+const AuthLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
     <div className="relative flex min-h-svh flex-col items-center justify-center">
       <Link
@@ -42,4 +42,4 @@ const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   );
 };
 
-export default layout;
+export default AuthLayout;
