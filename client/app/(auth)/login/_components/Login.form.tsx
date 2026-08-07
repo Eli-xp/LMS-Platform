@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import z from "zod";
 import { login } from "@/services/auth.api";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const PhoneNumForm = () => {
   const router = useRouter();
@@ -26,7 +27,7 @@ const PhoneNumForm = () => {
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     try {
       const result: { message: string } = await login(data);
-      console.log(result.message);
+      toast.success("Verification code sent");
       router.push(`/verify-request?phone=${data.phone}`);
     } catch (error) {
       console.error(error);

@@ -12,6 +12,7 @@ import { otpVerify } from "@/services/auth.api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
 
 const VerifyRequestForm = ({ phone }: { phone: string }) => {
@@ -25,6 +26,8 @@ const VerifyRequestForm = ({ phone }: { phone: string }) => {
   const onSubmit = async (data: z.infer<typeof otpEntrySchema>) => {
     try {
       const result = await otpVerify(data);
+      toast.success("Login Successfully");
+
       console.log(result);
       router.push("/");
     } catch (error) {
