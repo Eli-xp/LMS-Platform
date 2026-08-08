@@ -5,10 +5,11 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { RedisModule } from './redis/redis.module';
 import { SmsModule } from './sms/sms.module';
+import { CourseModule } from './course/course.module';
 import config from 'config'
 
 @Module({
-  imports: [MongooseModule.forRoot(config.get<string>('server.database.URL')), UsersModule, AuthModule, RedisModule, SmsModule],
+  imports: [MongooseModule.forRoot(config.get<string>('server.database.URL')), UsersModule, AuthModule, RedisModule, SmsModule, CourseModule],
   controllers: [AppController],
   providers: [],
 })
