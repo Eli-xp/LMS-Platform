@@ -1,5 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 @Schema({ timestamps: true })
 export class User extends Document {
   @Prop({ type: String, default: 'guest-user' })
@@ -14,5 +14,7 @@ export class User extends Document {
   phone!:string
   @Prop({ type: String })
   refreshToken!: string
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Course'}] })
+  courses?: Types.ObjectId[]
 }
 export const UserSchema = SchemaFactory.createForClass(User);
