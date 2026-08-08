@@ -25,8 +25,8 @@ import { HttpModule } from '@nestjs/axios';
     ]),
     ThrottlerModule.forRoot([
           {
-            ttl: 10000,
-            limit: 2,
+            ttl: 120_000,
+            limit: 1,
           },
         ]),
     HttpModule,
