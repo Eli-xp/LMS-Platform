@@ -35,7 +35,7 @@ const PhoneNumForm = () => {
   };
 
   return (
-    <form id="myFooorm" onSubmit={form.handleSubmit(onSubmit)}>
+    <form id="loginFormID" onSubmit={form.handleSubmit(onSubmit)}>
       <FieldGroup>
         <Controller
           name="phone"
@@ -46,6 +46,7 @@ const PhoneNumForm = () => {
               <Input
                 {...field}
                 id="loginPhone"
+                aria-invalid={fieldState.invalid}
                 inputMode="numeric"
                 type="tel"
                 placeholder="09173728290"
@@ -56,7 +57,7 @@ const PhoneNumForm = () => {
         />
         <Button
           type="submit"
-          form="myFooorm"
+          form="loginFormID"
           disabled={form.formState.isSubmitting}
           className="cursor-pointer"
         >
