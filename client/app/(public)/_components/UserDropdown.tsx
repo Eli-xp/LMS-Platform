@@ -45,74 +45,72 @@ const UserDropdown = ({ name, email, image }: iAppProps) => {
           </Avatar>
           <ChevronDown />
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent align="end" className="min-w-48">
           <DropdownMenuGroup>
             <DropdownMenuLabel>
-              <span className="text-foreground">{name}</span>
+              <span className="text-foreground text-sm font-medium truncate">
+                {name}
+              </span>
               <br />
               <span>{email}</span>
             </DropdownMenuLabel>
 
             <DropdownMenuItem
-              className="cursor-pointer hover:bg-gray-300/10"
-              asChild
-            >
-              <Link
-                href="/"
-                className="flex justify-center items-center gap-1.5"
-              >
-                <Home size={16} className="opacity-60" aria-hidden="true" />
-                <span className="opacity-90">Profile</span>
-              </Link>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem
-              className="cursor-pointer hover:bg-gray-300/10"
-              asChild
-            >
-              <Link
-                href="/course"
-                className="flex justify-center items-center gap-1.5"
-              >
-                <BookOpen size={16} className="opacity-60" aria-hidden="true" />
-                <span className="opacity-90">Courses</span>
-              </Link>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem
-              className="cursor-pointer hover:bg-gray-300/10"
-              asChild
-            >
-              <Link
-                href="/dashboard"
-                className="flex justify-center items-center gap-1.5"
-              >
-                <LayoutDashboardIcon
-                  size={16}
-                  className="opacity-60"
-                  aria-hidden="true"
+              className="flex justify-start cursor-pointer hover:bg-gray-300/10"
+              render={
+                <Link
+                  href="/"
+                  className="flex justify-center items-center gap-1.5"
                 />
-                <span className="opacity-90">Dashboard</span>
-              </Link>
+              }
+            >
+              <Home size={16} className="opacity-60" aria-hidden="true" />
+              <span className="opacity-90">Profile</span>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              className="flex justify-start cursor-pointer hover:bg-gray-300/10"
+              render={
+                <Link
+                  href="/"
+                  className="flex justify-center items-center gap-1.5"
+                />
+              }
+            >
+              <BookOpen size={16} className="opacity-60" aria-hidden="true" />
+              <span className="opacity-90">Courses</span>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              className="flex justify-start cursor-pointer hover:bg-gray-300/10"
+              render={
+                <Link
+                  href="/dashboard"
+                  className="flex justify-center items-center gap-1.5"
+                />
+              }
+            >
+              <LayoutDashboardIcon
+                size={16}
+                className="opacity-60"
+                aria-hidden="true"
+              />
+              <span className="opacity-90">Dashboard</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem
-              className="cursor-pointer hover:bg-red-500/10"
-              asChild
-            >
-              <Link
-                href="/course"
-                className="flex justify-center items-center gap-1.5"
-              >
-                <LogOutIcon
-                  size={16}
-                  className="opacity-60"
-                  aria-hidden="true"
+              className="flex justify-start cursor-pointer hover:bg-red-500/10"
+              render={
+                <Link
+                  href="//course"
+                  className="flex justify-center items-center gap-1.5"
                 />
-                <span className="opacity-90">Logout</span>
-              </Link>
+              }
+            >
+              <LogOutIcon size={16} className="opacity-60" aria-hidden="true" />
+              <span className="opacity-90">Logout</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
