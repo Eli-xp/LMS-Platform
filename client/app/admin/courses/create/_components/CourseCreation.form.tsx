@@ -29,6 +29,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import RichTextEditor from "@/components/rich-text-editor/Editor";
 
 const CourseCreationForm = () => {
   const form = useForm<z.infer<typeof courseSchema>>({
@@ -36,7 +37,7 @@ const CourseCreationForm = () => {
     defaultValues: {
       title: "",
       slug: "",
-      category: "",
+      category: "Web Development",
       description: "",
       smallDescription: "",
       fileKey: "",
@@ -151,23 +152,15 @@ const CourseCreationForm = () => {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="description">
-                Description<span className="text-destructive">*</span>
-              </FieldLabel>
-              <Textarea
-                {...field}
-                id="description"
-                aria-invalid={fieldState.invalid}
-                inputMode="text"
-                placeholder="Learn Next.js 16 from beginner to advanced..."
-                className="min-h-40"
-              />
+
+              <RichTextEditor field={field} />
+
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
 
-        {/* <Controller
+        <Controller
           name="fileKey"
           control={form.control}
           render={({ field, fieldState }) => (
@@ -185,7 +178,7 @@ const CourseCreationForm = () => {
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
-        /> */}
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Controller
