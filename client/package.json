@@ -16,6 +16,7 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@hookform/resolvers": "^5.7.1",
     "@tanstack/react-table": "^8.21.3",
+    "@tiptap/extension-text-align": "^3.29.2",
     "@tiptap/pm": "^3.29.2",
     "@tiptap/react": "^3.29.2",
     "@tiptap/starter-kit": "^3.29.2",
