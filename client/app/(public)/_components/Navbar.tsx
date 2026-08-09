@@ -55,7 +55,7 @@ const Navbar = () => {
               <UserDropdown
                 name={session.user.name}
                 email={session.user.email}
-                image={session.user.image}
+                image={session.user.image || "/user-profile-default.svg"}
               />
             ) : (
               <>
