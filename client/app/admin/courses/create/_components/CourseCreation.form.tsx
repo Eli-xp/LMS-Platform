@@ -30,6 +30,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import RichTextEditor from "@/components/rich-text-editor/Editor";
+import FileUploader from "@/components/file-uploader/FileUploader";
 
 const CourseCreationForm = () => {
   const form = useForm<z.infer<typeof courseSchema>>({
@@ -127,33 +128,23 @@ const CourseCreationForm = () => {
         />
 
         <Controller
-          name="smallDescription"
+          name="description"
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="smallDescription">
-                Small Description<span className="text-destructive">*</span>
-              </FieldLabel>
-              <Textarea
-                {...field}
-                id="smallDescription"
-                aria-invalid={fieldState.invalid}
-                inputMode="text"
-                placeholder="Master Next.js 16 and build production-ready applications."
-                className="min-h-30"
-              />
+              <RichTextEditor field={field} filedLabel={"Description"} />
+
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
 
         <Controller
-          name="description"
+          name="smallDescription"
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-
-              <RichTextEditor field={field} />
+              <RichTextEditor field={field} filedLabel={"Small Description"} />
 
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -166,15 +157,22 @@ const CourseCreationForm = () => {
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="fileKey">
-                Thumbnail Image<span className="text-destructive">*</span>
+                Thumbnail Image
+                <span className="text-destructive">
+                  *{" "}
+                  <span className="text-muted-foreground text-xs">
+                    (only 1 image max: 5mb - .png .jpg .jpeg )
+                  </span>
+                </span>
               </FieldLabel>
-              <Input
+              <FileUploader />
+              {/* <Input
                 {...field}
                 id="fileKey"
                 aria-invalid={fieldState.invalid}
                 type="file"
                 placeholder="courses/nextjs-16-course-thumbnail.png"
-              />
+              /> */}
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
