@@ -6,10 +6,11 @@ import { AuthModule } from './auth/auth.module';
 import { RedisModule } from './redis/redis.module';
 import { SmsModule } from './sms/sms.module';
 import { CourseModule } from './course/course.module';
+import { MediaModule } from './media/media.module';
 import config from 'config'
 
 @Module({
-  imports: [MongooseModule.forRoot(config.get<string>('server.database.URL')), UsersModule, AuthModule, RedisModule, SmsModule, CourseModule],
+  imports: [MongooseModule.forRoot(config.get<string>('server.database.URL')), UsersModule, AuthModule, RedisModule, SmsModule, CourseModule, MediaModule],
   controllers: [AppController],
   providers: [],
 })
