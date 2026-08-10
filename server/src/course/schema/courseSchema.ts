@@ -10,7 +10,7 @@ export class Course extends Document{
     description!: string;
     @Prop({ type: Number, required: true })
     price!: Number;
-    @Prop({ type: String, required: true })
+    @Prop({ type: String })
     fileKey?: string;
     @Prop({ type: String, required: true, enum: ['Beginner', 'Intermediate', 'Advanced'], default: 'Beginner' })
     level!: string
