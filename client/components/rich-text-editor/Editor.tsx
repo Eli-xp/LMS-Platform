@@ -6,7 +6,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import Menubar from "./Menubar";
 import { FieldLabel } from "../ui/field";
 
-const RichTextEditor = ({ field }) => {
+const RichTextEditor = ({ field,filedLabel }) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -39,7 +39,7 @@ const RichTextEditor = ({ field }) => {
   return (
     <>
       <FieldLabel onClick={() => editor?.commands.focus()}>
-        Description<span className="text-destructive">*</span>
+        {filedLabel}<span className="text-destructive">*</span>
       </FieldLabel>
       <div className="w-full border border-input rounded-lg overflow-hidden dark:bg-input/30">
         <Menubar editor={editor} />
