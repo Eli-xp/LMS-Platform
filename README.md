@@ -21,6 +21,8 @@ A scalable course management platform featuring authentication, payments, course
 - React 19
 - TypeScript
 - Tailwind CSS
+- Shadcn/ui - component library
+- Redux - client state management
 
 ### Backend
 
