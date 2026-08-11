@@ -8,8 +8,8 @@ export class LoggerMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: () => void) {
     const {ip, method, baseUrl} = req;
     const parser = new UAParser(req.get('user-agent') || '');
-    const browser = parser.getBrowser().name || 'Unknown';
-    const os = parser.getOS().name || 'Unknown'
+    const browser = parser.getBrowser().name;
+    const os = parser.getOS().name;
     const startAt = process.hrtime();
     // res.on('finish) for when the request is finished
     res.on('finish', () => {
