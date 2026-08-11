@@ -16,7 +16,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { UsersService } from 'src/users/users.service';
 
 
-interface JwtUser {
+export interface JwtUser {
   userId: string;
 }
 @Controller('auth')

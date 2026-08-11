@@ -1,10 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { CreateUploadUrlDto } from 'src/media/DTO/create-upload-dto';
 import { MediaService } from 'src/media/media.service';
 import { ApiOperation, ApiProperty, ApiResponse } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
+import type { Request } from 'express';
+import { JwtUser } from 'src/auth/auth.controller';
+import { Types } from 'mongoose';
 
 @Controller('course')
 export class CourseController {
@@ -18,5 +22,23 @@ export class CourseController {
   } })
   async createUploadUrl(@Body() createUploadUrl: CreateUploadUrlDto) {
     return this.mediaService.createUploadUrl(createUploadUrl.originalName,createUploadUrl.contentType)
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('/create')
+  async create(
+    @Body() createCourseDto: CreateCourseDto,
+    @Req() req: Request
+  ) {
+    const { newCourse } = await this.courseService.create(createCourseDto);
+    const  {userId}  = req.user as JwtUser;
+    newCourse.userId = new Types.ObjectId(userId);
+    await newCourse.save();
+    return {message: 'new course created', newCourse};
+  }
+
+  @Post('/upload-complete')
+  async uploadComplete(@Body() fileKey: string){
+
   }
 }

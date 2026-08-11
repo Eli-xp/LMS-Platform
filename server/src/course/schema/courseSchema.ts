@@ -25,3 +25,5 @@ export class Course extends Document{
     @Prop({ type: Types.ObjectId, ref: 'User', required: true })
     userId!: Types.ObjectId
 }
+
+export const CourseSchema = SchemaFactory.createForClass(Course);

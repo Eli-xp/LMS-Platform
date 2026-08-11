@@ -3,7 +3,7 @@ import { Document, Types } from 'mongoose';
 @Schema({ timestamps: true })
 export class User extends Document {
   @Prop({ type: String, default: 'guest-user' })
-  name!: string;
+  name?: string;
   @Prop({ type: String})
   email?: string;
   @Prop({ type: Boolean, required: true, default: false })
