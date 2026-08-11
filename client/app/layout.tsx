@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
 import StoreProvider from "@/redux/StoreProvider";
+import { getCurrentUser } from "@/services/auth.server";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -23,11 +24,13 @@ export const metadata: Metadata = {
   description: "Learning management System",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const user = await getCurrentUser();
+
   return (
     <html
       lang="en"
