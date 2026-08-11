@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCourseDto } from './dto/create-course.dto';
-import { UpdateCourseDto } from './dto/update-course.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Course } from './schema/courseSchema';
 import { Model } from 'mongoose';

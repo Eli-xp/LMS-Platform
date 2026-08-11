@@ -10,7 +10,7 @@ import { OtpVerify } from './dto/OtpVerify-Dto';
 import { randomInt } from 'crypto';
 import { RedisService } from 'src/redis/redis.service';
 import { SmsService } from 'src/sms/sms.service';
-import bcrypt from 'node_modules/bcryptjs';
+import bcrypt from 'bcryptjs';
 import config from 'config';
 
 @Injectable()
