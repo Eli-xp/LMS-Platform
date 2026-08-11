@@ -123,4 +123,11 @@ export class AuthController {
       const user = await this.usersService.findById(userId)
       return user;
     }
+
+
+
+    @Get('/test')
+    async test(){
+      return 'this is a test router'
+    }
 }
