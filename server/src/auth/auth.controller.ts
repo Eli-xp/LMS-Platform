@@ -104,6 +104,19 @@ export class AuthController {
 
 
   @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({summary:' send current users info'})
+  @ApiResponse({
+    type: Object,
+    status: 201,
+    example: {
+      user: {
+        name: 'userName',
+        email: 'user email',
+        _id: 'userId',
+        phone: 'user Phone number',
+        refreshToken: 'user hashed refreshToken',
+      },
+    }})
   @Get('/me')
     async findMe(@Req() req: Request){
       const {userId} = req.user as JwtUser
