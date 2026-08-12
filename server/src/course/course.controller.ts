@@ -71,6 +71,12 @@ export class CourseController {
     return { message: 'new course created', newCourse };
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @Get(':id')
+  async findCourse(@Param('id') id: string){
+    return await this.courseService.findById(id)
+  }
+
   @Post('/upload-complete')
   async uploadComplete(@Body() fileKey: string) {}
 }
