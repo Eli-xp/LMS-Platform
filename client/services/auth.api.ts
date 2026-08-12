@@ -1,7 +1,11 @@
+// Handles login - otpVerify
 import z from "zod";
 import { loginSchema, otpEntrySchema } from "@/schemas/auth.schema";
 
+// login
 export const login = async (data: z.infer<typeof loginSchema>) => {
+  console.log("login CALLED");
+
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/sendOtp`, {
     method: "POST",
     headers: { "Content-type": "application/json" },
@@ -16,6 +20,7 @@ export const login = async (data: z.infer<typeof loginSchema>) => {
   return await res.json();
 };
 
+// otpVerify
 export const otpVerify = async (data: z.infer<typeof otpEntrySchema>) => {
   console.log("otpVerifyAPI CALLED, DATA:", data);
 
