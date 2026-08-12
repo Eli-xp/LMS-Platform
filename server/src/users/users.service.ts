@@ -18,7 +18,11 @@ export class UsersService {
     return await this.UserModel.findById(id)
   }
   async update(id: string) {
-    return await this.UserModel.findByIdAndUpdate(id);
+    return await this.UserModel.findByIdAndUpdate(
+      id,
+      {$unset: {refreshToken: true}},
+      {new: true}
+    );
   }
   async findByPhone(phone: string) {
     return await this.UserModel.findOne({ phone });
