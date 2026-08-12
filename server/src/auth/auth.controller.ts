@@ -125,7 +125,7 @@ export class AuthController {
     }
 
     @UseGuards(AuthGuard('jwt'))
-    @Get('/logout')
+    @Post('/logout')
     async logout(@Req() req:Request){
       const { userId } = req.user as JwtUser
       return await this.usersService.update(userId)
