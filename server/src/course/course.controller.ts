@@ -65,6 +65,7 @@ export class CourseController {
   async create(@Body() createCourseDto: CreateCourseDto, @Req() req: Request) {
     const { newCourse } = await this.courseService.create(createCourseDto);
     const { userId } = req.user as JwtUser;
+    console.log(userId);
     newCourse.userId = new Types.ObjectId(userId);
     await newCourse.save();
     return { message: 'new course created', newCourse };

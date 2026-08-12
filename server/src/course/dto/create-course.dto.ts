@@ -17,7 +17,7 @@ export class CreateCourseDto {
     price!: number;
     @IsNotEmpty()
     @IsString()
-    @ApiProperty({type: String, required: true, enum:['Draft','Published','Archived'], default:'Archived'})
+    @ApiProperty({type: String, required: true, enum:['Beginner','Intermediate','Advanced'], default:'Beginner'})
     level!: string
     @IsString()
     @IsNotEmpty()

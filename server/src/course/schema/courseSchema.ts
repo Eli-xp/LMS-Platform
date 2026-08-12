@@ -22,8 +22,8 @@ export class Course extends Document{
     slug!: string
     @Prop({type: String, required: true, enum: ['Draft', 'Published', 'Archived'], default: 'Draft'})
     status!: string
-    @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-    userId!: Types.ObjectId
+    @Prop({ type: Types.ObjectId, ref: 'User',})
+    userId?: Types.ObjectId
 }
 
 export const CourseSchema = SchemaFactory.createForClass(Course);
