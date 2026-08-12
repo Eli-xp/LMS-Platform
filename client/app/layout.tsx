@@ -29,7 +29,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await getCurrentUser();
+  const { user, needsRefresh } = await getCurrentUser();
 
   return (
     <html
@@ -51,7 +51,9 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <StoreProvider user={user}>{children}</StoreProvider>
+          <StoreProvider user={user} needsRefresh={needsRefresh}>
+            {children}
+          </StoreProvider>
 
           <Toaster richColors />
         </ThemeProvider>
