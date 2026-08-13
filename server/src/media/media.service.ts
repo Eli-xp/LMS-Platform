@@ -6,7 +6,7 @@ import { randomUUID } from 'crypto';
 @Injectable()
 export class MediaService {
     private s3 = new S3Client({
-        region: 'default',
+        region: 'auto',
         endpoint: config.get<string>('server.aws.END_POINT'),
         forcePathStyle: true,
         credentials: {
@@ -16,13 +16,12 @@ export class MediaService {
     })
 
 
-    async createUploadUrl() {
-        const fileKey = `Assets/tataloo.png`;
+    async createUploadUrl(originalName: string, contentType: string) {
+        const fileKey = `${randomUUID()}-${originalName}`;
         const command = new PutObjectCommand({
-            Bucket: config.get<string>('server.aws.BUCKET'),
+            Bucket: 'c917408',
             Key: fileKey,
-            ContentType: 'image/png',
-            ACL: 'bucket-owner-full-control',
+            ContentType: `${contentType}`
         })
 
         const uploadUrl = await getSignedUrl(this.s3, command, { expiresIn: 300 })
