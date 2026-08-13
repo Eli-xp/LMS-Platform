@@ -126,9 +126,15 @@ export class AuthController {
 
     @UseGuards(AuthGuard('jwt'))
     @Post('/logout')
-    async logout(@Req() req:Request){
+    async logout(@Req() req:Request,@Res({passthrough: true}) res:Response){
       const { userId } = req.user as JwtUser
-      return await this.usersService.update(userId)
+      await this.usersService.update(userId);
+      res.clearCookie('refresh_token',{
+        httpOnly: true,
+        secure: false,
+        sameSite: 'lax'
+      })
+
     }
 
 
