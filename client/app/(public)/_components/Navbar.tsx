@@ -1,8 +1,7 @@
-import { buttonVariants } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import Image from "next/image";
 import Link from "next/link";
-import UserDropdown from "./UserDropdown";
+import NavbarAuthCheck from "./NavbarAuthCheck";
 
 // sample data
 const nvaigationItems = [
@@ -11,20 +10,7 @@ const nvaigationItems = [
   { name: "Dashboard", href: "/dashboard" },
 ];
 
-// sample data - user session
-const session = {
-  user: {
-    name: "Alireza",
-    email: "elirezza@gmail.com",
-    image: "",
-  },
-};
-
 const Navbar = () => {
-  //// temporary states
-  // lodaing
-  const isPending = false;
-
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-[backdrop-filter]:bg-backgroud/60">
       <div className="container flex min-h-16 items-center mx-auto px-4 md:px-6 lg:px-8">
@@ -49,27 +35,7 @@ const Navbar = () => {
 
           <div className="flex items-center justify-center space-x-4">
             <ThemeToggle />
-
-            {/* If user Session true */}
-            {isPending ? null : session ? (
-              <UserDropdown
-                name={session.user.name}
-                email={session.user.email}
-                image={session.user.image || "/user-profile-default.svg"}
-              />
-            ) : (
-              <>
-                <Link
-                  href="login"
-                  className={buttonVariants({ variant: "secondary" })}
-                >
-                  Login
-                </Link>
-                <Link href="login" className={buttonVariants()}>
-                  Get Started
-                </Link>
-              </>
-            )}
+            <NavbarAuthCheck />
           </div>
         </nav>
       </div>
