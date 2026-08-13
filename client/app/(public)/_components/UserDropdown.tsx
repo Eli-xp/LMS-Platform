@@ -17,6 +17,7 @@ import {
   LogOutIcon,
 } from "lucide-react";
 import Link from "next/link";
+import NavbarLogout from "./NavbarLogout";
 
 interface iAppProps {
   name: string;
@@ -36,7 +37,7 @@ const UserDropdown = ({ name, email, image }: iAppProps) => {
             />
           }
         >
-          <Avatar className="flex items-center gap-1">
+          <Avatar className="flex items-center gap-1" render={<div />}>
             <AvatarImage src={image} alt="Profile image"></AvatarImage>
             <AvatarFallback>
               {name[0].toUpperCase()}
@@ -100,18 +101,7 @@ const UserDropdown = ({ name, email, image }: iAppProps) => {
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem
-              className="flex justify-start cursor-pointer hover:bg-red-500/10"
-              render={
-                <Link
-                  href="//course"
-                  className="flex justify-center items-center gap-1.5"
-                />
-              }
-            >
-              <LogOutIcon size={16} className="opacity-60" aria-hidden="true" />
-              <span className="opacity-90">Logout</span>
-            </DropdownMenuItem>
+            <NavbarLogout />
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
