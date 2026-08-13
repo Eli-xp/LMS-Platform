@@ -15,11 +15,11 @@ import NavbarLogout from "./NavbarLogout";
 
 interface iAppProps {
   name: string;
-  email: string;
+  phone: string;
   image: string;
 }
 
-const UserDropdown = ({ name, email, image }: iAppProps) => {
+const UserDropdown = ({ name, phone, image }: iAppProps) => {
   return (
     <div>
       <DropdownMenu>
@@ -47,7 +47,7 @@ const UserDropdown = ({ name, email, image }: iAppProps) => {
                 {name}
               </span>
               <br />
-              <span>{email}</span>
+              <span>{phone}</span>
             </DropdownMenuLabel>
 
             <DropdownMenuItem
