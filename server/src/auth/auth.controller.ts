@@ -133,8 +133,13 @@ export class AuthController {
         httpOnly: true,
         secure: false,
         sameSite: 'lax'
+      });
+      res.clearCookie('access_token',{
+        httpOnly: true,
+        secure: false,
+        sameSite: 'lax'
       })
-
+      return {message: 'user logged out'}
     }
 
 
