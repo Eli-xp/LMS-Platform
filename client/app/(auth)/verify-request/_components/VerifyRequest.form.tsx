@@ -7,16 +7,19 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { setUser } from "@/redux/slices/auth.slice";
 import { otpEntrySchema } from "@/schemas/auth.schema";
 import { otpVerify } from "@/services/auth/auth.api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 import z from "zod";
 
 const VerifyRequestForm = ({ phone }: { phone: string }) => {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const form = useForm<z.infer<typeof otpEntrySchema>>({
     resolver: zodResolver(otpEntrySchema),
@@ -29,6 +32,7 @@ const VerifyRequestForm = ({ phone }: { phone: string }) => {
       const result = await otpVerify(data);
       toast.success("Login Successfully");
       console.log(result);
+      dispatch(setUser(result));
       router.push("/");
     } catch (error) {
       console.error(error);
