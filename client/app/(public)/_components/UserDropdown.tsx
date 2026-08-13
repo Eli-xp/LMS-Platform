@@ -9,13 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  BookOpen,
-  ChevronDown,
-  Home,
-  LayoutDashboardIcon,
-  LogOutIcon,
-} from "lucide-react";
+import { BookOpen, ChevronDown, Home, LayoutDashboardIcon } from "lucide-react";
 import Link from "next/link";
 import NavbarLogout from "./NavbarLogout";
 
