@@ -3,14 +3,16 @@
 import { useEffect, useRef } from "react";
 import { Provider } from "react-redux";
 import { makeStore, AppStore } from "./store";
-import { initializeUser } from "./slices/auth.slice";
+import { clearUser, initializeUser } from "./slices/auth.slice";
 import { useRouter } from "next/navigation";
-import { refreshToken, setSessionExpiredHandler } from "@/services/apiClient";
+import {
+  getCurrentUserOnClient,
+  refreshToken,
+} from "@/services/auth/apiClient";
 
 export default function StoreProvider({
   children,
   user,
-  needsRefresh,
 }: {
   children: React.ReactNode;
 }) {
@@ -18,57 +20,58 @@ export default function StoreProvider({
   const storeRef = useRef<AppStore | null>(null);
   // Redirect state
   const router = useRouter();
-  // Prevent mulitple Session Expired requests
-  const handlingSession = useRef(false);
 
-  // create redux store & initialize User
+  // create redux store only once
   if (!storeRef.current) {
     console.log("STORE CREATED");
-    console.log("INITIAL USER:", user);
     storeRef.current = makeStore();
-    storeRef.current.dispatch(initializeUser(user));
+
+    if (user !== null) {
+      console.log(`First initialUser HAPPENED!${user}`);
+      storeRef.current.dispatch(initializeUser(user));
+    }
   }
 
-  // Sync server user
   useEffect(() => {
-    console.log(`StoreProvider:: Sync User ${user}`);
-    storeRef.current?.dispatch(initializeUser(user));
-  }, [user]);
-
-  useEffect(() => {
-    if (!needsRefresh) {
-      console.log("StorePtovider:: No NEED TO CALL refreshToken ");
+    if (user !== null) {
+      console.log("user was not null");
       return;
     }
 
-    console.log("StorePtovider:: Called refreshToken ");
+    console.log("StorePtovider:: Server user is null => handleRefresh ");
     const handleRefresh = async () => {
       try {
-        await refreshToken();
+        // refresh browser session use refresh token
+        console.log("StorePtovider:: BERFORE refreshToken Call ");
+
+        const res = await refreshToken();
+        if (res.status === 401) {
+          console.log("refreshToken is EXPIRED...");
+          storeRef.current?.dispatch(clearUser());
+
+          return;
+        }
+
         console.log("StorePtovider:: AFTER refreshToken Call ");
-        router.refresh();
-        console.log("StorePtovider:: SERVER COMPONENT REFRESHHH ");
+        // get the user using the NEW browser cookie
+        const secondTryUser = await getCurrentUserOnClient();
+        if (secondTryUser !== null) {
+          console.log(`Second initialUser is not null! ${secondTryUser}`);
+          storeRef.current?.dispatch(initializeUser(secondTryUser));
+          return;
+        }
+
+        // Refresh succeeded but auth/me still gets 401
+        console.log("StorePtovider:: Second initialUser is null ");
+
+        storeRef.current?.dispatch(clearUser());
       } catch (error) {
-        console.error(`StorePtovider:: CATCH: ${error}`);
+        console.error(`StorePtovider:: Refresh Failed, CATCH=> ${error}`);
+        storeRef.current?.dispatch(clearUser());
       }
     };
-
     handleRefresh();
-  }, [needsRefresh, router]);
-
-  // if refresh token is also expired::
-  // useEffect(() => {
-  //   console.log("StoreProvider:: useEffect ran");
-  //   setSessionExpiredHandler(() => {
-  //     if (handlingSession.current) {
-  //       return;
-  //     }
-  //     handlingSession.current = true;
-  //     storeRef.current?.dispatch(clearUser());
-  //     console.log("StoreProvider: clearUser ran");
-  //     router.replace("/login");
-  //   });
-  // }, [router]);
+  }, [router, user]);
 
   return <Provider store={storeRef.current}>{children}</Provider>;
 }
