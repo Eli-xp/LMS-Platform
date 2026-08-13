@@ -9,7 +9,7 @@ export const setSessionExpiredHandler = (handler: () => void) => {
 let refreshPromise: Promise<void> | null = null;
 
 export const refreshToken = async () => {
-  console.log(refreshPromise)
+  console.log(refreshPromise);
   if (!refreshPromise) {
     console.log("refreshToken:: refreshToken CALLED");
     refreshPromise = fetch(`${API_URL}/auth/refresh`, {
@@ -32,41 +32,21 @@ export const refreshToken = async () => {
   return refreshPromise;
 };
 
-// export const apiClient = async (
-//   endpoint: string,
-//   options: RequestInit = {},
-// ) => {
-//   // Client Request
-//   console.log("Client Request ran");
-//   let res = await fetch(`${API_URL}${endpoint}`, {
-//     ...options,
-//     credentials: "include",
-//     headers: { "Content-Type": "application/json", ...options.headers },
-//   });
+export const getCurrentUserOnClient = async () => {
+  console.log("getCurrentUserOnClient ran");
 
-//   // if Access token expired
-//   if (res.status === 401) {
-//     console.log(`Client Request ran, ${res.status}`);
-//     try {
-//       // if Refresh success
-//       await refreshToken();
+  const res = fetch(`${API_URL}/auth/me`, {
+    method: "GET",
+    credentials: "include",
+    cache: "no-store",
+  });
 
-//       //Retry Client Request
-//       console.log("Retry Client Request ran");
-//       res = await fetch(`${API_URL}${endpoint}`, {
-//         ...options,
-//         credentials: "include",
-//         headers: { "Content-Type": "application/json", ...options.headers },
-//       });
-//     } catch (error) {
-//       console.error(error);
-//       throw error;
-//     }
-//   }
+  if (!res.ok) {
+    throw new Error(`Failed to Login ${res.status});
+    }`);
+  }
 
-//   if (!res.ok) {
-//     throw new Error(`Request failed: ${res.status}`);
-//   }
-
-//   return res.json();
-// };
+  const data = await res.json();
+  console.log(data);
+  return data;
+};

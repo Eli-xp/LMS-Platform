@@ -2,12 +2,11 @@ import { cookies } from "next/headers";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const getCurrentUser = async () => {
-  console.log("getCurrentUser CALLED");
+export const getCurrentUserOnServer = async () => {
+  console.log("getCurrentUserOnServer CALLED");
   try {
     const cookieStore = await cookies();
     const accessToken = cookieStore.toString();
-    console.log(accessToken);
 
     const res = await fetch(`${API_URL}/auth/me`, {
       method: "GET",
@@ -22,7 +21,6 @@ export const getCurrentUser = async () => {
       console.log(`getCurrentUser:: ${res.status}`);
       return {
         user: null,
-        needsRefresh: true,
       };
     }
 
@@ -33,13 +31,12 @@ export const getCurrentUser = async () => {
     }
 
     const data = await res.json();
-    console.log(data);
-    return { user: data, needsRefresh: false };
+    console.log("getCurrentUserOnServer Successfully!");
+    return { user: data };
   } catch (error) {
     console.error(error);
     return {
       user: null,
-      needsRefresh: false,
     };
   }
 };
