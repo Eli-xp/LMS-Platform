@@ -8,7 +8,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { otpEntrySchema } from "@/schemas/auth.schema";
-import { otpVerify } from "@/services/auth.api";
+import { otpVerify } from "@/services/auth/auth.api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
@@ -25,9 +25,9 @@ const VerifyRequestForm = ({ phone }: { phone: string }) => {
 
   const onSubmit = async (data: z.infer<typeof otpEntrySchema>) => {
     try {
+      // otpVerify - API call
       const result = await otpVerify(data);
       toast.success("Login Successfully");
-
       console.log(result);
       router.push("/");
     } catch (error) {

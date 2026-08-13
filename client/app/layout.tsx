@@ -5,7 +5,7 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
 import StoreProvider from "@/redux/StoreProvider";
-import { getCurrentUser } from "@/services/auth.server";
+import { getCurrentUser } from "@/services/auth/auth.server";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
