@@ -35,11 +35,8 @@ export class CourseController {
       fileKey: 'Assets/uuid.jpg',
     },
   })
-  async createUploadUrl(@Body() createUploadUrl: CreateUploadUrlDto) {
-    return this.mediaService.createUploadUrl(
-      createUploadUrl.originalName,
-      createUploadUrl.contentType,
-    );
+  async createUploadUrl() {
+    return this.mediaService.createUploadUrl();
   }
 
   @UseGuards(AuthGuard('jwt'))
