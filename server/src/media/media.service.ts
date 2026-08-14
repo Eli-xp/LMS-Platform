@@ -8,20 +8,20 @@ export class MediaService {
 
     private s3 = new S3Client({
         region: 'auto',
-        endpoint: 'https://c917408.parspack.net',
+        endpoint: config.get<string>('server.aws.END_POINT'),
         forcePathStyle: true,
         requestChecksumCalculation: 'WHEN_REQUIRED',
         responseChecksumValidation: 'WHEN_REQUIRED',
         credentials: {
-            accessKeyId: 'lJCUrcjns3muaDsY',
-            secretAccessKey: 'LkmtljMpifWMOIWn9LD1eWuCeBcn5bbU',
+            accessKeyId: config.get<string>('server.aws.ACCESS_KEY'),
+            secretAccessKey: config.get<string>('server.aws.SECRET_KEY'),
         }
     })
 
     async createUploadUrl(originalName: string, contentType: string) {
         const fileKey = `${randomUUID()}-${originalName}`;
         const command = new PutObjectCommand({
-            Bucket: 'c917408',
+            Bucket: config.get<string>('server.aws.BUCKET'),
             Key: fileKey,
             ContentType: `${contentType}`
             
