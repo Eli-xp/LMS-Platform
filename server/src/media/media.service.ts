@@ -1,10 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import config from 'config';
 import { randomUUID } from 'crypto';
+import { ConfirmUploadDto } from './DTO/confirmUploadDto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Course } from 'src/course/schema/courseSchema';
+import { Model } from 'mongoose';
+import { CourseService } from 'src/course/course.service';
 @Injectable()
 export class MediaService {
+    constructor(
+        @InjectModel(Course.name) private readonly CourseModel: Model<Course>,
+    ){}
 
     private s3 = new S3Client({
         region: 'auto',
@@ -28,5 +36,19 @@ export class MediaService {
         })
         const uploadUrl = await getSignedUrl(this.s3, command, {expiresIn: 86400})
         return {uploadUrl,fileKey,contentType}
+    }
+
+    async completeUpload(confirmUploadDto: ConfirmUploadDto, JwtUserId: string){
+        const course = await this.CourseModel.findOneAndUpdate({
+            _id: confirmUploadDto.courseId,
+            userId: JwtUserId
+        },{
+            $set:{fileKey: confirmUploadDto.fileKey}
+        },{new: true})
+
+        if(!course){
+            throw new NotFoundException('course not found')
+        }
+        return { course }
     }
 }

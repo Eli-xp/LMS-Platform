@@ -20,6 +20,7 @@ import type { Request, Express } from 'express';
 import { JwtUser } from 'src/auth/auth.controller';
 import { Types } from 'mongoose';
 import { FileInterceptor } from '@nestjs/platform-express'
+import { ConfirmUploadDto } from 'src/media/DTO/confirmUploadDto';
 
 
 @Controller('course')
@@ -41,12 +42,8 @@ export class CourseController {
     },
   })
   async createUploadUrl(@Body() createUploadUrlDto: CreateUploadUrlDto) {
-    const {uploadUrl} = await this.mediaService.createUploadUrl(createUploadUrlDto.originalName,createUploadUrlDto.contentType);
-    return {uploadUrl}
-  }
-
-  async upload(){
-
+    const {uploadUrl, contentType, fileKey} = await this.mediaService.createUploadUrl(createUploadUrlDto.originalName,createUploadUrlDto.contentType);
+    return {uploadUrl, contentType, fileKey}
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -72,18 +69,17 @@ export class CourseController {
   async create(@Body() createCourseDto: CreateCourseDto, @Req() req: Request) {
     const { newCourse } = await this.courseService.create(createCourseDto);
     const { userId } = req.user as JwtUser;
-    console.log(userId);
     newCourse.userId = new Types.ObjectId(userId);
     await newCourse.save();
     return { message: 'new course created', newCourse };
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get(':id')
-  async findCourse(@Param('id') id: string){
-    return await this.courseService.findById(id)
-  }
-
   @Post('/upload-complete')
-  async uploadComplete(@Body() fileKey: string) {}
+  async uploadComplete(@Body() 
+  confirmUploadDto: ConfirmUploadDto,@Req() req:Request) {
+    const { userId } = req.user as JwtUser;
+    const {course} = await this.mediaService.completeUpload(confirmUploadDto,userId);
+    return {message: 'upload completed', course};
+  }
 }

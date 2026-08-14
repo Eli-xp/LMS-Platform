@@ -18,8 +18,4 @@ export class CourseService {
     await newCourse.save();
     return {newCourse};
   }
-
-  async findById(id: string) {
-    return await this.CourseModel.findById(id);
-  }
 }
