@@ -51,13 +51,8 @@ const UserDropdown = ({ name, phone, image }: iAppProps) => {
             </DropdownMenuLabel>
 
             <DropdownMenuItem
-              className="flex justify-start cursor-pointer hover:bg-gray-300/10"
-              render={
-                <Link
-                  href="/"
-                  className="flex justify-center items-center gap-1.5"
-                />
-              }
+              className="flex justify-start  cursor-pointer hover:bg-gray-300/10 "
+              render={<Link href="/" />}
             >
               <Home size={16} className="opacity-60" aria-hidden="true" />
               <span className="opacity-90">Profile</span>
@@ -65,12 +60,7 @@ const UserDropdown = ({ name, phone, image }: iAppProps) => {
 
             <DropdownMenuItem
               className="flex justify-start cursor-pointer hover:bg-gray-300/10"
-              render={
-                <Link
-                  href="/"
-                  className="flex justify-center items-center gap-1.5"
-                />
-              }
+              render={<Link href="/" />}
             >
               <BookOpen size={16} className="opacity-60" aria-hidden="true" />
               <span className="opacity-90">Courses</span>
@@ -78,12 +68,7 @@ const UserDropdown = ({ name, phone, image }: iAppProps) => {
 
             <DropdownMenuItem
               className="flex justify-start cursor-pointer hover:bg-gray-300/10"
-              render={
-                <Link
-                  href="/dashboard"
-                  className="flex justify-center items-center gap-1.5"
-                />
-              }
+              render={<Link href="/dashboard" />}
             >
               <LayoutDashboardIcon
                 size={16}

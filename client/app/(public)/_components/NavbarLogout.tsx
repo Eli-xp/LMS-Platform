@@ -28,11 +28,11 @@ const NavbarLogout = () => {
 
   return (
     <DropdownMenuItem
+    className="flex w-full justify-start items-center cursor-pointer hover:bg-red-500/20"
       render={
         <Button
           type="button"
           onClick={logoutCall}
-          className="flex w-full justify-start items-center cursor-pointer hover:bg-red-500/20 curpo"
         />
       }
     >
