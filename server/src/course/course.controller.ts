@@ -7,6 +7,8 @@ import {
   Delete,
   UseGuards,
   Req,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
@@ -14,9 +16,11 @@ import { CreateUploadUrlDto } from 'src/media/DTO/create-upload-dto';
 import { MediaService } from 'src/media/media.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import type { Request } from 'express';
+import type { Request, Express } from 'express';
 import { JwtUser } from 'src/auth/auth.controller';
 import { Types } from 'mongoose';
+import { FileInterceptor } from '@nestjs/platform-express'
+
 
 @Controller('course')
 export class CourseController {
@@ -26,17 +30,23 @@ export class CourseController {
   ) {}
 
   @Post('/upload-url')
+  @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({ summary: 'create upload url' })
   @ApiResponse({
     type: Object,
     status: 200,
     example: {
       uploadUrl: 'https://s3.amazonaws.com/BUCKET_NAME/Assets/uuid.jpg',
-      fileKey: 'Assets/uuid.jpg',
+      fileKey: 'sidfjaisjfisafj.jpg',
     },
   })
   async createUploadUrl(@Body() createUploadUrlDto: CreateUploadUrlDto) {
-    return this.mediaService.createUploadUrl(createUploadUrlDto.originalName,createUploadUrlDto.contentType);
+    const {uploadUrl} = await this.mediaService.createUploadUrl(createUploadUrlDto.originalName,createUploadUrlDto.contentType);
+    return {uploadUrl}
+  }
+
+  async upload(){
+
   }
 
   @UseGuards(AuthGuard('jwt'))

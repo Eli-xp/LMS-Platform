@@ -4,7 +4,7 @@ import { IsNotEmpty, IsString } from "class-validator";
 export class CreateUploadUrlDto {
     @IsString()
     @IsNotEmpty()
-    @ApiProperty({type: String, required: true, example: 'image.png'})
+    @ApiProperty({type: String, required: true, example: 'flower.png'})
     originalName!: string;
     @IsString()
     @IsNotEmpty()

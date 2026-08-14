@@ -9,7 +9,7 @@ export class MediaService {
     // ست کردن مشخصات اتصال برای ساخت کلاینت اس 3
     private s3 = new S3Client({
         region: 'auto',
-        endpoint: 'https://c917408.parspack.net/',
+        endpoint: 'https://c917408.parspack.net',
         forcePathStyle: true,
         requestChecksumCalculation: 'WHEN_REQUIRED',
         responseChecksumValidation: 'WHEN_REQUIRED',
@@ -29,7 +29,7 @@ export class MediaService {
             
         })
         // دریافت لینک آپلود
-        const uploadUrl = await getSignedUrl(this.s3, command, {expiresIn: 3600})
-        return {uploadUrl,fileKey}
+        const uploadUrl = await getSignedUrl(this.s3, command, {expiresIn: 86400})
+        return {uploadUrl,fileKey,contentType}
     }
 }
