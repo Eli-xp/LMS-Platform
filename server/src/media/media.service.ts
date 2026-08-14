@@ -6,7 +6,6 @@ import { randomUUID } from 'crypto';
 @Injectable()
 export class MediaService {
 
-    // ست کردن مشخصات اتصال برای ساخت کلاینت اس 3
     private s3 = new S3Client({
         region: 'auto',
         endpoint: 'https://c917408.parspack.net',
@@ -19,7 +18,6 @@ export class MediaService {
         }
     })
 
-    // فانکشن ساخت نام فایل و اسم باکت
     async createUploadUrl(originalName: string, contentType: string) {
         const fileKey = `${randomUUID()}-${originalName}`;
         const command = new PutObjectCommand({
@@ -28,7 +26,6 @@ export class MediaService {
             ContentType: `${contentType}`
             
         })
-        // دریافت لینک آپلود
         const uploadUrl = await getSignedUrl(this.s3, command, {expiresIn: 86400})
         return {uploadUrl,fileKey,contentType}
     }
