@@ -11,6 +11,8 @@ export class MediaService {
         region: 'auto',
         endpoint: 'https://c917408.parspack.net/',
         forcePathStyle: true,
+        requestChecksumCalculation: 'WHEN_REQUIRED',
+        responseChecksumValidation: 'WHEN_REQUIRED',
         credentials: {
             accessKeyId: 'lJCUrcjns3muaDsY',
             secretAccessKey: 'LkmtljMpifWMOIWn9LD1eWuCeBcn5bbU',
@@ -24,9 +26,10 @@ export class MediaService {
             Bucket: 'c917408',
             Key: fileKey,
             ContentType: `${contentType}`
+            
         })
         // دریافت لینک آپلود
-        const uploadUrl = await getSignedUrl(this.s3, command, { expiresIn: 300 })
+        const uploadUrl = await getSignedUrl(this.s3, command, {expiresIn: 3600})
         return {uploadUrl,fileKey}
     }
 }
