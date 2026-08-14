@@ -15,7 +15,7 @@ export const courseCategories = [
   "Personal Development",
 ];
 
-// note: MongoDB wil create: createdAt, updatedAt
+// note: MongoDB wil create=> id, createdAt, updatedAt
 export const courseSchema = z.object({
   title: z
     .string()
@@ -47,4 +47,19 @@ export const courseSchema = z.object({
   status: z.enum(courseStatus, {
     error: "Status is required",
   }),
+  id: z.string().min(3, { error: "id must be at least 3 characters long" }),
+});
+
+// /admin/courses
+
+export const adminGetCourses = courseSchema.pick({
+  id: true,
+  title: true,
+  smallDescription: true,
+  duration: true,
+  level: true,
+  status: true,
+  price: true,
+  fileKey: true,
+  slug: true,
 });
