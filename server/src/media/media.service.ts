@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import { createPresignedPost } from '@aws-sdk/s3-presigned-post'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import config from 'config';
 import { randomUUID } from 'crypto';
@@ -28,14 +29,19 @@ export class MediaService {
 
     async createUploadUrl(originalName: string, contentType: string) {
         const fileKey = `${randomUUID()}-${originalName}`;
-        const command = new PutObjectCommand({
+        const {url,fields} = await createPresignedPost(this.s3,{
             Bucket: config.get<string>('server.aws.BUCKET'),
             Key: fileKey,
-            ContentType: `${contentType}`
-            
+            Conditions:[
+                ['content-length-range', 0, 10 * 1024 * 1024],
+                ['eq', '$Content-Type', contentType],
+            ],
+            Fields:{
+                'Content-Type': contentType
+            },
+            Expires: 86400
         })
-        const uploadUrl = await getSignedUrl(this.s3, command, {expiresIn: 86400})
-        return {uploadUrl,fileKey,contentType}
+        return {url,fields,fileKey}
     }
 
     async completeUpload(confirmUploadDto: ConfirmUploadDto, JwtUserId: string){

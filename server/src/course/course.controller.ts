@@ -41,11 +41,11 @@ export class CourseController {
     },
   })
   async createUploadUrl(@Body() createUploadUrlDto: CreateUploadUrlDto) {
-    const { uploadUrl, fileKey } = await this.mediaService.createUploadUrl(
+    const { url, fileKey } = await this.mediaService.createUploadUrl(
       createUploadUrlDto.originalName,
       createUploadUrlDto.contentType,
     );
-    return { uploadUrl, fileKey };
+    return { url, fileKey };
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -70,7 +70,7 @@ export class CourseController {
     },
   })
   async create(@Body() createCourseDto: CreateCourseDto, @Req() req: Request) {
-    const { uploadUrl, fileKey } = await this.mediaService.createUploadUrl(
+    const { url, fileKey } = await this.mediaService.createUploadUrl(
       createCourseDto.thumbNail!.originalName,
       createCourseDto.thumbNail!!.contentType,
     );
@@ -85,7 +85,7 @@ export class CourseController {
     }
     user.courses?.push(newCourse._id);
     await user.save();
-    return { message: 'new course created', uploadUrl, newCourse };
+    return { message: 'new course created', url, newCourse };
   }
 
   @UseGuards(AuthGuard('jwt'))
