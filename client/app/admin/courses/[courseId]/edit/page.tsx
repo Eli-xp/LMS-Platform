@@ -1,5 +1,5 @@
 "use client";
-import { adminGetCourse } from "@/services/admin/adminGetCourse.api";
+import { adminGetCourse } from "@/services/admin/course/adminGetCourse.api";
 import { useParams } from "next/navigation";
 
 const courseEditPage = () => {

@@ -18,7 +18,7 @@ export const courseCategories = [
 // note: MongoDB wil create=> id, createdAt, updatedAt
 
 //  /admin/courses/create File Upload
-export const fileKey = z.object({
+export const thumbNail = z.object({
   originalName: z.string().min(1, { error: "Invalid File Name" }),
   contentType: z.string().min(1, { error: "Invalid File Type" }),
   size: z.number().min(1, { error: "Invalid File Size" }),
@@ -43,7 +43,7 @@ export const courseSchema = z.object({
     .max(200, {
       error: "Small Description must be at most 200 characters long",
     }),
-  fileKey: fileKey,
+  thumbNail: thumbNail,
   price: z.coerce.number().min(1, { error: "Price must be a positive number" }),
   duration: z.coerce
     .number()
@@ -67,6 +67,6 @@ export const adminGetCourses = courseSchema.pick({
   level: true,
   status: true,
   price: true,
-  fileKey: true,
+  thumbNail: true,
   slug: true,
 });
