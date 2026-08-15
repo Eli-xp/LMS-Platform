@@ -5,6 +5,7 @@ import { MediaService } from 'src/media/media.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Course, CourseSchema } from './schema/courseSchema';
 import { User, UserSchema } from 'src/users/schema/userSchema';
+import { UsersService } from 'src/users/users.service';
 
 @Module({
   imports: [
@@ -20,6 +21,6 @@ import { User, UserSchema } from 'src/users/schema/userSchema';
     ]),
   ],
   controllers: [CourseController],
-  providers: [CourseService, MediaService],
+  providers: [CourseService, MediaService, UsersService],
 })
 export class CourseModule {}
