@@ -22,6 +22,8 @@ export class Course extends Document{
     slug!: string
     @Prop({type: String, required: true, enum: ['Draft', 'Published', 'Archived'], default: 'Draft'})
     status!: string
+    @Prop({type: String})
+    thumbnail?: string;
     @Prop({ type: Types.ObjectId, ref: 'User',})
     userId?: Types.ObjectId
 }

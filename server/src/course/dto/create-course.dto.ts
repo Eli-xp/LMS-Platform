@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEnum, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumber, IsObject, IsString } from "class-validator";
 
 
 export class CreateCourseDto {
@@ -35,4 +35,9 @@ export class CreateCourseDto {
     @IsNotEmpty()
     @ApiProperty({type: String, required: true, enum: ['Draft', 'Published', 'Archived'], default: 'Draft'})
     status!: string
+    @IsObject()
+    thumbNail?: {
+        originalName: string,
+        contentType: string
+    }
 }

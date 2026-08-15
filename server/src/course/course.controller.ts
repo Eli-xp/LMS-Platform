@@ -31,7 +31,6 @@ export class CourseController {
   ) {}
 
   @Post('/upload-url')
-  @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({ summary: 'create upload url' })
   @ApiResponse({
     type: Object,
@@ -42,8 +41,8 @@ export class CourseController {
     },
   })
   async createUploadUrl(@Body() createUploadUrlDto: CreateUploadUrlDto) {
-    const {uploadUrl, contentType, fileKey} = await this.mediaService.createUploadUrl(createUploadUrlDto.originalName,createUploadUrlDto.contentType);
-    return {uploadUrl, contentType, fileKey}
+    const {uploadUrl, fileKey} = await this.mediaService.createUploadUrl(createUploadUrlDto.originalName,createUploadUrlDto.contentType);
+    return {uploadUrl, fileKey}
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -67,11 +66,13 @@ export class CourseController {
     },
   })
   async create(@Body() createCourseDto: CreateCourseDto, @Req() req: Request) {
+    const { uploadUrl,fileKey } = await this.mediaService.createUploadUrl(createCourseDto.thumbNail!.originalName,createCourseDto.thumbNail!!.contentType)
     const { newCourse } = await this.courseService.create(createCourseDto);
     const { userId } = req.user as JwtUser;
     newCourse.userId = new Types.ObjectId(userId);
+    newCourse.thumbnail = fileKey;
     await newCourse.save();
-    return { message: 'new course created', newCourse };
+    return { message: 'new course created', uploadUrl ,newCourse };
   }
 
   @UseGuards(AuthGuard('jwt'))
