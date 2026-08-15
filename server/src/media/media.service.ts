@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import config from 'config';
 import { randomUUID } from 'crypto';
@@ -50,5 +50,16 @@ export class MediaService {
             throw new NotFoundException('course not found')
         }
         return { course }
+    }
+
+
+
+    async createViewUrl(fileKey: string){
+        const command = new GetObjectCommand({
+            Bucket: config.get<string>('server.aws.BUCKET'),
+            Key: fileKey
+        })
+        const viewUrl = await getSignedUrl(this.s3,command,{expiresIn: 86400})
+        return {viewUrl}
     }
 }

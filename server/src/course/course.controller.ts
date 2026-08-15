@@ -7,6 +7,7 @@ import {
   Delete,
   UseGuards,
   Req,
+  Query,
 } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
@@ -80,4 +81,14 @@ export class CourseController {
     const {course} = await this.mediaService.completeUpload(confirmUploadDto,userId);
     return {message: 'upload completed', course};
   }
+
+
+@UseGuards(AuthGuard('jwt'))
+@Get('/view-url')
+async getViewUrl(@Query('fileKey') fileKey: string){
+  return this.mediaService.createViewUrl(fileKey)
+}
+
+
+
 }
