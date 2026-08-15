@@ -8,6 +8,7 @@ import {
   UseGuards,
   Req,
   Query,
+  NotFoundException,
 } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
@@ -19,6 +20,7 @@ import type { Request } from 'express';
 import { JwtUser } from 'src/auth/auth.controller';
 import { Types } from 'mongoose';
 import { ConfirmUploadDto } from 'src/media/DTO/confirmUploadDto';
+import { UsersService } from 'src/users/users.service';
 
 
 @Controller('course')
@@ -26,6 +28,7 @@ export class CourseController {
   constructor(
     private readonly courseService: CourseService,
     private readonly mediaService: MediaService,
+    private readonly usersService: UsersService
   ) {}
 
   @Post('/upload-url')
@@ -70,6 +73,12 @@ export class CourseController {
     newCourse.userId = new Types.ObjectId(userId);
     newCourse.thumbnail = fileKey;
     await newCourse.save();
+    const user = await this.usersService.findById(userId);
+    if(!user){
+      throw new NotFoundException('user not found')
+    }
+    user.courses?.push(newCourse._id)
+    await user.save()
     return { message: 'new course created', uploadUrl ,newCourse };
   }
 
