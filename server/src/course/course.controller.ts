@@ -92,6 +92,14 @@ export class CourseController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: 'check for successfully uploads' })
+  @ApiResponse({
+    type: Object,
+    status: 200,
+    example:{
+      message:'upload completed',
+      course:'course infos'}
+  })
   @Post('/upload-complete')
   async uploadComplete(
     @Body()
