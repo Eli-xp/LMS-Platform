@@ -45,5 +45,6 @@ export class CreateCourseDto {
     @IsNumber()
     @IsNotEmpty()
     @Max(5 * 1024 * 1024)
+    @ApiProperty({type:Object, required: true, example:'5'})
     size!: number
 }
