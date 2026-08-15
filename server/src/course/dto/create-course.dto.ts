@@ -36,6 +36,8 @@ export class CreateCourseDto {
     @ApiProperty({type: String, required: true, enum: ['Draft', 'Published', 'Archived'], default: 'Draft'})
     status!: string
     @IsObject()
+    @IsNotEmpty()
+    @ApiProperty({type:Object, required: true, example:{originalName:'test.png',contentType:'image/png'}})
     thumbNail?: {
         originalName: string,
         contentType: string

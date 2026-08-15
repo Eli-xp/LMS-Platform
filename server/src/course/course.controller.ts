@@ -65,11 +65,8 @@ export class CourseController {
         smallDescription: 'about js...',
         slug: 'string',
         status: 'Draft',
-        thumbNail: {
-          originalName: 'js events',
-          contentType: 'video/mp4',
-        },
       },
+      uploadUrl:'https"//padaiodsfpwer123123qwd.png'
     },
   })
   async create(@Body() createCourseDto: CreateCourseDto, @Req() req: Request) {
