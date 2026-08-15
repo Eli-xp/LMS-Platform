@@ -83,11 +83,11 @@ export class CourseController {
   }
 
 
-@UseGuards(AuthGuard('jwt'))
-@Get('/view-url')
-async getViewUrl(@Query('fileKey') fileKey: string){
-  return this.mediaService.createViewUrl(fileKey)
-}
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/view-url')
+  async getViewUrl(@Query('fileKey') fileKey: string){
+    return this.mediaService.createViewUrl(fileKey)
+  }
 
 
 
