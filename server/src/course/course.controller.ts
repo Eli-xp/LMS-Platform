@@ -63,6 +63,10 @@ export class CourseController {
         smallDescription: 'about js...',
         slug: 'string',
         status: 'Draft',
+        thumbNail:{
+          originalName:'js events',
+          contentType:'video/mp4'
+        }
       },
     },
   })
