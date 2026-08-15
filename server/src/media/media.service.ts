@@ -33,7 +33,7 @@ export class MediaService {
             Bucket: config.get<string>('server.aws.BUCKET'),
             Key: fileKey,
             Conditions:[
-                ['content-length-range', 0, 10 * 1024 * 1024],
+                ['content-length-range', 0, 5 * 1024 * 1024],
                 ['eq', '$Content-Type', contentType],
             ],
             Fields:{

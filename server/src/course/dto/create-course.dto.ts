@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEnum, IsNotEmpty, IsNumber, IsObject, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumber, IsObject, IsString, Max } from "class-validator";
 
 
 export class CreateCourseDto {
@@ -42,4 +42,8 @@ export class CreateCourseDto {
         originalName: string,
         contentType: string
     }
+    @IsNumber()
+    @IsNotEmpty()
+    @Max(5 * 1024 * 1024)
+    size!: number
 }
