@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/select";
 import RichTextEditor from "@/components/rich-text-editor/Editor";
 import FileUploader from "@/components/file-uploader/FileUploader";
+import { Textarea } from "@/components/ui/textarea";
 
 const CourseCreationForm = () => {
   const form = useForm<z.infer<typeof courseSchema>>({
@@ -40,7 +41,7 @@ const CourseCreationForm = () => {
       category: "Web Development",
       description: "",
       smallDescription: "",
-      fileKey: "",
+      thumbNail: "",
       price: 0,
       duration: 0,
       level: "Beginner",
@@ -49,7 +50,7 @@ const CourseCreationForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof courseSchema>) => {
-    console.log("object");
+    console.log("onSubmit ran");
     console.log(values);
   };
 
@@ -57,6 +58,7 @@ const CourseCreationForm = () => {
     const titleValue = form.getValues("title");
     if (titleValue) {
       const slug = slugify(titleValue, { lower: true, strict: true });
+
       console.log(slug);
     } else {
       toast.error("Enter The Title Please.");
@@ -66,7 +68,10 @@ const CourseCreationForm = () => {
   return (
     <form
       id="CourseCreationFormID"
-      onSubmit={form.handleSubmit(onSubmit)}
+      onSubmit={form.handleSubmit(onSubmit, (error) => {
+        
+        console.log("VALIDATION ERRORS:", error);
+      })}
       className="space-y-6"
     >
       <FieldGroup>
@@ -143,19 +148,27 @@ const CourseCreationForm = () => {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <RichTextEditor field={field} filedLabel={"Small Description"} />
-
+              <FieldLabel htmlFor="smallDescription">
+                Small Description<span className="text-destructive">*</span>
+              </FieldLabel>
+              <Textarea
+                {...field}
+                id="smallDescription"
+                aria-invalid={fieldState.invalid}
+                inputMode="text"
+                placeholder="complete-nextjs-16-courses"
+              />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
 
         <Controller
-          name="fileKey"
+          name="thumbNail"
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="fileKey">
+              <FieldLabel htmlFor="thumbNail">
                 Thumbnail Image
                 <span className="text-destructive">
                   *{" "}
@@ -164,7 +177,7 @@ const CourseCreationForm = () => {
                   </span>
                 </span>
               </FieldLabel>
-              <FileUploader />
+              <FileUploader onFileChange={field.onChange} />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
