@@ -20,7 +20,6 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 import slugify from "slugify";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -166,13 +165,6 @@ const CourseCreationForm = () => {
                 </span>
               </FieldLabel>
               <FileUploader />
-              {/* <Input
-                {...field}
-                id="fileKey"
-                aria-invalid={fieldState.invalid}
-                type="file"
-                placeholder="courses/nextjs-16-course-thumbnail.png"
-              /> */}
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
