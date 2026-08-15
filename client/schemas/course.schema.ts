@@ -51,7 +51,6 @@ export const courseSchema = z.object({
 });
 
 // /admin/courses
-
 export const adminGetCourses = courseSchema.pick({
   id: true,
   title: true,
