@@ -7,8 +7,6 @@ import {
   Delete,
   UseGuards,
   Req,
-  UseInterceptors,
-  UploadedFile,
 } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
@@ -16,10 +14,9 @@ import { CreateUploadUrlDto } from 'src/media/DTO/create-upload-dto';
 import { MediaService } from 'src/media/media.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import type { Request, Express } from 'express';
+import type { Request } from 'express';
 import { JwtUser } from 'src/auth/auth.controller';
 import { Types } from 'mongoose';
-import { FileInterceptor } from '@nestjs/platform-express'
 import { ConfirmUploadDto } from 'src/media/DTO/confirmUploadDto';
 
 
