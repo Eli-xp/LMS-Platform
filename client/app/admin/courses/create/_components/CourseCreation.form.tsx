@@ -41,7 +41,7 @@ const CourseCreationForm = () => {
       category: "Web Development",
       description: "",
       smallDescription: "",
-      thumbNail: "",
+      thumbNail: { originalName: "", contentType: "", size: 0 },
       price: 0,
       duration: 0,
       level: "Beginner",
@@ -68,10 +68,10 @@ const CourseCreationForm = () => {
   return (
     <form
       id="CourseCreationFormID"
-      onSubmit={form.handleSubmit(onSubmit, (error) => {
-        
-        console.log("VALIDATION ERRORS:", error);
-      })}
+      onSubmit={form.handleSubmit(
+        onSubmit,
+        //  (error) => {console.log("VALIDATION ERRORS:", error)}
+      )}
       className="space-y-6"
     >
       <FieldGroup>
