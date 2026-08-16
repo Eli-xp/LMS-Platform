@@ -56,16 +56,6 @@ export class CourseController {
     status: 201,
     example: {
       message: 'new course created',
-      newCourse: {
-        title: 'what is nestJs',
-        description: 'this course is about working with...',
-        price: 499,
-        level: 'Archived',
-        category: 'Programming',
-        smallDescription: 'about js...',
-        slug: 'string',
-        status: 'Draft',
-      },
       url:'https"//padaiodsfpwer123123qwd.png'
     },
   })
@@ -85,7 +75,7 @@ export class CourseController {
     }
     user.courses?.push(newCourse._id);
     await user.save();
-    return { message: 'new course created', url, newCourse };
+    return { message: 'new course created', url };
   }
 
   @UseGuards(AuthGuard('jwt'))
