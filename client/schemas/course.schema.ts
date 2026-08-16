@@ -19,6 +19,7 @@ export const courseCategories = [
 
 //  /admin/courses/create File Upload
 export const thumbNail = z.object({
+  file: z.instanceof(File),
   originalName: z.string().min(1, { error: "Invalid File Name" }),
   contentType: z.string().min(1, { error: "Invalid File Type" }),
   size: z.number().min(1, { error: "Invalid File Size" }),
