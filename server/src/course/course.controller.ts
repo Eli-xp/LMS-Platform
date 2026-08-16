@@ -72,7 +72,7 @@ export class CourseController {
   async create(@Body() createCourseDto: CreateCourseDto, @Req() req: Request) {
     const { url, fileKey } = await this.mediaService.createUploadUrl(
       createCourseDto.thumbNail!.originalName,
-      createCourseDto.thumbNail!!.contentType,
+      createCourseDto.thumbNail!.contentType,
     );
     const { newCourse } = await this.courseService.create(createCourseDto);
     const { userId } = req.user as JwtUser;
