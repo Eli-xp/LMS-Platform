@@ -66,7 +66,7 @@ export class CourseController {
         slug: 'string',
         status: 'Draft',
       },
-      uploadUrl:'https"//padaiodsfpwer123123qwd.png'
+      url:'https"//padaiodsfpwer123123qwd.png'
     },
   })
   async create(@Body() createCourseDto: CreateCourseDto, @Req() req: Request) {
