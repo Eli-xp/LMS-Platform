@@ -56,11 +56,20 @@ export class CourseController {
     status: 201,
     example: {
       message: 'new course created',
-      url:'https"//padaiodsfpwer123123qwd.png'
+      url:'https"//padaiodsfpwer123123qwd.png',
+      field:{
+        "key": "LMS/Assets/abc.png",
+        "Content-Type": "image/png",
+        "Policy": "...",
+        "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+        "X-Amz-Credential": "...",
+        "X-Amz-Date": "...",
+        "X-Amz-Signature": "..."
+      }
     },
   })
   async create(@Body() createCourseDto: CreateCourseDto, @Req() req: Request) {
-    const { url, fileKey } = await this.mediaService.createUploadUrl(
+    const { url, fileKey, fields } = await this.mediaService.createUploadUrl(
       createCourseDto.thumbNail!.originalName,
       createCourseDto.thumbNail!.contentType,
     );
@@ -75,7 +84,7 @@ export class CourseController {
     }
     user.courses?.push(newCourse._id);
     await user.save();
-    return { message: 'new course created', url };
+    return { message: 'new course created', url, fields };
   }
 
   @UseGuards(AuthGuard('jwt'))
