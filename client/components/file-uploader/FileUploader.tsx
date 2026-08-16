@@ -24,6 +24,7 @@ interface UploaderState {
 }
 
 interface FileMetadata {
+  file:File
   originalName: string;
   contentType: string;
   size: number;
@@ -52,6 +53,7 @@ const FileUploader = ({ onFileChange }: FileUploaderProps) => {
         const file = acceptFiles[0];
         console.log(file);
         console.log({
+          file: file,
           originalName: file.name,
           contentType: file.type,
           size: file.size,
@@ -69,6 +71,7 @@ const FileUploader = ({ onFileChange }: FileUploaderProps) => {
         });
 
         onFileChange({
+          file: file,
           originalName: file.name,
           contentType: file.type,
           size: file.size,
@@ -146,7 +149,8 @@ const FileUploader = ({ onFileChange }: FileUploaderProps) => {
           <RenderUploadedState
             previewUrl={fileState.objectUrl}
             setFileState={setFileState}
-        onFileChange={onFileChange}          />
+            onFileChange={onFileChange}
+          />
         )}
       </CardContent>
     </Card>
