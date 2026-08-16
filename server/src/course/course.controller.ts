@@ -110,6 +110,7 @@ export class CourseController {
     return { message: 'upload completed', course };
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get('/courses')
   @ApiOperation({summary: 'return all courses'})
   @ApiResponse({type:Array,status:200})
