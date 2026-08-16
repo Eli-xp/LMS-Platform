@@ -18,9 +18,9 @@ export class CourseService {
     await newCourse.save();
     return {newCourse};
   }
-  
+
   async findAll(){
-    return this.CourseModel.find()
+    return this.CourseModel.find().select('title smallDescription duration level status price thumbNail slug')
   }
 
 }
