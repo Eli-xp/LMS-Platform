@@ -112,7 +112,7 @@ export class CourseController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('course')
+  @Get('courses')
   @ApiOperation({ summary: 'return all courses' })
   @ApiResponse({
     type: Array,
