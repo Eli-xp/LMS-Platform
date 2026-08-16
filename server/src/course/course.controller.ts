@@ -22,7 +22,7 @@ import { Types } from 'mongoose';
 import { ConfirmUploadDto } from 'src/media/DTO/confirmUploadDto';
 import { UsersService } from 'src/users/users.service';
 
-@Controller('course')
+@Controller('admin')
 export class CourseController {
   constructor(
     private readonly courseService: CourseService,
@@ -30,7 +30,7 @@ export class CourseController {
     private readonly usersService: UsersService,
   ) {}
 
-  @Post('/upload-url')
+  @Post('course/upload-url')
   @ApiOperation({ summary: 'create upload url' })
   @ApiResponse({
     type: Object,
@@ -49,7 +49,7 @@ export class CourseController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Post('/create')
+  @Post('course/create')
   @ApiOperation({ summary: 'create new course' })
   @ApiResponse({
     type: Object,
@@ -97,7 +97,7 @@ export class CourseController {
       course: 'course infos',
     },
   })
-  @Post('/upload-complete')
+  @Post('course/upload-complete')
   async uploadComplete(
     @Body()
     confirmUploadDto: ConfirmUploadDto,
@@ -112,7 +112,7 @@ export class CourseController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('/courses')
+  @Get('course')
   @ApiOperation({ summary: 'return all courses' })
   @ApiResponse({
     type: Array,
@@ -132,7 +132,7 @@ export class CourseController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('/view-url')
+  @Get('course/view-url')
   async getViewUrl(@Query('fileKey') fileKey: string) {
     return this.mediaService.createViewUrl(fileKey);
   }
