@@ -20,7 +20,7 @@ export class CourseService {
   }
 
   async findAll(){
-    return this.CourseModel.find().select('title smallDescription duration level status price thumbNail slug')
+    return this.CourseModel.find().select('title smallDescription duration level status price thumbnail slug')
   }
 
 }

@@ -131,6 +131,8 @@ export class CourseController {
     return this.courseService.findAll();
   }
 
+  @Get('/')
+
   @UseGuards(AuthGuard('jwt'))
   @Get('course/view-url')
   async getViewUrl(@Query('fileKey') fileKey: string) {
