@@ -49,20 +49,24 @@ const CourseCreationForm = () => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof courseSchema>) => {
-    console.log("onSubmit ran");
-    console.log(values);
-  };
-
   const generateSlug = () => {
     const titleValue = form.getValues("title");
     if (titleValue) {
       const slug = slugify(titleValue, { lower: true, strict: true });
-
       console.log(slug);
+
+      form.setValue("slug", slug, {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
     } else {
       toast.error("Enter The Title Please.");
     }
+  };
+
+  const onSubmit = async (values: z.infer<typeof courseSchema>) => {
+    console.log("onSubmit ran");
+    console.log(values);
   };
 
   return (
