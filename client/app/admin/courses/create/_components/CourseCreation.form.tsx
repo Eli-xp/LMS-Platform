@@ -31,8 +31,15 @@ import {
 import RichTextEditor from "@/components/rich-text-editor/Editor";
 import FileUploader from "@/components/file-uploader/FileUploader";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  adminPostCourse,
+  adminPostCourseVerification,
+} from "@/services/admin/course/adminPostCourse.api";
+import { useRouter } from "next/navigation";
 
 const CourseCreationForm = () => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof courseSchema>>({
     resolver: zodResolver(courseSchema),
     defaultValues: {
@@ -41,7 +48,7 @@ const CourseCreationForm = () => {
       category: "Web Development",
       description: "",
       smallDescription: "",
-      thumbNail: { originalName: "", contentType: "", size: 0 },
+      thumbNail: { file: {}, originalName: "", contentType: "", size: 0 },
       price: 0,
       duration: 0,
       level: "Beginner",
@@ -66,7 +73,52 @@ const CourseCreationForm = () => {
 
   const onSubmit = async (values: z.infer<typeof courseSchema>) => {
     console.log("onSubmit ran");
+
+    // disable submit button
+    form.formState.isSubmitting;
+
     console.log(values);
+    const fixedValues = {
+      title: values.title,
+      slug: values.slug,
+      category: values.category,
+      description: values.description,
+      smallDescription: values.smallDescription,
+      thumbNail: {
+        originalName: values.thumbNail.originalName,
+        contentType: values.thumbNail.contentType,
+      },
+      size: values.thumbNail.size,
+      price: values.price,
+      duration: values.duration,
+      level: values.level,
+      status: values.status,
+    };
+
+    if (values) {
+      try {
+        const createCourseRes = await adminPostCourse(fixedValues);
+        console.log(createCourseRes);
+
+        const file = form.getValues("thumbNail.file");
+        console.log(file);
+        const createCourseResverification = await adminPostCourseVerification({
+          createCourseRes,
+          file,
+        });
+        console.log(createCourseResverification);
+
+        // if storage 204
+        if (createCourseResverification.status === 204) {
+          // Reset for inputs
+          form.reset();
+          // Redirect to admin courses
+          router.replace("/admin/courses");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
   };
 
   return (
