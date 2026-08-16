@@ -1,11 +1,4 @@
 import { buttonVariants } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import CourseCreationForm from "./_components/CourseCreation.form";
@@ -22,17 +15,8 @@ const CourseCreationPage = () => {
         </Link>
         <h2 className="text-2xl font-bold">Create Courses</h2>
       </div>
-      <Card>
-        <CardHeader>
-          <CardTitle>Basic info</CardTitle>
-          <CardDescription>
-            Provide basic information about the course
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <CourseCreationForm />
-        </CardContent>
-      </Card>
+      {/* Card containing form */}
+      <CourseCreationForm />
     </>
   );
 };
