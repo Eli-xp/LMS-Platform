@@ -26,6 +26,8 @@ export class Course extends Document{
     thumbnail?: string;
     @Prop({ type: Types.ObjectId, ref: 'User',})
     userId?: Types.ObjectId
+    @Prop({type: Number, required: true})
+    duration!: number
 }
 
 export const CourseSchema = SchemaFactory.createForClass(Course);
