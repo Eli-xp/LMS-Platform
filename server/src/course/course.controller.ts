@@ -56,16 +56,16 @@ export class CourseController {
     status: 201,
     example: {
       message: 'new course created',
-      url:'https"//padaiodsfpwer123123qwd.png',
-      field:{
-        "key": "LMS/Assets/abc.png",
-        "Content-Type": "image/png",
-        "Policy": "...",
-        "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
-        "X-Amz-Credential": "...",
-        "X-Amz-Date": "...",
-        "X-Amz-Signature": "..."
-      }
+      url: 'https"//padaiodsfpwer123123qwd.png',
+      field: {
+        key: 'LMS/Assets/abc.png',
+        'Content-Type': 'image/png',
+        Policy: '...',
+        'X-Amz-Algorithm': 'AWS4-HMAC-SHA256',
+        'X-Amz-Credential': '...',
+        'X-Amz-Date': '...',
+        'X-Amz-Signature': '...',
+      },
     },
   })
   async create(@Body() createCourseDto: CreateCourseDto, @Req() req: Request) {
@@ -92,9 +92,10 @@ export class CourseController {
   @ApiResponse({
     type: Object,
     status: 200,
-    example:{
-      message:'upload completed',
-      course:'course infos'}
+    example: {
+      message: 'upload completed',
+      course: 'course infos',
+    },
   })
   @Post('/upload-complete')
   async uploadComplete(
@@ -112,9 +113,21 @@ export class CourseController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('/courses')
-  @ApiOperation({summary: 'return all courses'})
-  @ApiResponse({type:Array,status:200})
-  async getCourses(){
+  @ApiOperation({ summary: 'return all courses' })
+  @ApiResponse({
+    type: Array,
+    status: 200,
+    example: {
+      _id: '6a7bbb6f4e9d50b549c8cb41',
+      title: 'what is nestJs',
+      price: 499,
+      level: 'Beginner',
+      smallDescription: 'about js...',
+      slug: 'string',
+      status: 'Draft',
+    },
+  })
+  async getCourses() {
     return this.courseService.findAll();
   }
 
