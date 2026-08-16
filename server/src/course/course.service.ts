@@ -18,4 +18,9 @@ export class CourseService {
     await newCourse.save();
     return {newCourse};
   }
+  
+  async findAll(){
+    return this.CourseModel.find()
+  }
+
 }

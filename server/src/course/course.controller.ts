@@ -110,6 +110,13 @@ export class CourseController {
     return { message: 'upload completed', course };
   }
 
+  @Get('/courses')
+  @ApiOperation({summary: 'return all courses'})
+  @ApiResponse({type:Array,status:200})
+  async getCourses(){
+    return this.courseService.findAll();
+  }
+
   @UseGuards(AuthGuard('jwt'))
   @Get('/view-url')
   async getViewUrl(@Query('fileKey') fileKey: string) {
