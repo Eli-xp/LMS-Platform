@@ -134,7 +134,7 @@ export class CourseController {
     return this.courseService.findAll();
   }
 
-  
+  @UseGuards(AuthGuard('jwt'))
   @Get('courses/:id')
   @UseGuards(ThrottlerGuard)
   @ApiOperation({summary: 'return one course'})
@@ -158,6 +158,7 @@ export class CourseController {
     return this.courseService.findOne(id);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete('/courses/:id')
   @ApiOperation({summary: 'delete a course'})
   @ApiResponse({type:Object,example:{message:'course deleted'}})
