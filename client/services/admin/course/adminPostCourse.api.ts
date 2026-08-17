@@ -10,7 +10,7 @@ export const adminPostCourse = async (file: z.infer<typeof courseSchema>) => {
   // only admin
 
   // Request Validation
-  const res = await fetch(`${API_URL}/course/create`, {
+  const res = await fetch(`${API_URL}/admin/course/create`, {
     method: "POST",
     headers: { "Content-type": "application/json" },
     body: JSON.stringify(file),
