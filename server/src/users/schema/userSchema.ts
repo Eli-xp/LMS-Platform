@@ -13,8 +13,17 @@ export class User extends Document {
   @Prop({type: String, required: true, unique: true})
   phone!:string
   @Prop({ type: String })
-  refreshToken!: string
+  refreshToken!: string;
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Course'}] })
-  courses?: Types.ObjectId[]
+  courses?: Types.ObjectId[];
+  @Prop({type: String, required: true, enum:['User','Admin'], default: 'User'})
+  role!: string;
+  @Prop({type: Boolean})
+  banned!: boolean;
+  @Prop({type: String})
+  banReason!: string;
+  @Prop({type: Date})
+  banExpires!: Date;
+
 }
 export const UserSchema = SchemaFactory.createForClass(User);

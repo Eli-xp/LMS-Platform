@@ -11,6 +11,7 @@ const cookieExtractor = (req: Request): string | null => {
 // interface
 interface JwtPayload {
   sub: string;
+  role: string
 }
 
 @Injectable()
@@ -23,6 +24,9 @@ export class JwtStrategy extends PassportStrategy(Strategy){
         })
     }
     async validate(payload: JwtPayload) {
-        return { userId: payload.sub };
+        return { 
+          userId: payload.sub,
+          userRole: payload.role
+         };
       }
 }

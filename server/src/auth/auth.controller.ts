@@ -19,6 +19,7 @@ import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 
 export interface JwtUser {
   userId: string;
+  userRole: string
 }
 @Controller('auth')
 export class AuthController {
@@ -122,7 +123,7 @@ export class AuthController {
   @Get('/me')
     async findMe(@Req() req: Request){
       const {userId} = req.user as JwtUser
-      const user = await this.usersService.findById(userId)
+      const user = await this.usersService.findById(userId);
       return user;
     }
 
@@ -140,7 +141,7 @@ export class AuthController {
         httpOnly: true,
         secure: false,
         sameSite: 'lax'
-      })
+      });
       return {message: 'user logged out'}
     }
 }

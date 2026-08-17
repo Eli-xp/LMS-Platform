@@ -13,21 +13,21 @@ export class Course extends Document{
     @Prop({ type: String })
     fileKey?: string;
     @Prop({ type: String, required: true, enum: ['Beginner', 'Intermediate', 'Advanced'], default: 'Beginner' })
-    level!: string
+    level!: string;
     @Prop({ type: String, required: true})
-    category!: string
+    category!: string;
     @Prop({ type: String, required: true})
-    smallDescription!: string
+    smallDescription!: string;
     @Prop({ type: String, required: true, unique: true })
-    slug!: string
+    slug!: string;
     @Prop({type: String, required: true, enum: ['Draft', 'Published', 'Archived'], default: 'Draft'})
-    status!: string
+    status!: string;
     @Prop({type: String, required: true})
     thumbnail!: string;
     @Prop({ type: Types.ObjectId, ref: 'User',})
-    userId?: Types.ObjectId
+    userId?: Types.ObjectId;
     @Prop({type: Number, required: true})
-    duration!: number
+    duration!: number;
 }
 
 export const CourseSchema = SchemaFactory.createForClass(Course);
