@@ -43,7 +43,7 @@ const AdminCourseCard = (course: z.infer<typeof adminGetCourses>) => {
             <DropdownMenuItem
               render={
                 <Link
-                  href={`/admin/courses/${course.id}/edit`}
+                  href={`/admin/courses/${course._id}/edit`}
                   className="cursor-pointer"
                 />
               }
@@ -54,7 +54,7 @@ const AdminCourseCard = (course: z.infer<typeof adminGetCourses>) => {
             <DropdownMenuItem
               render={
                 <Link
-                  href={`/courses/${course.id}/edit`}
+                  href={`/courses/${course._id}/edit`}
                   className="cursor-pointer"
                 />
               }
@@ -68,7 +68,7 @@ const AdminCourseCard = (course: z.infer<typeof adminGetCourses>) => {
                 className:
                   "flex w-full justify-start items-center cursor-pointer hover:bg-red-500/20",
               })}
-              render={<Link href={`/admin/courses/${course.id}/delete`} />}
+              render={<Link href={`/admin/courses/${course._id}/delete`} />}
             >
               <Trash2 size={16} className="opacity-60" aria-hidden="true" />
               <span className="opacity-90">Delete</span>
@@ -77,15 +77,15 @@ const AdminCourseCard = (course: z.infer<typeof adminGetCourses>) => {
         </DropdownMenu>
       </div>
       <Image
-        src={course?.fileKey || "/next.svg"}
+        src={course?.thumbnail.viewUrl || "/next.svg"}
         alt={course?.title || "course thumbnail"}
         width={600}
         height={400}
-        className="w-full rounded-t-lg aspect-video h-full object-cover "
+        className="w-full rounded-t-lg aspect-video h-full object-cover"
       />
       <CardContent className="p-4">
         <Link
-          href={`/admin/courses/${course.id}`}
+          href={`/admin/courses/${course._id}`}
           className="font-medium text-lg line-clamp-2 hover:underline group-hover:text-primary transition-colors"
         >
           {course.title}
@@ -105,7 +105,7 @@ const AdminCourseCard = (course: z.infer<typeof adminGetCourses>) => {
         </div>
 
         <Link
-          href={`/admin/courses/${course.id}/edit`}
+          href={`/admin/courses/${course._id}/edit`}
           className={buttonVariants({
             className: "flex items-center justify-center w-full mt-4",
           })}
