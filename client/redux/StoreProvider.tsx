@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import {
   getCurrentUserOnClient,
   refreshToken,
-} from "@/services/auth/auth.client.api";
+} from "@/services/auth/client.api";
 
 export default function StoreProvider({
   children,
