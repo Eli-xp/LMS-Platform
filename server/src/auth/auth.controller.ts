@@ -6,6 +6,7 @@ import {
   UseGuards,
   Req,
   Res,
+  NotFoundException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { OtpVerify } from './dto/OtpVerify-Dto';
@@ -125,6 +126,9 @@ export class AuthController {
     async findMe(@Req() req: Request){
       const {userId} = req.user as JwtUser
       const user = await this.usersService.findById(userId);
+      if(!user){
+        throw new NotFoundException('user not found')
+      }
       return user;
     }
 
