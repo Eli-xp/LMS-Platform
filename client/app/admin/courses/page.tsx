@@ -2,16 +2,16 @@ import { buttonVariants } from "@/components/ui/button";
 // import { adminGetCourses } from "@/services/admin/adminGetCourses.api";
 import Link from "next/link";
 import AdminCourseCard from "./_components/AdminCourseCard";
-import { adminGetCourses } from "@/schemas/course.schema";
-import { sampleDataCourses } from "./sampleData";
-import z from "zod";
-
-// sample data
-const data: z.infer<typeof adminGetCourses>[] = sampleDataCourses;
+import { adminGetCourses } from "@/services/admin/course/adminGetCourses.api";
 
 const CoursesPage = async () => {
-  // const data = await adminGetCourses();
-  console.log(data);
+  let data;
+  try {
+    data = await adminGetCourses();
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
 
   return (
     <>
@@ -26,9 +26,10 @@ const CoursesPage = async () => {
         <span>Here you will see all of the courses</span>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-7">
-        {data.map((course) => (
-          <AdminCourseCard key={course.id} {...course} />
-        ))}
+        {data.length > 0 &&
+          data?.map((course) => (
+            <AdminCourseCard key={course._id} {...course} />
+          ))}
       </div>
     </>
   );
