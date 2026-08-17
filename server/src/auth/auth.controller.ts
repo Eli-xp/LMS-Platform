@@ -14,7 +14,7 @@ import type { Request, Response } from 'express';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { UsersService } from 'src/users/users.service';
-import { Throttle } from '@nestjs/throttler';
+import { SkipThrottle, Throttle } from '@nestjs/throttler';
 
 
 export interface JwtUser {
@@ -120,6 +120,7 @@ export class AuthController {
         refreshToken: 'user hashed refreshToken',
       },
     }})
+  @SkipThrottle()
   @Get('/me')
     async findMe(@Req() req: Request){
       const {userId} = req.user as JwtUser
