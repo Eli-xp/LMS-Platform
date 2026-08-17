@@ -6,9 +6,16 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Course, CourseSchema } from './schema/courseSchema';
 import { User, UserSchema } from 'src/users/schema/userSchema';
 import { UsersService } from 'src/users/users.service';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60_000,
+        limit: 10,
+      },
+    ]),
     MongooseModule.forFeature([
       {
         name: Course.name,

@@ -14,6 +14,7 @@ import type { Request, Response } from 'express';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { UsersService } from 'src/users/users.service';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 
 export interface JwtUser {
@@ -68,6 +69,7 @@ export class AuthController {
   }
 
   @Post('/sendOtp')
+  @UseGuards(ThrottlerGuard)
   @ApiOperation({ summary: 'Send OTP Code to Users phone number' })
   @ApiResponse({
   type: String,
@@ -140,12 +142,5 @@ export class AuthController {
         sameSite: 'lax'
       })
       return {message: 'user logged out'}
-    }
-
-
-
-    @Get('/test')
-    async test(){
-      return 'this is a test router'
     }
 }

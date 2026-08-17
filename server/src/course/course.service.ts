@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Course } from './schema/courseSchema';
@@ -34,6 +34,14 @@ export class CourseService {
   }),
 );
     
+  }
+
+  async findOne(id: string){
+    const course = await this.CourseModel.findById(id);
+    if(!course){
+      throw new NotFoundException('course not found')
+    }
+    return course
   }
 
 }

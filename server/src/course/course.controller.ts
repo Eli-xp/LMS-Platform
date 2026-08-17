@@ -14,13 +14,14 @@ import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { CreateUploadUrlDto } from 'src/media/DTO/create-upload-dto';
 import { MediaService } from 'src/media/media.service';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiProperty, ApiResponse } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import type { Request } from 'express';
 import { JwtUser } from 'src/auth/auth.controller';
 import { Types } from 'mongoose';
 import { ConfirmUploadDto } from 'src/media/DTO/confirmUploadDto';
 import { UsersService } from 'src/users/users.service';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 @Controller('admin')
 export class CourseController {
@@ -50,6 +51,7 @@ export class CourseController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post('course/create')
+  @UseGuards(ThrottlerGuard)
   @ApiOperation({ summary: 'create new course' })
   @ApiResponse({
     type: Object,
@@ -113,6 +115,7 @@ export class CourseController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('courses')
+  @UseGuards(ThrottlerGuard)
   @ApiOperation({ summary: 'return all courses' })
   @ApiResponse({
     type: Array,
@@ -131,7 +134,29 @@ export class CourseController {
     return this.courseService.findAll();
   }
 
-  @Get('/')
+  
+  @Get('courses/:id')
+  @UseGuards(ThrottlerGuard)
+  @ApiOperation({summary: 'return one course'})
+  @ApiResponse({type:Object,status:200,example:{
+    "_id": "6a81e6183ff6c222cd385ca6",
+    "title": "grrerg",
+    "description": "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"attrs\":{\"textAlign\":null},\"content\":[{\"type\":\"text\",\"text\":\"Hello World🚀ergrergegegre\"}]}]}",
+    "price": 12,
+    "level": "Beginner",
+    "category": "Web Development",
+    "smallDescription": "rgeerrergegre",
+    "slug": "grrerg",
+    "status": "Draft",
+    "createdAt": "2026-08-16T16:32:24.312Z",
+    "updatedAt": "2026-08-16T16:32:24.793Z",
+    "__v": 0,
+    "thumbnail": "65479aa7-8d21-45ee-b08f-1214be23ecfd-ux honeycomb.png",
+    "userId": "6a7465965d57a6a2aedcd26b"
+  }})
+  async getOneCourse(@Param('id') id: string){
+    return this.courseService.findOne(id);
+  }
 
   @UseGuards(AuthGuard('jwt'))
   @Get('course/view-url')
