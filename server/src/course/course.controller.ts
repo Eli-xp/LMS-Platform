@@ -158,6 +158,13 @@ export class CourseController {
     return this.courseService.findOne(id);
   }
 
+  @Delete('/courses/:id')
+  @ApiOperation({summary: 'delete a course'})
+  @ApiResponse({type:Object,example:{message:'course deleted'}})
+  async deleteOneCourse(@Param('id') id: string){
+    return this.courseService.deleteOne(id);
+  }
+
   @UseGuards(AuthGuard('jwt'))
   @Get('course/view-url')
   async getViewUrl(@Query('fileKey') fileKey: string) {

@@ -44,4 +44,11 @@ export class CourseService {
     return course
   }
 
+  async deleteOne(id: string){
+    const course = await this.CourseModel.findByIdAndDelete(id);
+    if(!course){
+      throw new NotFoundException('course not found')
+    }
+  }
+
 }
