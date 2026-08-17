@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import z from "zod";
-import { login } from "@/services/auth/auth.api";
+import { login } from "@/services/auth/login.api";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 

@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/input-otp";
 import { setUser } from "@/redux/slices/auth.slice";
 import { otpEntrySchema } from "@/schemas/auth.schema";
-import { otpVerify } from "@/services/auth/auth.api";
+import { otpVerify } from "@/services/auth/login.api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
