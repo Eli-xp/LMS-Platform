@@ -14,7 +14,7 @@ import type { Request, Response } from 'express';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { UsersService } from 'src/users/users.service';
-import { ThrottlerGuard } from '@nestjs/throttler';
+import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 
 
 export interface JwtUser {
@@ -68,8 +68,8 @@ export class AuthController {
     return user;
   }
 
+  @Throttle({default:{limit:1,ttl:120_000}})
   @Post('/sendOtp')
-  @UseGuards(ThrottlerGuard)
   @ApiOperation({ summary: 'Send OTP Code to Users phone number' })
   @ApiResponse({
   type: String,

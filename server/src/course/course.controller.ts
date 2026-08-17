@@ -21,7 +21,8 @@ import { JwtUser } from 'src/auth/auth.controller';
 import { Types } from 'mongoose';
 import { ConfirmUploadDto } from 'src/media/DTO/confirmUploadDto';
 import { UsersService } from 'src/users/users.service';
-import { ThrottlerGuard } from '@nestjs/throttler';
+import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
+
 
 @Controller('admin')
 export class CourseController {
@@ -50,8 +51,8 @@ export class CourseController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @Throttle({default:{limit:50,ttl:60_000}})
   @Post('course/create')
-  @UseGuards(ThrottlerGuard)
   @ApiOperation({ summary: 'create new course' })
   @ApiResponse({
     type: Object,
@@ -114,8 +115,8 @@ export class CourseController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @Throttle({default:{limit:50,ttl:60_000}})
   @Get('courses')
-  @UseGuards(ThrottlerGuard)
   @ApiOperation({ summary: 'return all courses' })
   @ApiResponse({
     type: Array,
@@ -135,8 +136,8 @@ export class CourseController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @Throttle({default:{limit:50,ttl:60_000}})
   @Get('courses/:id')
-  @UseGuards(ThrottlerGuard)
   @ApiOperation({summary: 'return one course'})
   @ApiResponse({type:Object,status:200,example:{
     "_id": "6a81e6183ff6c222cd385ca6",
@@ -159,7 +160,8 @@ export class CourseController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Delete('/courses/:id')
+  @Throttle({default:{limit:50,ttl:60_000}})
+  @Delete('courses/:id')
   @ApiOperation({summary: 'delete a course'})
   @ApiResponse({type:Object,example:{message:'course deleted'}})
   async deleteOneCourse(@Param('id') id: string){

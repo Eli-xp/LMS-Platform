@@ -9,29 +9,30 @@ import config from 'config';
 import { JwtStrategy } from './strategies/jwt-strategy';
 import { RedisService } from 'src/redis/redis.service';
 import { SmsService } from 'src/sms/sms.service';
-import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { HttpModule } from '@nestjs/axios';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
     JwtModule.register({
-      secret: config.get<string>('server.jwt.SECRET')
+      secret: config.get<string>('server.jwt.SECRET'),
     }),
     MongooseModule.forFeature([
       {
         name: User.name,
         schema: UserSchema,
-      }
+      },
     ]),
-    ThrottlerModule.forRoot([
-          {
-            ttl: 120_000,
-            limit: 1,
-          },
-        ]),
     HttpModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, UsersService, JwtStrategy, RedisService, SmsService]
+  providers: [
+    AuthService,
+    UsersService,
+    JwtStrategy,
+    RedisService,
+    SmsService,
+  ],
 })
 export class AuthModule {}
