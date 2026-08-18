@@ -174,8 +174,15 @@ export class CourseController {
 @ApiOperation({summary: 'edit course information'})
 @ApiResponse({type: Object, status: 200, example:{message: 'course edited'}})
 async updateCourse(@Body() updateCourseDto: UpdateCourseDto, @Req() req: Request, @Param('id') id: string){
+  const { url, fileKey, fields } = await this.mediaService.createUploadUrl(
+      updateCourseDto.thumbNail!.originalName,
+      updateCourseDto.thumbNail!.contentType,
+    );
   const { userId } = req.user as JwtUser;
-  return this.courseService.findOneAndUpdate(updateCourseDto,userId,id)
+  const { course } = await this.courseService.findOneAndUpdate(updateCourseDto,userId,id);
+  course.thumbnail = fileKey;
+  await course.save();
+  return {message: 'course edited',url, fields}
 }
 
 
