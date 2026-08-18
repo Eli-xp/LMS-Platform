@@ -175,15 +175,19 @@ export class CourseController {
 @ApiOperation({summary: 'edit course information'})
 @ApiResponse({type: Object, status: 200, example:{message: 'course edited',url: 'https://parspack/asdkadi1123123.png', fields: 'policy'}})
 async updateCourse(@Body() updateCourseDto: UpdateCourseDto, @Req() req: Request, @Param('id') id: string){
-  const { url, fileKey, fields } = await this.mediaService.createUploadUrl(
+  const { userId } = req.user as JwtUser;
+  const { course } = await this.courseService.findOneAndUpdate(updateCourseDto,userId,id);
+  if(updateCourseDto.thumbNail){
+    const { url, fileKey, fields } = await this.mediaService.createUploadUrl(
       updateCourseDto.thumbNail!.originalName,
       updateCourseDto.thumbNail!.contentType,
     );
-  const { userId } = req.user as JwtUser;
-  const { course } = await this.courseService.findOneAndUpdate(updateCourseDto,userId,id);
   course.thumbnail = fileKey;
   await course.save();
   return {message: 'course edited',url, fields}
+  }
+  
+  return {message: 'course edited'}
 }
 
 
