@@ -18,12 +18,16 @@ export const courseCategories = [
 // note: MongoDB wil create=> id, createdAt, updatedAt
 
 //  /admin/courses/create File Upload
-export const thumbNail = z.object({
-  file: z.instanceof(File),
-  originalName: z.string().min(1, { error: "Invalid File Name" }),
-  contentType: z.string().min(1, { error: "Invalid File Type" }),
-  size: z.number().min(1, { error: "Invalid File Size" }),
-});
+export const thumbNail = z.union([
+  z.string().min(1, { error: "Invalid thumbNail URL" }),
+
+  z.object({
+    file: z.instanceof(File),
+    originalName: z.string().min(1, { error: "Invalid File Name" }),
+    contentType: z.string().min(1, { error: "Invalid File Type" }),
+    size: z.number().min(1, { error: "Invalid File Size" }),
+  }),
+]);
 
 export const courseSchema = z.object({
   title: z
@@ -56,7 +60,10 @@ export const courseSchema = z.object({
   status: z.enum(courseStatus, {
     error: "Status is required",
   }),
-  // id: z.string().min(3, { error: "id must be at least 3 characters long" }),
+  _id: z
+    .string()
+    .min(3, { error: "id must be at least 3 characters long" })
+    .optional(),
 });
 
 // /admin/courses
