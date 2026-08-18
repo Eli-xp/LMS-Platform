@@ -22,6 +22,7 @@ import { Types } from 'mongoose';
 import { ConfirmUploadDto } from 'src/media/DTO/confirmUploadDto';
 import { UsersService } from 'src/users/users.service';
 import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { UpdateCourseDto } from './dto/update-course.dto';
 
 
 @Controller('admin')
@@ -167,6 +168,16 @@ export class CourseController {
   async deleteOneCourse(@Param('id') id: string){
     return this.courseService.deleteOne(id);
   }
+
+@UseGuards(AuthGuard('jwt'))
+@Post('/courses/edit/:id')
+@ApiOperation({summary: 'edit course information'})
+@ApiResponse({type: Object, status: 200, example:{message: 'course edited'}})
+async updateCourse(@Body() updateCourseDto: UpdateCourseDto, @Req() req: Request, @Param('id') id: string){
+  const { userId } = req.user as JwtUser;
+  return this.courseService.findOneAndUpdate(updateCourseDto,userId,id)
+}
+
 
   @UseGuards(AuthGuard('jwt'))
   @Get('course/view-url')

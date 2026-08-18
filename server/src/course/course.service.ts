@@ -5,6 +5,7 @@ import { Course } from './schema/courseSchema';
 import { Model } from 'mongoose';
 import { User } from 'src/users/schema/userSchema';
 import { MediaService } from 'src/media/media.service';
+import { UpdateCourseDto } from './dto/update-course.dto';
 
 @Injectable()
 export class CourseService {
@@ -49,6 +50,18 @@ export class CourseService {
     if(!course){
       throw new NotFoundException('course not found')
     }
+  }
+
+
+  async findOneAndUpdate(updateCourseDto: UpdateCourseDto, userId: string, id: string){
+    const course = await this.CourseModel.findOneAndUpdate(
+      {_id: id,userId: userId},
+      updateCourseDto
+    )
+    if(!course){
+      throw new NotFoundException('course not found')
+    }
+    return {course}
   }
 
 }
