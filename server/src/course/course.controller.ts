@@ -9,6 +9,7 @@ import {
   Req,
   Query,
   NotFoundException,
+  Put,
 } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
@@ -170,7 +171,7 @@ export class CourseController {
   }
 
 @UseGuards(AuthGuard('jwt'))
-@Post('/courses/edit/:id')
+@Put('/courses/edit/:id')
 @ApiOperation({summary: 'edit course information'})
 @ApiResponse({type: Object, status: 200, example:{message: 'course edited',url: 'https://parspack/asdkadi1123123.png', fields: 'policy'}})
 async updateCourse(@Body() updateCourseDto: UpdateCourseDto, @Req() req: Request, @Param('id') id: string){
