@@ -38,7 +38,7 @@ export class CreateCourseDto {
     @IsObject()
     @IsNotEmpty()
     @ApiProperty({type:Object, required: true, example:{originalName:'test.png',contentType:'image/png'}})
-    thumbnail!: {
+    thumbNail!: {
         originalName: string,
         contentType: string
     }
