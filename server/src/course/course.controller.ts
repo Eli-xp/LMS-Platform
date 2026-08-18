@@ -75,8 +75,8 @@ export class CourseController {
   })
   async create(@Body() createCourseDto: CreateCourseDto, @Req() req: Request) {
     const { url, fileKey, fields } = await this.mediaService.createUploadUrl(
-      createCourseDto.thumbNail!.originalName,
-      createCourseDto.thumbNail!.contentType,
+      createCourseDto.thumbnail!.originalName,
+      createCourseDto.thumbnail!.contentType,
     );
     const { newCourse } = await this.courseService.create(createCourseDto);
     const { userId } = req.user as JwtUser;
@@ -177,10 +177,10 @@ export class CourseController {
 async updateCourse(@Body() updateCourseDto: UpdateCourseDto, @Req() req: Request, @Param('id') id: string){
   const { userId } = req.user as JwtUser;
   const { course } = await this.courseService.findOneAndUpdate(updateCourseDto,userId,id);
-  if(updateCourseDto.thumbNail){
+  if(updateCourseDto.thumbnail){
     const { url, fileKey, fields } = await this.mediaService.createUploadUrl(
-      updateCourseDto.thumbNail!.originalName,
-      updateCourseDto.thumbNail!.contentType,
+      updateCourseDto.thumbnail!.originalName,
+      updateCourseDto.thumbnail!.contentType,
     );
   course.thumbnail = fileKey;
   await course.save();
