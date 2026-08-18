@@ -42,7 +42,9 @@ export class CourseService {
     if(!course){
       throw new NotFoundException('course not found')
     }
-    return course
+    const { viewUrl } = await this.mediaService.createViewUrl(course.thumbnail);
+    course.thumbnail = viewUrl;
+    return course;
   }
 
   async deleteOne(id: string){
