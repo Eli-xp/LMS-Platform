@@ -15,14 +15,14 @@ import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { CreateUploadUrlDto } from 'src/media/DTO/create-upload-dto';
 import { MediaService } from 'src/media/media.service';
-import { ApiOperation, ApiProperty, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import type { Request } from 'express';
 import { JwtUser } from 'src/auth/auth.controller';
 import { Types } from 'mongoose';
 import { ConfirmUploadDto } from 'src/media/DTO/confirmUploadDto';
 import { UsersService } from 'src/users/users.service';
-import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { Throttle } from '@nestjs/throttler';
 import { UpdateCourseDto } from './dto/update-course.dto';
 
 
