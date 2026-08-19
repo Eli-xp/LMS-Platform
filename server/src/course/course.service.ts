@@ -55,9 +55,9 @@ export class CourseService {
   }
 
 
-  async findOneAndUpdate(updateCourseDto: UpdateCourseDto, userId: string, id: string){
+  async findOneAndUpdate(updateCourseDto: UpdateCourseDto, id: string){
     const course = await this.CourseModel.findOneAndUpdate(
-      {_id: id,userId: userId},
+      {_id: id},
       updateCourseDto
     )
     if(!course){
