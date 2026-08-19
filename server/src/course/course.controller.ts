@@ -176,9 +176,7 @@ export class CourseController {
 @ApiResponse({type: Object, status: 200, example:{message: 'course edited',url: 'https://parspack/asdkadi1123123.png', fields: 'policy'}})
 async updateCourse(@Body() updateCourseDto: UpdateCourseDto, @Param('id') id: string, @Req() req: Request){
   const { userId } = req.user as JwtUser;
-  console.log(userId);
   const { course } = await this.courseService.findOneAndUpdate(updateCourseDto,id,userId);
-  console.log(course);
   if(updateCourseDto.thumbNail){
     const { url, fileKey, fields } = await this.mediaService.createUploadUrl(
       updateCourseDto.thumbNail!.originalName,

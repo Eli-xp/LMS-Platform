@@ -58,8 +58,13 @@ export class CourseService {
   async findOneAndUpdate(updateCourseDto: UpdateCourseDto, id: string, userCourseId: string){
     const course = await this.CourseModel.findOneAndUpdate(
       {_id: id, userId: userCourseId},
-      updateCourseDto
+      updateCourseDto,
+      {
+        new: true,
+        runValidators: true
+      }
     )
+    console.log(course);
     if(!course){
       throw new NotFoundException('course not found')
     }
