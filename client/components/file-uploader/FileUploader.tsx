@@ -24,7 +24,7 @@ interface UploaderState {
 }
 
 interface FileMetadata {
-  file:File
+  file: File;
   originalName: string;
   contentType: string;
   size: number;
@@ -34,17 +34,24 @@ interface FileUploaderProps {
   onFileChange: (metadata: FileMetadata) => void;
 }
 
-const FileUploader = ({ onFileChange }: FileUploaderProps) => {
+const FileUploader = ({
+  initialURL,
+  onFileChange,
+}: {
+  initialURL: string;
+  onFileChange: FileUploaderProps;
+}) => {
   const [fileState, setFileState] = useState<UploaderState>({
     file: null,
     fileType: "image",
     id: null,
-    objectUrl: undefined,
+    objectUrl: initialURL || null,
     progress: 0,
     error: false,
     uploading: false,
     isDeleting: false,
   });
+  // console.log(initialURL)
 
   // Drop and Pre-view
   const onDrop = useCallback(
@@ -143,7 +150,7 @@ const FileUploader = ({ onFileChange }: FileUploaderProps) => {
 
         {fileState.error ? (
           <RenderErrorState />
-        ) : fileState.file === null ? (
+        ) : fileState.file === null && !fileState.objectUrl ? (
           <RenderState isDragActive={isDragActive} />
         ) : (
           <RenderUploadedState
