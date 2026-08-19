@@ -31,10 +31,10 @@ import {
 import RichTextEditor from "@/components/rich-text-editor/Editor";
 import FileUploader from "@/components/file-uploader/FileUploader";
 import { Textarea } from "@/components/ui/textarea";
-import { adminPostCourseVerification } from "@/services/admin/course/adminPostCourse.api";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { adminEditCourse } from "@/services/admin/course/adminEditCourse.api";
+import { adminCourseFileVerification } from "@/services/admin/course/adminCourseFileVerification.api";
 
 const CourseEditForm = ({
   course,
@@ -64,12 +64,6 @@ const CourseEditForm = ({
     },
   });
 
-  console.log(course);
-
-  console.log(form);
-  const data = form.getValues("thumbnail");
-  console.log(data);
-
   // onSubmit Function
   const onSubmit = async (values: z.infer<typeof AdminGetCourseSchema>) => {
     console.log("onSubmit ran");
@@ -86,36 +80,77 @@ const CourseEditForm = ({
     );
     console.log(changedValues);
 
+    // 0) if course changed & course id was available
     if (Object.keys(changedValues).length > 0 && course_id) {
-      // try {
-      console.log("Edit Begun");
+      console.log(changedValues);
       setIsSubmitting(true);
-      const editCourseRes = await adminEditCourse(changedValues, course_id);
-      console.log(editCourseRes);
 
-      //   const file = form.getValues("thumbnail.file");
-      //   console.log(file);
-      //   const createCourseResverification = await adminPostCourseVerification({
-      //     createCourseRes,
-      //     file,
-      //   });
-      //   console.log(createCourseResverification);
+      // 1) if thumbnail also changed
+      if ("thumbnail" in changedValues) {
+        try {
+          // 1_1) edit course request
+          console.log("CourseEditForm API:: thumbnail changed");
 
-      //   // if storage 204
-      //   if (createCourseResverification.status === 204) {
-      //     // Reset for inputs
-      //     form.reset();
-      //     // Redirect to admin courses
-      //     router.replace("/admin/courses");
-      //     setIsSubmitting(false);
-      //   } else {
-      //     console.error(createCourseResverification.status);
-      //     setIsSubmitting(false);
-      //   }
-      // } catch (error) {
-      //   console.error(error);
-      //   setIsSubmitting(false);
-      // }
+          const { thumbnail, ...rest } = changedValues;
+          const changedValuesforserver = {
+            ...rest,
+            thumbNail: {
+              originalName: thumbnail?.originalName,
+              contentType: thumbnail?.contentType,
+            },
+            size: thumbnail?.size,
+          };
+
+          const editCourseRes = await adminEditCourse(
+            changedValuesforserver,
+            course_id,
+          );
+          console.log(editCourseRes);
+          toast.success("Course Edited Successfully");
+
+          //
+          console.log("adminPostCourseVerification called");
+          const createCourseResverification = await adminCourseFileVerification(
+            {
+              link: editCourseRes,
+              file: values.thumbnail.file,
+            },
+          );
+          console.log(createCourseResverification);
+
+          // if storage 204
+          if (createCourseResverification.status === 204) {
+            // Reset for inputs
+            form.reset();
+            // Redirect to admin courses
+            router.replace("/admin/courses");
+            setIsSubmitting(false);
+          } else {
+            console.error(createCourseResverification.status);
+            setIsSubmitting(false);
+          }
+        } catch (error) {
+          console.error(error);
+          setIsSubmitting(false);
+        }
+
+        // 2) if thumbnail did not change
+      } else {
+        try {
+          console.log("CourseEditForm API:: thumbnail did not change");
+          setIsSubmitting(true);
+          const editCourseRes = await adminEditCourse(changedValues, course_id);
+          console.log(editCourseRes);
+          toast.success("Course Edited Successfully");
+          setIsSubmitting(false);
+          router.replace("/admin/courses/");
+        } catch (error) {
+          console.error(error);
+          setIsSubmitting(false);
+        }
+      }
+
+      // if course had no change
     } else {
       toast.info("No change(s) spotted.");
     }
