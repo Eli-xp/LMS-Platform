@@ -1,21 +1,28 @@
-"use client";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { adminGetCourse } from "@/services/admin/course/adminGetCourse.api";
-import { useParams } from "next/navigation";
+import CourseEditForm from "./_components/CourseEdit.form";
 
-const courseEditPage = () => {
-  // const { courseId } = await params
-  const { courseId } = useParams<{ courseId: string }>();
+const courseEditPage = async ({ params }) => {
+  const { courseId } = await params;
+  let data;
   if (courseId) {
     // Get course information by id
-    const courseEditCall = async () => {
-      try {
-        const data = await adminGetCourse(courseId);
-        console.log(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    return data;
+    try {
+      console.log(courseId);
+      data = await adminGetCourse(courseId);
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+
+    console.log(data);
   }
 
   return (
@@ -24,6 +31,26 @@ const courseEditPage = () => {
         Edit Course:{" "}
         <span className="text-primary underline">{data?.title}</span>
       </h1>
+
+      <Tabs defaultValue="basic-info" className="w-full">
+        <TabsList className="grid grid-cols-2 w-full">
+          <TabsTrigger value="basic-info">Basic Info</TabsTrigger>
+          <TabsTrigger value="course-structure">Course Structure</TabsTrigger>
+        </TabsList>
+        <TabsContent value="basic-info">
+          <Card>
+            <CardHeader>
+              <CardTitle>Basic Info</CardTitle>
+              <CardDescription>
+                Provide basicinformation about the course
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <CourseEditForm course={data} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
