@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Course } from './schema/courseSchema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { User } from 'src/users/schema/userSchema';
 import { MediaService } from 'src/media/media.service';
 import { UpdateCourseDto } from './dto/update-course.dto';
@@ -57,14 +57,13 @@ export class CourseService {
 
   async findOneAndUpdate(updateCourseDto: UpdateCourseDto, id: string, userCourseId: string){
     const course = await this.CourseModel.findOneAndUpdate(
-      {_id: id, userId: userCourseId},
+      {_id: new Types.ObjectId(id), userId: new Types.ObjectId(userCourseId)},
       updateCourseDto,
       {
-        new: true,
+        returnDocument:'after',
         runValidators: true
       }
     )
-    console.log(course);
     if(!course){
       throw new NotFoundException('course not found')
     }
