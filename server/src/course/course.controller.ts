@@ -166,8 +166,9 @@ export class CourseController {
   @Delete('courses/:id')
   @ApiOperation({summary: 'delete a course'})
   @ApiResponse({type:Object,example:{message:'course deleted'}})
-  async deleteOneCourse(@Param('id') id: string){
-    return this.courseService.deleteOne(id);
+  async deleteOneCourse(@Param('id') id: string, @Req() req: Request){
+    const {userId} = req.user as JwtUser
+    return this.courseService.deleteOne(id,userId);
   }
 
 @UseGuards(AuthGuard('jwt'))

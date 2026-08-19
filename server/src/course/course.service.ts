@@ -47,11 +47,13 @@ export class CourseService {
     return course;
   }
 
-  async deleteOne(id: string){
+  async deleteOne(id: string, userId: string){
     const course = await this.CourseModel.findByIdAndDelete(id);
     if(!course){
       throw new NotFoundException('course not found')
     }
+    await this.UserModel.findByIdAndUpdate(userId,{$pull:{courses: course._id}})
+    return {message:'course deleted'}
   }
 
 
