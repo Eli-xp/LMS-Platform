@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import {
   courseCategories,
   courseLevels,
-  courseSchema,
+  courseCreateSchema,
   courseStatus,
 } from "@/schemas/course.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -51,8 +51,8 @@ const CourseCreationForm = () => {
   const router = useRouter();
 
   // Define form
-  const form = useForm<z.infer<typeof courseSchema>>({
-    resolver: zodResolver(courseSchema),
+  const form = useForm<z.infer<typeof courseCreateSchema>>({
+    resolver: zodResolver(courseCreateSchema),
     defaultValues: {
       title: "",
       slug: "",
@@ -84,7 +84,7 @@ const CourseCreationForm = () => {
   };
 
   // onSubmit Function
-  const onSubmit = async (values: z.infer<typeof courseSchema>) => {
+  const onSubmit = async (values: z.infer<typeof courseCreateSchema>) => {
     console.log("onSubmit ran");
 
     // disable submit button
@@ -160,10 +160,9 @@ const CourseCreationForm = () => {
       <CardContent>
         <form
           id="CourseCreationFormID"
-          onSubmit={form.handleSubmit(
-            onSubmit,
-            //  (error) => {console.log("VALIDATION ERRORS:", error)}
-          )}
+          onSubmit={form.handleSubmit(onSubmit, (error) => {
+            console.log("VALIDATION ERRORS:", error);
+          })}
           className="space-y-6"
         >
           <FieldGroup>
