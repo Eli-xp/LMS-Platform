@@ -47,8 +47,10 @@ import {
 
 const CourseCreationForm = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  // redirect on client side
   const router = useRouter();
 
+  // Define form
   const form = useForm<z.infer<typeof courseSchema>>({
     resolver: zodResolver(courseSchema),
     defaultValues: {
@@ -65,6 +67,7 @@ const CourseCreationForm = () => {
     },
   });
 
+  // Generate slug function
   const generateSlug = () => {
     const titleValue = form.getValues("title");
     if (titleValue) {
@@ -80,6 +83,7 @@ const CourseCreationForm = () => {
     }
   };
 
+  // onSubmit Function
   const onSubmit = async (values: z.infer<typeof courseSchema>) => {
     console.log("onSubmit ran");
 
