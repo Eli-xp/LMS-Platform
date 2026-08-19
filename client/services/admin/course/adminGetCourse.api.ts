@@ -1,20 +1,32 @@
-// expected input:: course id
+// import { requireAdmin } from "@/services/auth/requireAdmin.api";
+import { cookies } from "next/headers";
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-import { notFound } from "next/navigation";
-
-// expected response:: courseSchema
 export const adminGetCourse = async (id: string) => {
   // Only admin API
+  // requireAdmin()
 
-  const res = await fetch(`API_URL/..`, {
+  console.log("adminGetCourse ran");
+
+  // Get token from cookies
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.toString();
+  console.log(cookieStore);
+  console.log(accessToken);
+
+  // Fetch
+  console.log("adminDeleteCourse:: fetch started");
+  const res = await fetch(`${API_URL}/admin/courses/${id}`, {
     method: "GET",
-    credentials: "include",
-    headers: { "Content-type": "application/json" },
-    body: JSON.stringify(id),
+    headers: {
+      Cookie: accessToken,
+    },
   });
 
+  console.log(res);
+
   if (!res.ok) {
-    throw new Error(`Failed to Get Admin Course: ${res.status}`);
+    throw new Error(`Faild to Get Courses: ${res.status}`);
   }
 
   if (!res) {
@@ -24,5 +36,6 @@ export const adminGetCourse = async (id: string) => {
 
   const data = res.json();
   console.log(data);
+
   return data;
 };
