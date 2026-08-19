@@ -45,9 +45,10 @@ export const RenderUploadedState = ({
   previewUrl,
   setFileState,
   onFileChange,
-}: {
-  previewUrl: string | undefined;
 }) => {
+  console.log(previewUrl);
+
+  // onClickFunc
   const onClickFunc = (e) => {
     e.stopPropagation();
 
