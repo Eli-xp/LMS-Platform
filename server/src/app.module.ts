@@ -11,6 +11,7 @@ import config from 'config'
 import { LoggerMiddleware } from 'middleware/logger.middleware';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { LessonModule } from './lesson/lesson.module';
 
 @Module({
   imports: [MongooseModule.forRoot(config.get<string>('server.database.URL')), UsersModule, AuthModule, RedisModule, SmsModule, CourseModule, MediaModule,ThrottlerModule.forRoot([
@@ -19,7 +20,7 @@ import { APP_GUARD } from '@nestjs/core';
       ttl: 60_000,
       limit:10
     }
-  ])],
+  ]), LessonModule],
   controllers: [AppController],
   providers: [
     {
