@@ -31,10 +31,7 @@ import {
 import RichTextEditor from "@/components/rich-text-editor/Editor";
 import FileUploader from "@/components/file-uploader/FileUploader";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  adminPostCourse,
-  adminPostCourseVerification,
-} from "@/services/admin/course/adminPostCourse.api";
+import { adminPostCourse } from "@/services/admin/course/adminPostCourse.api";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
@@ -44,6 +41,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { adminCourseFileVerification } from "@/services/admin/course/adminCourseFileVerification.api";
 
 const CourseCreationForm = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -112,13 +110,13 @@ const CourseCreationForm = () => {
     if (values) {
       try {
         setIsSubmitting(true);
-        const createCourseRes = await adminPostCourse(fixedValues);
-        console.log(createCourseRes);
+        const link = await adminPostCourse(fixedValues);
+        console.log(link);
 
         const file = form.getValues("thumbNail.file");
         console.log(file);
-        const createCourseResverification = await adminPostCourseVerification({
-          createCourseRes,
+        const createCourseResverification = await adminCourseFileVerification({
+          link,
           file,
         });
         console.log(createCourseResverification);
