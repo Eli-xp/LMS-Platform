@@ -178,6 +178,7 @@ async updateCourse(@Body() updateCourseDto: UpdateCourseDto, @Param('id') id: st
   const { userId } = req.user as JwtUser;
   console.log(userId);
   const { course } = await this.courseService.findOneAndUpdate(updateCourseDto,id,userId);
+  console.log(course);
   if(updateCourseDto.thumbNail){
     const { url, fileKey, fields } = await this.mediaService.createUploadUrl(
       updateCourseDto.thumbNail!.originalName,
