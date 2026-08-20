@@ -28,6 +28,8 @@ export class Course extends Document{
     userId?: Types.ObjectId;
     @Prop({type: Number, required: true})
     duration!: number;
+    @Prop({type: [{ type: Types.ObjectId, ref: 'Chapter'}]})
+    chapters!: Types.ObjectId[]
 }
 
 export const CourseSchema = SchemaFactory.createForClass(Course);
