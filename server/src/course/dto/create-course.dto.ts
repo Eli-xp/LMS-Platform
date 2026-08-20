@@ -17,6 +17,7 @@ export class CreateCourseDto {
     price!: number;
     @IsNotEmpty()
     @IsString()
+    @IsEnum(['Beginner', 'Intermediate', 'Advanced'])
     @ApiProperty({type: String, required: true, enum:['Beginner','Intermediate','Advanced'], default:'Beginner'})
     level!: string
     @IsString()
@@ -33,6 +34,7 @@ export class CreateCourseDto {
     slug!: string
     @IsString()
     @IsNotEmpty()
+    @IsEnum(['Draft', 'Published', 'Archived'])
     @ApiProperty({type: String, required: true, enum: ['Draft', 'Published', 'Archived'], default: 'Draft'})
     status!: string
     @IsObject()
