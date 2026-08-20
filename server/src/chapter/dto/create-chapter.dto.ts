@@ -8,10 +8,6 @@ export class CreateChapterDto {
     title!: string;
     @IsString()
     @IsNotEmpty()
-    @ApiProperty({ type: String, required: true, example: "Chapter 1 is about variables" })
-    description!: string;
-    @IsString()
-    @IsNotEmpty()
     @ApiProperty({ type: String, required: true, example: "12342412324asd2123" })
     courseId!: string;
 }
