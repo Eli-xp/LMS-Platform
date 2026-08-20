@@ -8,6 +8,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { adminGetCourse } from "@/services/admin/course/adminGetCourse.api";
 import CourseEditForm from "./_components/CourseEdit.form";
+import CourseStructure from "./_components/CourseStructure";
 
 const courseEditPage = async ({ params }) => {
   const { courseId } = await params;
@@ -42,11 +43,24 @@ const courseEditPage = async ({ params }) => {
             <CardHeader>
               <CardTitle>Basic Info</CardTitle>
               <CardDescription>
-                Provide basicinformation about the course
+                Provide basic information about the course
               </CardDescription>
             </CardHeader>
             <CardContent>
               <CourseEditForm course={data} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="course-structure">
+          <Card>
+            <CardHeader>
+              <CardTitle>Course Structure</CardTitle>
+              <CardDescription>
+                Here you can update your course structure
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <CourseStructure />
             </CardContent>
           </Card>
         </TabsContent>
