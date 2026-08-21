@@ -7,5 +7,9 @@ import { UpdateLessonDto } from './dto/update-lesson.dto';
 export class LessonController {
   constructor(private readonly lessonService: LessonService) {}
 
+  @Post()
+  create(@Body() createLessonDto: CreateLessonDto) {
+    return this.lessonService.create(createLessonDto);
+  }
   
 }
