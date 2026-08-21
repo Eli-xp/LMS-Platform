@@ -5,10 +5,7 @@ import { Provider } from "react-redux";
 import { makeStore, AppStore } from "./store";
 import { clearUser, initializeUser } from "./slices/auth.slice";
 import { useRouter } from "next/navigation";
-import {
-  getCurrentUserOnClient,
-  refreshToken,
-} from "@/services/auth/client.api";
+import { getCurrentUserOnClient } from "@/services/auth/currentUser.client-user";
 
 export default function StoreProvider({
   children,
@@ -44,27 +41,16 @@ export default function StoreProvider({
         // refresh browser session use refresh token
         console.log("StorePtovider:: BERFORE refreshToken Call ");
 
-        const res = await refreshToken();
+        const res = await getCurrentUserOnClient();
         if (res.status === 401) {
           console.log("refreshToken is EXPIRED...");
           storeRef.current?.dispatch(clearUser());
-
           return;
         }
 
-        console.log("StorePtovider:: AFTER refreshToken Call ");
-        // get the user using the NEW browser cookie
-        const secondTryUser = await getCurrentUserOnClient();
-        if (secondTryUser !== null) {
-          console.log(`Second initialUser is not null! ${secondTryUser}`);
-          storeRef.current?.dispatch(initializeUser(secondTryUser));
-          return;
-        }
-
-        // Refresh succeeded but auth/me still gets 401
-        console.log("StorePtovider:: Second initialUser is null ");
-
-        storeRef.current?.dispatch(clearUser());
+        console.log(
+          `StorePtovider:: getCurrentUserOnClient ${getCurrentUserOnClient}`,
+        );
       } catch (error) {
         console.error(`StorePtovider:: Refresh Failed, CATCH=> ${error}`);
         storeRef.current?.dispatch(clearUser());
