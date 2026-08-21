@@ -4,6 +4,7 @@ import { CreateLessonDto } from './dto/create-lesson.dto';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
 import { MediaService } from 'src/media/media.service';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('lesson')
 export class LessonController {
@@ -14,6 +15,8 @@ export class LessonController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
+  @ApiOperation({ summary: 'create lesson' })
+  @ApiResponse({type: Object, status: 201, example:{message: 'new lesson created', url: 'https://parspack/1231/asdsad1515asd.net'}})
   async create(@Body() createLessonDto: CreateLessonDto) {
     // getting thumbnail post url
     const { newLesson } = await this.lessonService.create(createLessonDto);
