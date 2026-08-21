@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { clearUser } from "@/redux/slices/auth.slice";
-import { logout } from "@/services/auth/logout.api";
+import { logout } from "@/services/auth/logout.client-public";
 import { LogOutIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";

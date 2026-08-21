@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { adminGetCourse } from "@/services/admin/course/adminGetCourse.api";
+import { adminGetCourse } from "@/services/admin/course/adminGetCourse.server-admin";
 import CourseEditForm from "./_components/CourseEdit.form";
 import CourseStructure from "./_components/CourseStructure";
 
