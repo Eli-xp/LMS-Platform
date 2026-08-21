@@ -16,7 +16,9 @@ export class ChapterService {
     async create(createChapterDto: CreateChapterDto) {
         // counting chapters in course model and adding 1 to it
         const chapterPosition = await this.ChapterModel.countDocuments({ courseId: createChapterDto.courseId }) + 1;
-        return this.ChapterModel.create({ ...createChapterDto, position: chapterPosition });
+        const newChapter = await this.ChapterModel.create({ ...createChapterDto, position: chapterPosition });
+        // adding chapter id to course model
+        await this.CourseModel.findByIdAndUpdate(createChapterDto.courseId, { $push: { chapters: newChapter._id  } });
     }
 
    
