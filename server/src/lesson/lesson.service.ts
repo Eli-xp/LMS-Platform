@@ -14,7 +14,12 @@ export class LessonService {
     ) {}
 
     async create(createLessonDto: CreateLessonDto) {
-        
+        // counting lessons in chapter model and adding 1 to it
+        const lessonPosition = await this.LessonModel.countDocuments({ chapterId: createLessonDto.chapterId }) + 1;
+        const newLesson = await this.LessonModel.create({ ...createLessonDto, position: lessonPosition });
+        // add lessons id to chapter lessons array
+        await this.ChapterModel.findByIdAndUpdate(createLessonDto.chapterId, { $push: { lessons: newLesson._id } });
+        return {newLesson};
     }
   
 }
