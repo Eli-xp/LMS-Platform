@@ -1,22 +1,20 @@
-import { cookies } from "next/headers";
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+import { centralServerAPI } from "@/services/central/central.server-public&user";
+import { notFound } from "next/navigation";
 
 export const adminGetCourses = async () => {
   // Only admin API
 
   console.log("adminGetCourses ran");
 
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.toString();
-
-  const res = await fetch(`${API_URL}/admin/courses`, {
-    headers: {
-      Cookie: accessToken,
-    },
+  const res = await centralServerAPI("/admin/courses", {
     method: "GET",
   });
 
-  // console.log(res);
+  console.log(res);
+
+  if (res.status === 404) {
+    notFound();
+  }
 
   if (!res.ok) {
     throw new Error(`Faild to Get Courses: ${res.status}`);
