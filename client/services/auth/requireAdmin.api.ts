@@ -1,6 +1,6 @@
 "server-only";
 import { redirect } from "next/navigation";
-import { getCurrentUserOnServer } from "./server.api";
+import { getCurrentUserOnServer } from "./currentUser.server-user";
 
 export const requireAdmin = async () => {
   console.log("requireAdmin Ran!!!");
