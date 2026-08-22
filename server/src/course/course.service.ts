@@ -38,7 +38,7 @@ export class CourseService {
   }
 
   async findOne(id: string){
-    const course = await this.CourseModel.findById(id);
+    const course = await this.CourseModel.findById(id).select('-chapters');
     if(!course){
       throw new NotFoundException('course not found')
     }
