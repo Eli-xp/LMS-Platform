@@ -8,7 +8,6 @@ import { ConfirmUploadDto } from './DTO/confirmUploadDto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Course } from 'src/course/schema/courseSchema';
 import { Model } from 'mongoose';
-import { CourseService } from 'src/course/course.service';
 @Injectable()
 export class MediaService {
     constructor(
