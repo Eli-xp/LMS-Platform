@@ -11,7 +11,7 @@ export class ChapterController {
 
 
   @UseGuards(AuthGuard('jwt'))
-  @Post()
+  @Post('create')
   @ApiOperation({ summary: 'create chapter' })
   @ApiResponse({ type: Object, status: 200, example: { message: 'chapter created' } })
   async create(@Body() createChapterDto: CreateChapterDto) {

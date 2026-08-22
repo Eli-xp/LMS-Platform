@@ -14,7 +14,7 @@ export class LessonController {
   ) {}
 
   @UseGuards(AuthGuard('jwt'))
-  @Post()
+  @Post('create')
   @ApiOperation({ summary: 'create lesson' })
   @ApiResponse({type: Object, status: 201, example:{message: 'new lesson created', url: 'https://parspack/1231/asdsad1515asd.net'}})
   async create(@Body() createLessonDto: CreateLessonDto) {
