@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, UseGuards, Put } from '@nestjs/common';
 import { ChapterService } from './chapter.service';
 import { CreateChapterDto } from './dto/create-chapter.dto';
 import { UpdateChapterDto } from './dto/update-chapter.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { StructureDto } from './dto/structureDto';
 
 @Controller('chapter')
 export class ChapterController {
@@ -19,7 +20,11 @@ export class ChapterController {
     return { message: 'chapter created' };
   }
 
- 
+
+ @Put('allUpdate')
+ async update(@Body() structureDto: StructureDto, courseId: string){
+  return this.chapterService.update(structureDto, courseId);
+ }
   
   
 }

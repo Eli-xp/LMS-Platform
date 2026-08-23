@@ -5,24 +5,66 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Course } from 'src/course/schema/courseSchema';
 import { Model } from 'mongoose';
 import { Chapter } from './schema/chapterSchema';
+import { StructureDto } from './dto/structureDto';
 
 @Injectable()
 export class ChapterService {
-    constructor(
-        @InjectModel(Course.name) private readonly CourseModel: Model<Course>,
-        @InjectModel(Chapter.name) private readonly ChapterModel: Model<Chapter>
-    ) {}
+  constructor(
+    @InjectModel(Course.name) private readonly CourseModel: Model<Course>,
+    @InjectModel(Chapter.name) private readonly ChapterModel: Model<Chapter>,
+  ) {}
 
-    async create(createChapterDto: CreateChapterDto) {
-        // counting chapters in course model and adding 1 to it
-        const chapterPosition = await this.ChapterModel.countDocuments({ courseId: createChapterDto.courseId }) + 1;
-        const newChapter = await this.ChapterModel.create({ ...createChapterDto, position: chapterPosition });
-        // adding chapter id to course model
-        await this.CourseModel.findByIdAndUpdate(createChapterDto.courseId, { $push: { chapters: newChapter._id  } });
-    }
+  async create(createChapterDto: CreateChapterDto) {
+    // counting chapters in course model and adding 1 to it
+    const chapterPosition =
+      (await this.ChapterModel.countDocuments({
+        courseId: createChapterDto.courseId,
+      })) + 1;
+    const newChapter = await this.ChapterModel.create({
+      ...createChapterDto,
+      position: chapterPosition,
+    });
+    // adding chapter id to course model
+    await this.CourseModel.findByIdAndUpdate(createChapterDto.courseId, {
+      $push: { chapters: newChapter._id },
+    });
+  }
 
-   
-
-
-  
+  async update(structureDto: StructureDto, courseId: string) {
+    const { chapters, lessons } = structureDto;
+    await Promise.all([
+       this.ChapterModel.bulkWrite(
+        chapters!.map((chapter) => ({
+          updateOne: {
+            filter: {
+              _id: chapter.id,
+              courseId,
+            },
+            update: {
+              $set: {
+                position: chapter.position,
+                title: chapter.title,
+              },
+            },
+          },
+        })),
+      ),
+       this.ChapterModel.bulkWrite(
+        lessons!.map((lesson) => ({
+          updateOne: {
+            filter: {
+              _id: lesson.id,
+              courseId,
+            },
+            update: {
+              $set: {
+                position: lesson.position,
+                title: lesson.title,
+              },
+            },
+          },
+        })),
+      ),
+    ]);
+  }
 }

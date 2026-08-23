@@ -1,11 +1,11 @@
 import { IsArray, IsOptional } from "class-validator";
 
-export class UpdatePositionDto{
+export class StructureDto{
     @IsArray()
     @IsOptional()
     chapters?:{
         id: string
-        positions: number
+        position: number
         title: string
     }[];
     @IsArray()
