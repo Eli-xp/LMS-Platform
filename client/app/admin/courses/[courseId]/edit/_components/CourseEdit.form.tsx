@@ -33,8 +33,8 @@ import FileUploader from "@/components/file-uploader/FileUploader";
 import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { adminEditCourse } from "@/services/admin/course/adminEditCourse.api";
-import { adminCourseFileVerification } from "@/services/admin/course/adminCourseFileVerification.api";
+import { adminEditCourse } from "@/services/admin/course/EditCourse.client-admin";
+import { adminCourseFileVerification } from "@/services/admin/course/CourseFileVerification.client-admin.api";
 
 const CourseEditForm = ({
   course,
@@ -45,6 +45,8 @@ const CourseEditForm = ({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   // redirect on client side
   const router = useRouter();
+
+  console.log(course)
 
   // Define form
   const form = useForm<z.infer<typeof AdminGetCourseSchema>>({

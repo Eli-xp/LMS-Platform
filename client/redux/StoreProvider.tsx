@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { Provider } from "react-redux";
 import { makeStore, AppStore } from "./store";
-import { clearUser, initializeUser } from "./slices/auth.slice";
+import { clearUser, initializeUser, setUser } from "./slices/auth.slice";
 import { useRouter } from "next/navigation";
 import { getCurrentUserOnClient } from "@/services/auth/currentUser.client-user";
 
@@ -24,7 +24,7 @@ export default function StoreProvider({
     storeRef.current = makeStore();
 
     if (user !== null) {
-      console.log(`First initialUser HAPPENED!${user}`);
+      console.log(`received user from server!${user}`);
       storeRef.current.dispatch(initializeUser(user));
     }
   }
@@ -42,15 +42,15 @@ export default function StoreProvider({
         console.log("StorePtovider:: BERFORE refreshToken Call ");
 
         const res = await getCurrentUserOnClient();
+        console.log(res);
         if (res.status === 401) {
           console.log("refreshToken is EXPIRED...");
           storeRef.current?.dispatch(clearUser());
           return;
         }
 
-        console.log(
-          `StorePtovider:: getCurrentUserOnClient ${getCurrentUserOnClient}`,
-        );
+        console.log(`StorePtovider:: getCurrentUserOnClient ${res}`);
+        storeRef.current?.dispatch(setUser(res));
       } catch (error) {
         console.error(`StorePtovider:: Refresh Failed, CATCH=> ${error}`);
         storeRef.current?.dispatch(clearUser());
