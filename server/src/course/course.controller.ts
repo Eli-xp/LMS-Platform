@@ -139,7 +139,7 @@ export class CourseController {
 
   @UseGuards(AuthGuard('jwt'))
   @Throttle({default:{limit:50,ttl:60_000}})
-  @Get('courses/:id')
+  @Get('course/basic/:id')
   @ApiOperation({summary: 'return one course'})
   @ApiResponse({type:Object,status:200,example:{
     "_id": "6a81e6183ff6c222cd385ca6",
