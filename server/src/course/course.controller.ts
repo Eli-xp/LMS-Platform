@@ -124,13 +124,17 @@ export class CourseController {
     type: Array,
     status: 200,
     example: {
-      _id: '6a7bbb6f4e9d50b549c8cb41',
+      courses:{
+        _id: '6a7bbb6f4e9d50b549c8cb41',
       title: 'what is nestJs',
       price: 499,
       level: 'Beginner',
       smallDescription: 'about js...',
       slug: 'string',
       status: 'Draft',
+      },
+      courseCount: 120,
+      pageCount: 13
     },
   })
   async getCourses(
