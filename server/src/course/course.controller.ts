@@ -195,6 +195,12 @@ async updateCourse(@Body() updateCourseDto: UpdateCourseDto, @Param('id') id: st
 }
 
 
+@Get('course/structure/:id')
+async getOneCourseStructure(@Param('id') id: string){
+  return this.courseService.findOneStructure(id)
+}
+
+
   @UseGuards(AuthGuard('jwt'))
   @Get('course/view-url')
   async getViewUrl(@Query('fileKey') fileKey: string) {

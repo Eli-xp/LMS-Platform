@@ -47,6 +47,24 @@ export class CourseService {
     return course;
   }
 
+
+  async findOneStructure(id: string){
+    return this.CourseModel.findById(id).select('chapters').populate({
+      path: 'chapters',
+      select: 'title position _id',
+      options: {sort:{position:1}},
+      populate:{
+        path: 'lessons',
+        select: 'title position _id',
+        options:{sort:{position:1}}
+      }
+    }).lean();
+
+  }
+
+
+
+
   async deleteOne(id: string, userId: string){
     const course = await this.CourseModel.findByIdAndDelete(id);
     if(!course){
