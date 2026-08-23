@@ -22,8 +22,9 @@ export class ChapterController {
 
 
  @Put('allUpdate')
- async update(@Body() structureDto: StructureDto, courseId: string){
-  return this.chapterService.update(structureDto, courseId);
+ async update(@Body() structureDto: StructureDto){
+  await this.chapterService.update(structureDto);
+  return {message: 'edited'}
  }
   
   

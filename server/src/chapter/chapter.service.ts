@@ -6,12 +6,14 @@ import { Course } from 'src/course/schema/courseSchema';
 import { Model } from 'mongoose';
 import { Chapter } from './schema/chapterSchema';
 import { StructureDto } from './dto/structureDto';
+import { Lesson } from 'src/lesson/schema/lessonSchema';
 
 @Injectable()
 export class ChapterService {
   constructor(
     @InjectModel(Course.name) private readonly CourseModel: Model<Course>,
     @InjectModel(Chapter.name) private readonly ChapterModel: Model<Chapter>,
+    @InjectModel(Lesson.name) private readonly LessonModel: Model<Lesson>
   ) {}
 
   async create(createChapterDto: CreateChapterDto) {
@@ -30,8 +32,8 @@ export class ChapterService {
     });
   }
 
-  async update(structureDto: StructureDto, courseId: string) {
-    const { chapters, lessons } = structureDto;
+  async update(structureDto: StructureDto) {
+    const { chapters, lessons, courseId } = structureDto;
     await Promise.all([
        this.ChapterModel.bulkWrite(
         chapters!.map((chapter) => ({
@@ -49,12 +51,11 @@ export class ChapterService {
           },
         })),
       ),
-       this.ChapterModel.bulkWrite(
+       this.LessonModel.bulkWrite(
         lessons!.map((lesson) => ({
           updateOne: {
             filter: {
               _id: lesson.id,
-              courseId,
             },
             update: {
               $set: {

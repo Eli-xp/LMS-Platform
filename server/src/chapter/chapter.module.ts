@@ -4,6 +4,7 @@ import { ChapterController } from './chapter.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Course, CourseSchema } from 'src/course/schema/courseSchema';
 import { Chapter, ChapterSchema } from './schema/chapterSchema';
+import { Lesson, LessonSchema } from 'src/lesson/schema/lessonSchema';
 
 @Module({
   imports: [
@@ -19,6 +20,12 @@ import { Chapter, ChapterSchema } from './schema/chapterSchema';
             schema: ChapterSchema,
           },
         ]),
+        MongooseModule.forFeature([
+              {
+                name: Lesson.name,
+                schema: LessonSchema,
+              },
+            ])
   ],
   controllers: [ChapterController],
   providers: [ChapterService],

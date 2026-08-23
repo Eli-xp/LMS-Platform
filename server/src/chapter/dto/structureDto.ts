@@ -1,7 +1,11 @@
 import {  ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsOptional } from "class-validator";
+import { IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class StructureDto{
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty({type: String})
+    courseId!: string
     @IsArray()
     @IsOptional()
     @ApiProperty({type: [Object], example:[
