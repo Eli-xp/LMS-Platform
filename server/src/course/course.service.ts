@@ -24,7 +24,9 @@ export class CourseService {
 
   async findAll(page:number,limit:number){
     const courses = await this.CourseModel.find().select('title smallDescription duration level status price thumbnail slug').skip((page - 1)* limit).limit(limit).lean();
-    return Promise.all(
+    const courseCount = await this.CourseModel.countDocuments();
+    const pageCount = Math.ceil(courseCount / limit);
+    const coursesWithThumbnail = await Promise.all(
   courses.map(async (course) => {
     const thumbnailUrl = await this.mediaService.createViewUrl(course.thumbnail)
 
@@ -34,6 +36,12 @@ export class CourseService {
     };
   }),
 );
+return {
+  courses: coursesWithThumbnail,
+  courseCount,
+  pageCount
+}
+
     
   }
 
