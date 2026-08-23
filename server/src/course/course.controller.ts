@@ -194,8 +194,22 @@ async updateCourse(@Body() updateCourseDto: UpdateCourseDto, @Param('id') id: st
   return {message: 'course edited'}
 }
 
-
+@UseGuards(AuthGuard('jwt'))
 @Get('course/structure/:id')
+@ApiOperation({summary: 'get course infos'})
+@ApiResponse({type: Object, status: 200, example:{
+  _id: 'asdoao1o231i',
+  chapters:{
+    _id:'asdasdi123123',
+    title:'what is nestJs2',
+    position:1,
+    lessons:{
+      _id: 'asdkj123jj12',
+      title: 'lesson 1',
+      position: 1
+    }
+  }
+}})
 async getOneCourseStructure(@Param('id') id: string){
   return this.courseService.findOneStructure(id)
 }
