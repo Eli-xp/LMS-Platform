@@ -59,7 +59,7 @@ const CourseStructure = () =>
           <CardHeader className="flex flex-row items-center justify-between border-b border-border">
             <CardTitle>Chapters</CardTitle>
           </CardHeader>
-          <CardContent className="list">
+          <CardContent className="list space-y-8">
             {/* chapters */}
             {course?.map((chapter, index) => (
               <SortableCourse
@@ -82,6 +82,7 @@ export default CourseStructure;
 function SortableCourse({ id, index, chapter, toggleChapterFunc, courseId }) {
   const { ref } = useSortable({ id: chapter.id, index });
   console.log(chapter);
+  console.log(index);
 
   return (
     <Card ref={ref}>
@@ -153,6 +154,8 @@ function SortableLesson({
   chapterId,
 }) {
   const { ref } = useSortable({ id: lesson.id, index });
+  console.log(lesson);
+  console.log(index);
 
   return (
     <div

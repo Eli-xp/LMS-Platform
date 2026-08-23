@@ -6,31 +6,31 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { adminGetCourse } from "@/services/admin/course/adminGetCourse.server-admin";
+import { adminGetCourse } from "@/services/admin/course/GetCourse.server-admin";
 import CourseEditForm from "./_components/CourseEdit.form";
 import CourseStructure from "./_components/CourseStructure";
 
 const courseEditPage = async ({ params }) => {
   const { courseId } = await params;
-  let data;
+  let courseData;
+
   if (courseId) {
     // Get course information by id
     try {
       console.log(courseId);
-      data = await adminGetCourse(courseId);
-      console.log(data);
+      const { data } = await adminGetCourse(courseId);
+      courseData = data;
+      console.log(courseData);
     } catch (error) {
       console.error(error);
     }
-
-    console.log(data);
   }
 
   return (
     <div>
       <h1 className="text-3xl font-bold mb-8">
         Edit Course:{" "}
-        <span className="text-primary underline">{data?.title}</span>
+        <span className="text-primary underline">{courseData?.title}</span>
       </h1>
 
       <Tabs defaultValue="basic-info" className="w-full">
@@ -47,7 +47,7 @@ const courseEditPage = async ({ params }) => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <CourseEditForm course={data} />
+              <CourseEditForm course={courseData} />
             </CardContent>
           </Card>
         </TabsContent>

@@ -10,16 +10,15 @@ export const centralServerAPI = async (
   console.log("centralServerAPI called");
 
   const cookieStore = await cookies();
-  console.log(cookieStore);
 
   const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
     headers: { ...options.headers, Cookie: cookieStore.toString() },
   });
 
-  if (response.status !== 401) {
-    return response;
+  if (response.status === 401) {
+    return { type: "auth-required" };
   }
 
-  return response;
+  return { type: "success", response };
 };

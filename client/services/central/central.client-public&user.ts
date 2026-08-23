@@ -63,11 +63,16 @@ export const centralClientAPI = async (
     return;
   }
 
+  console.log("centralClientAPI - Before Rtry")
   // if Refresh Token Valid - Retry original request
   response = await fetch(`${API_URL}${endpoint}`, {
     ...fetchOptions,
     credentials: "include",
   });
+
+  console.log("centralClientAPI - After Rtry")
+  console.log(response)
+
 
   return response;
 };
