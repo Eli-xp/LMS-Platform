@@ -10,14 +10,14 @@ export const getCurrentUserOnServer = async () => {
 
     console.log(res);
 
-    if (!res.ok) {
+    if (!res.response.ok) {
       // console.error(res.status);
       return {
         user: null,
       };
     }
 
-    const data = await res.json();
+    const data = await res.response.json();
     console.log(data);
     console.log("getCurrentUserOnServer Successfully!");
     return { user: data };
