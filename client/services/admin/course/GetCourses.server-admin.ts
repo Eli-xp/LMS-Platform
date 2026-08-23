@@ -12,16 +12,16 @@ export const adminGetCourses = async () => {
 
   console.log(res);
 
-  if (res.status === 404) {
-    notFound();
+  if (!res.response.ok) {
+    return res;
   }
 
-  if (!res.ok) {
-    throw new Error(`Faild to Get Courses: ${res.status}`);
+  if (!res.response.ok) {
+    throw new Error(`Faild to Get Courses: ${res.response.status}`);
   }
 
-  const data = res.json();
+  const data = await res.response.json();
   console.log(data);
 
-  return data;
+  return { type: res.type, data: data };
 };
