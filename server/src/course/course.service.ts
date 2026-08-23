@@ -51,11 +51,11 @@ export class CourseService {
   async findOneStructure(id: string){
     return this.CourseModel.findById(id).select('chapters').populate({
       path: 'chapters',
-      select: 'title position _id',
+      select: 'title position',
       options: {sort:{position:1}},
       populate:{
         path: 'lessons',
-        select: 'title position _id',
+        select: 'title position',
         options:{sort:{position:1}}
       }
     }).lean();
