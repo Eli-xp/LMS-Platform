@@ -19,3 +19,7 @@ export class Lesson extends Document{
 }
 
 export const LessonSchema = SchemaFactory.createForClass(Lesson);
+LessonSchema.index({
+    chapterId: 1,
+    position: 1
+})

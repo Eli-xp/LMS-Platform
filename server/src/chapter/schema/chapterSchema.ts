@@ -15,3 +15,7 @@ export class Chapter extends Document{
 }
 
 export const ChapterSchema = SchemaFactory.createForClass(Chapter);
+ChapterSchema.index({
+    courseId: 1,
+    position: 1
+})

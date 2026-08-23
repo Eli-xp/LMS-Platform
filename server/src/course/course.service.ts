@@ -22,14 +22,14 @@ export class CourseService {
     return {newCourse};
   }
 
-  async findAll(){
-    const courses = await this.CourseModel.find().select('title smallDescription duration level status price thumbnail slug');
+  async findAll(page:number,limit:number){
+    const courses = await this.CourseModel.find().select('title smallDescription duration level status price thumbnail slug').skip((page - 1)* limit).limit(limit).lean();
     return Promise.all(
   courses.map(async (course) => {
     const thumbnailUrl = await this.mediaService.createViewUrl(course.thumbnail)
 
     return {
-      ...course.toObject(),
+      ...course,
       thumbnail: thumbnailUrl,
     };
   }),

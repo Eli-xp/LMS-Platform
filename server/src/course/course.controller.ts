@@ -133,8 +133,11 @@ export class CourseController {
       status: 'Draft',
     },
   })
-  async getCourses() {
-    return this.courseService.findAll();
+  async getCourses(
+    @Query('page') page:number,
+    @Query('limit') limit:number
+  ) {
+    return this.courseService.findAll(page,limit);
   }
 
   @UseGuards(AuthGuard('jwt'))
