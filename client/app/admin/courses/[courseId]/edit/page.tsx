@@ -7,37 +7,28 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { adminGetCourse } from "@/services/admin/course/GetCourse.server-admin";
-import CourseEditForm from "./_components/CourseEdit.form";
-import CourseStructure from "./_components/CourseStructure";
+import CourseBasicForm from "./_components/CourseBasic.form";
+import CourseStructureForm from "./_components/CourseStructure.form";
+import CourseStructureTab from "./_components/CourseStructure.tab";
+import CourseBasicTab from "./_components/CourseBasic.tab";
 
 const courseEditPage = async ({ params }) => {
   const { courseId } = await params;
   let courseData;
 
-  if (courseId) {
-    // Get course information by id
-    try {
-      console.log(courseId);
-      const { data } = await adminGetCourse(courseId);
-      courseData = data;
-      console.log(courseData);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   return (
     <div>
       <h1 className="text-3xl font-bold mb-8">
-        Edit Course:{" "}
-        <span className="text-primary underline">{courseData?.title}</span>
+        Edit Course: <span className="text-primary underline">#{courseId}</span>
       </h1>
 
+      {/* Tabs */}
       <Tabs defaultValue="basic-info" className="w-full">
         <TabsList className="grid grid-cols-2 w-full">
           <TabsTrigger value="basic-info">Basic Info</TabsTrigger>
           <TabsTrigger value="course-structure">Course Structure</TabsTrigger>
         </TabsList>
+        {/* Tab: basic-info */}
         <TabsContent value="basic-info">
           <Card>
             <CardHeader>
@@ -47,10 +38,12 @@ const courseEditPage = async ({ params }) => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <CourseEditForm course={courseData} />
+              <CourseBasicTab courseId={courseId} />
             </CardContent>
           </Card>
         </TabsContent>
+
+        {/* Tab: course-structure */}
         <TabsContent value="course-structure">
           <Card>
             <CardHeader>
@@ -60,7 +53,7 @@ const courseEditPage = async ({ params }) => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <CourseStructure />
+              <CourseStructureTab courseId={courseId} />
             </CardContent>
           </Card>
         </TabsContent>
