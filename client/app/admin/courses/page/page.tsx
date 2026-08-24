@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
-const CoursesPage = () => {
+const page = () => {
   redirect("/admin/courses/page/1");
 };
 
-export default CoursesPage;
+export default page;
