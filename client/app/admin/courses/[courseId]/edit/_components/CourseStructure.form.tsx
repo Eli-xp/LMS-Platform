@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DragDropProvider } from "@dnd-kit/react";
 import { useSortable } from "@dnd-kit/react/sortable";
 import { useState } from "react";
-import { sampleDataCourseStructure } from "./sapmleData";
 import {
   Collapsible,
   CollapsibleContent,
@@ -19,65 +18,64 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-const CourseStructure = () =>
-  // { data }
-  {
-    const sampledata = sampleDataCourseStructure;
+const CourseStructureForm = ({ courseStructure }) => {
+  console.log(courseStructure);
+  const sampledata = courseStructure;
 
-    console.log(sampledata);
-    const initialCourse =
-      sampledata?.chapters?.map((chapter) => ({
-        id: chapter.id,
-        title: chapter.title,
-        order: chapter.position,
-        isOpen: true, // defaul chapters to open
-        lessons: chapter.lessons.map((lesson) => ({
-          id: lesson.id,
-          title: lesson.title,
-          order: lesson.position,
-        })),
-      })) || [];
+  console.log(sampledata);
+  const initialCourse =
+    sampledata?.chapters?.map((chapter) => ({
+      id: chapter.id,
+      title: chapter.title,
+      order: chapter.position,
+      isOpen: true, // defaul chapters to open
+      lessons: chapter.lessons.map((lesson) => ({
+        id: lesson.id,
+        title: lesson.title,
+        order: lesson.position,
+      })),
+    })) || [];
 
-    const [course, setCourse] = useState(initialCourse);
+  const [course, setCourse] = useState(initialCourse);
 
-    const toggleChapterFunc = (chapterId: string) => {
-      console.log("toggleChapterFunc Ran");
-      setCourse((prevItems) =>
-        prevItems.map((chapter) =>
-          chapter.id === chapterId
-            ? { ...chapter, isOpen: !chapter.isOpen }
-            : chapter,
-        ),
-      );
-    };
-
-    console.log(course);
-
-    return (
-      <DragDropProvider>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between border-b border-border">
-            <CardTitle>Chapters</CardTitle>
-          </CardHeader>
-          <CardContent className="list space-y-8">
-            {/* chapters */}
-            {course?.map((chapter, index) => (
-              <SortableCourse
-                key={chapter.id}
-                id={chapter.id}
-                chapter={chapter}
-                index={index}
-                courseId={course.id}
-                toggleChapterFunc={toggleChapterFunc}
-              />
-            ))}
-          </CardContent>
-        </Card>
-      </DragDropProvider>
+  const toggleChapterFunc = (chapterId: string) => {
+    console.log("toggleChapterFunc Ran");
+    setCourse((prevItems) =>
+      prevItems.map((chapter) =>
+        chapter.id === chapterId
+          ? { ...chapter, isOpen: !chapter.isOpen }
+          : chapter,
+      ),
     );
   };
 
-export default CourseStructure;
+  console.log(course);
+
+  return (
+    <DragDropProvider>
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between border-b border-border">
+          <CardTitle>Chapters</CardTitle>
+        </CardHeader>
+        <CardContent className="list space-y-8">
+          {/* chapters */}
+          {course?.map((chapter, index) => (
+            <SortableCourse
+              key={chapter.id}
+              id={chapter.id}
+              chapter={chapter}
+              index={index}
+              courseId={course.id}
+              toggleChapterFunc={toggleChapterFunc}
+            />
+          ))}
+        </CardContent>
+      </Card>
+    </DragDropProvider>
+  );
+};
+
+export default CourseStructureForm;
 
 function SortableCourse({ id, index, chapter, toggleChapterFunc, courseId }) {
   const { ref } = useSortable({ id: chapter.id, index });

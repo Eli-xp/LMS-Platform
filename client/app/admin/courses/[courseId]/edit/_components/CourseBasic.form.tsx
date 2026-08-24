@@ -33,10 +33,10 @@ import FileUploader from "@/components/file-uploader/FileUploader";
 import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { adminEditCourse } from "@/services/admin/course/EditCourse.client-admin";
+import { adminEditCourse_basic } from "@/services/admin/course/EditCourse.client-admin";
 import { adminCourseFileVerification } from "@/services/admin/course/CourseFileVerification.client-admin.api";
 
-const CourseEditForm = ({
+const CourseBasicForm = ({
   course,
 }: {
   course: z.infer<typeof AdminGetCourseSchema>;
@@ -46,7 +46,7 @@ const CourseEditForm = ({
   // redirect on client side
   const router = useRouter();
 
-  console.log(course)
+  console.log(course);
 
   // Define form
   const form = useForm<z.infer<typeof AdminGetCourseSchema>>({
@@ -103,7 +103,7 @@ const CourseEditForm = ({
             size: thumbnail?.size,
           };
 
-          const editCourseRes = await adminEditCourse(
+          const editCourseRes = await adminEditCourse_basic(
             changedValuesforserver,
             course_id,
           );
@@ -472,4 +472,4 @@ const CourseEditForm = ({
   );
 };
 
-export default CourseEditForm;
+export default CourseBasicForm;
