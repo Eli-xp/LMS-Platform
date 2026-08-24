@@ -141,7 +141,7 @@ const CourseBasicForm = ({
         try {
           console.log("CourseEditForm API:: thumbnail did not change");
           setIsSubmitting(true);
-          const editCourseRes = await adminEditCourse(changedValues, course_id);
+          const editCourseRes = await adminEditCourse_basic(changedValues, course_id);
           console.log(editCourseRes);
           toast.success("Course Edited Successfully");
           setIsSubmitting(false);
