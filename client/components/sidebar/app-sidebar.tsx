@@ -40,7 +40,7 @@ const data = {
     },
     {
       title: "Courses",
-      url: "/admin/courses",
+      url: "/admin/courses/page/1",
       icon: <ListIcon />,
       status: true,
     },

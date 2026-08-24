@@ -24,19 +24,28 @@ import {
   Tv2,
 } from "lucide-react";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
 
   // Get user data from redux
-  // ...
+  const { user: userInfo, loading } = useSelector((state) => state.auth);
+  console.log(userInfo, loading);
 
   // sample data
-  const user = {
-    name: "alireza",
-    phoneNum: "09330887474",
-    avatar: null,
-  };
+
+  const user = userInfo
+    ? {
+        name: userInfo.name,
+        phoneNum: userInfo.phone,
+        avatar: userInfo.avatar,
+      }
+    : {
+        name: "Unknown",
+        phoneNum: "09000000000",
+        avatar: null,
+      };
 
   return (
     <SidebarMenu>
@@ -114,7 +123,7 @@ export function NavUser() {
               <DropdownMenuItem
                 render={
                   <Link
-                    href="/courses"
+                    href="/admin/courses/page/1"
                     className="cursor-pointer hover:text-muted-foreground"
                   />
                 }
