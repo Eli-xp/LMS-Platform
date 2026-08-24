@@ -38,7 +38,6 @@ export class CourseService {
 );
 return {
   courses: coursesWithThumbnail,
-  courseCount,
   pageCount
 }
 
