@@ -37,7 +37,7 @@ export class AuthService {
       user = await this.userService.create({ phone: otpVerify.phone });
     }
     // signing jwt token
-    const token = this.jwtService.sign({ sub: user._id, role: user.role }, { expiresIn: '15m' });
+    const token = this.jwtService.sign({ sub: user._id, role: user.role }, { expiresIn: '60m' });
     const refreshToken = this.jwtService.sign(
       { sub: user._id, role: user.role },
       {
@@ -79,7 +79,7 @@ export class AuthService {
       // signing new access token
       const token = this.jwtService.sign(
         { sub: user._id },
-        { expiresIn: '15m' },
+        { expiresIn: '60m' },
       );
       return  {token} ;
     } catch (error) {
