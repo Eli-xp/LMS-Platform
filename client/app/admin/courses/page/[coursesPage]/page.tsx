@@ -1,0 +1,34 @@
+import { buttonVariants } from "@/components/ui/button";
+// import { adminGetCourses } from "@/services/admin/adminGetCourses.api";
+import Link from "next/link";
+import { Suspense } from "react";
+import { CoursesList } from "./_components/CoursesList";
+
+const CoursesPage = async ({ params }) => {
+  const { coursesPage } = await params;
+  // convert string to number
+  const currentPageNum = Number(coursesPage);
+
+  console.log(coursesPage);
+
+  return (
+    <>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Your Courses</h1>
+
+        <Link href="/admin/courses/create" className={buttonVariants()}>
+          Create Course
+        </Link>
+      </div>
+      <div>
+        <span>Here you will see all of the courses</span>
+      </div>
+      {/* courses list */}
+      <Suspense fallback={<p>Loading product details...</p>}>
+        <CoursesList currentPageNum={currentPageNum} />
+      </Suspense>
+    </>
+  );
+};
+
+export default CoursesPage;
