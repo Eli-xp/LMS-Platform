@@ -41,7 +41,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { adminCourseFileVerification } from "@/services/admin/course/CourseFileVerification.client-admin.api";
+import { adminCourseFileVerification } from "@/services/admin/course/CourseFileVerification.client-admin";
 
 const CourseCreationForm = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);

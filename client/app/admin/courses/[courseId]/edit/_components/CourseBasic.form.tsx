@@ -34,7 +34,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { adminEditCourse_basic } from "@/services/admin/course/EditCourse.client-admin";
-import { adminCourseFileVerification } from "@/services/admin/course/CourseFileVerification.client-admin.api";
+import { adminCourseFileVerification } from "@/services/admin/course/CourseFileVerification.client-admin";
 
 const CourseBasicForm = ({
   course,
@@ -141,7 +141,10 @@ const CourseBasicForm = ({
         try {
           console.log("CourseEditForm API:: thumbnail did not change");
           setIsSubmitting(true);
-          const editCourseRes = await adminEditCourse_basic(changedValues, course_id);
+          const editCourseRes = await adminEditCourse_basic(
+            changedValues,
+            course_id,
+          );
           console.log(editCourseRes);
           toast.success("Course Edited Successfully");
           setIsSubmitting(false);
