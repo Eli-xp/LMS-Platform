@@ -1,12 +1,12 @@
 import { centralServerAPI } from "@/services/central/central.server-public&user";
-import { notFound } from "next/navigation";
 
-export const adminGetCourses = async () => {
+export const adminGetCourses = async (currentPageNum:number) => {
   // Only admin API
 
   console.log("adminGetCourses ran");
-
-  const res = await centralServerAPI("/admin/courses", {
+  console.log(currentPageNum);
+  const page = currentPageNum;
+  const res = await centralServerAPI(`/admin/courses/?page=${page}&limit=10`, {
     method: "GET",
   });
 
