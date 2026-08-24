@@ -1,6 +1,9 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+import { centralClientAPI } from "@/services/central/central.client-public&user";
 
-export const adminEditCourse = async (changedValuesforserver, course_id:string) => {
+export const adminEditCourse_basic = async (
+  changedValuesforserver,
+  course_id: string,
+) => {
   // only admin
 
   console.log(changedValuesforserver);
@@ -8,11 +11,10 @@ export const adminEditCourse = async (changedValuesforserver, course_id:string) 
   const id = course_id;
 
   // Request Validation
-  const res = await fetch(`${API_URL}/admin/courses/edit/${id}`, {
+  const res = await centralClientAPI(`/admin/courses/edit/${id}`, {
     method: "PUT",
     headers: { "Content-type": "application/json" },
     body: JSON.stringify(changedValuesforserver),
-    credentials: "include",
   });
   console.log(res);
   if (!res.ok) {
@@ -24,4 +26,3 @@ export const adminEditCourse = async (changedValuesforserver, course_id:string) 
 
   return data;
 };
-
