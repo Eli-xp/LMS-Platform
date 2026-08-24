@@ -15,8 +15,8 @@ export class StructureDto{
     ]})
     chapters?:{
         id: string
-        position: number
-        title: string
+        position?: number
+        title?: string
     }[];
     @IsArray()
     @IsOptional()
@@ -27,7 +27,7 @@ export class StructureDto{
     ]})
     lessons?:{
         id: string
-        position: number
-        title: string
+        position?: number
+        title?: string
     }[];
 }
