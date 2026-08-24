@@ -114,8 +114,7 @@ export const AdminGetCourseSchema = z.object({
     .optional(),
 });
 
-// /admin/courses
-export const adminGetCourses = z.object({
+export const adminGetCourse = z.object({
   title: z
     .string()
     .min(3, { error: "Title must be at least 3 characters long" })
@@ -153,4 +152,47 @@ export const adminGetCourses = z.object({
     .string()
     .min(3, { error: "id must be at least 3 characters long" })
     .optional(),
+});
+
+// /admin/courses
+const adminGetcourses_eachCourse = z.object({
+  title: z
+    .string()
+    .min(3, { error: "Title must be at least 3 characters long" })
+    .max(100, { error: "Title must be at most 100 characters long" }),
+  slug: z
+    .string()
+    .min(3, { error: "Slug must be at least 3 characters long" })
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, { error: "Invalid Slug format" }),
+  smallDescription: z
+    .string()
+    .min(3, { error: "Small Description must be at least 3 characters long" })
+    .max(200, {
+      error: "Small Description must be at most 200 characters long",
+    }),
+  thumbnail: z.object({
+    viewUrl: z.string().min(1, { error: "Invalid viewUrl" }),
+  }),
+  price: z.coerce.number().min(1, { error: "Price must be a positive number" }),
+  duration: z.coerce
+    .number()
+    .min(1, { error: "Duration must be at least 1 hour" })
+    .max(500, { error: "Duration must be at most 500 hours" }),
+  level: z.enum(courseLevels, {
+    error: "Level is required",
+  }),
+  status: z.enum(courseStatus, {
+    error: "Status is required",
+  }),
+
+  _id: z
+    .string()
+    .min(3, { error: "id must be at least 3 characters long" })
+    .optional(),
+});
+
+export const adminGetCourses = z.object({
+  courses: z.array(adminGetcourses_eachCourse),
+  courseCount: z.number(),
+  pageCount: z.number(),
 });
