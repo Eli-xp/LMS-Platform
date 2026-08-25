@@ -24,7 +24,8 @@ import { ConfirmUploadDto } from 'src/media/DTO/confirmUploadDto';
 import { UsersService } from 'src/users/users.service';
 import { Throttle } from '@nestjs/throttler';
 import { UpdateCourseDto } from './dto/update-course.dto';
-
+import { StructureDto } from 'src/chapter/dto/structureDto';
+import { ChapterService } from 'src/chapter/chapter.service';
 
 @Controller('admin')
 export class CourseController {
@@ -32,6 +33,7 @@ export class CourseController {
     private readonly courseService: CourseService,
     private readonly mediaService: MediaService,
     private readonly usersService: UsersService,
+    private readonly chapterService: ChapterService
   ) {}
 
   @Post('course/upload-url')
@@ -53,7 +55,7 @@ export class CourseController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Throttle({default:{limit:50,ttl:60_000}})
+  @Throttle({ default: { limit: 50, ttl: 60_000 } })
   @Post('course/create')
   @ApiOperation({ summary: 'create new course' })
   @ApiResponse({
@@ -117,111 +119,140 @@ export class CourseController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Throttle({default:{limit:50,ttl:60_000}})
+  @Throttle({ default: { limit: 50, ttl: 60_000 } })
   @Get('courses')
   @ApiOperation({ summary: 'return all courses' })
   @ApiResponse({
     type: Array,
     status: 200,
     example: {
-      courses:{
+      courses: {
         _id: '6a7bbb6f4e9d50b549c8cb41',
-      title: 'what is nestJs',
-      price: 499,
-      level: 'Beginner',
-      smallDescription: 'about js...',
-      slug: 'string',
-      status: 'Draft',
+        title: 'what is nestJs',
+        price: 499,
+        level: 'Beginner',
+        smallDescription: 'about js...',
+        slug: 'string',
+        status: 'Draft',
       },
       courseCount: 120,
-      pageCount: 13
+      pageCount: 13,
     },
   })
-  async getCourses(
-    @Query('page') page:number,
-    @Query('limit') limit:number
-  ) {
-    return this.courseService.findAll(page,limit);
+  async getCourses(@Query('page') page: number, @Query('limit') limit: number) {
+    return this.courseService.findAll(page, limit);
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Throttle({default:{limit:50,ttl:60_000}})
+  @Throttle({ default: { limit: 50, ttl: 60_000 } })
   @Get('course/basic/:id')
-  @ApiOperation({summary: 'return one course'})
-  @ApiResponse({type:Object,status:200,example:{
-    "_id": "6a81e6183ff6c222cd385ca6",
-    "title": "grrerg",
-    "description": "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"attrs\":{\"textAlign\":null},\"content\":[{\"type\":\"text\",\"text\":\"Hello World🚀ergrergegegre\"}]}]}",
-    "price": 12,
-    "level": "Beginner",
-    "category": "Web Development",
-    "smallDescription": "rgeerrergegre",
-    "slug": "grrerg",
-    "status": "Draft",
-    "createdAt": "2026-08-16T16:32:24.312Z",
-    "updatedAt": "2026-08-16T16:32:24.793Z",
-    "__v": 0,
-    "thumbnail": "65479aa7-8d21-45ee-b08f-1214be23ecfd-ux honeycomb.png",
-    "userId": "6a7465965d57a6a2aedcd26b"
-  }})
-  async getOneCourse(@Param('id') id: string){
+  @ApiOperation({ summary: 'return one course' })
+  @ApiResponse({
+    type: Object,
+    status: 200,
+    example: {
+      _id: '6a81e6183ff6c222cd385ca6',
+      title: 'grrerg',
+      description:
+        '{"type":"doc","content":[{"type":"paragraph","attrs":{"textAlign":null},"content":[{"type":"text","text":"Hello World🚀ergrergegegre"}]}]}',
+      price: 12,
+      level: 'Beginner',
+      category: 'Web Development',
+      smallDescription: 'rgeerrergegre',
+      slug: 'grrerg',
+      status: 'Draft',
+      createdAt: '2026-08-16T16:32:24.312Z',
+      updatedAt: '2026-08-16T16:32:24.793Z',
+      __v: 0,
+      thumbnail: '65479aa7-8d21-45ee-b08f-1214be23ecfd-ux honeycomb.png',
+      userId: '6a7465965d57a6a2aedcd26b',
+    },
+  })
+  async getOneCourse(@Param('id') id: string) {
     return this.courseService.findOne(id);
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Throttle({default:{limit:50,ttl:60_000}})
+  @Throttle({ default: { limit: 50, ttl: 60_000 } })
   @Delete('courses/:id')
-  @ApiOperation({summary: 'delete a course'})
-  @ApiResponse({type:Object,example:{message:'course deleted'}})
-  async deleteOneCourse(@Param('id') id: string, @Req() req: Request){
-    const {userId} = req.user as JwtUser
-    return this.courseService.deleteOne(id,userId);
+  @ApiOperation({ summary: 'delete a course' })
+  @ApiResponse({ type: Object, example: { message: 'course deleted' } })
+  async deleteOneCourse(@Param('id') id: string, @Req() req: Request) {
+    const { userId } = req.user as JwtUser;
+    return this.courseService.deleteOne(id, userId);
   }
 
-@UseGuards(AuthGuard('jwt'))
-@Put('courses/edit/:id')
-@ApiOperation({summary: 'edit course information'})
-@ApiResponse({type: Object, status: 200, example:{message: 'course edited',url: 'https://parspack/asdkadi1123123.png', fields: 'policy'}})
-async updateCourse(@Body() updateCourseDto: UpdateCourseDto, @Param('id') id: string, @Req() req: Request){
-  const { userId } = req.user as JwtUser;
-  const { course } = await this.courseService.findOneAndUpdate(updateCourseDto,id,userId);
-  if(updateCourseDto.thumbNail){
-    const { url, fileKey, fields } = await this.mediaService.createUploadUrl(
-      updateCourseDto.thumbNail!.originalName,
-      updateCourseDto.thumbNail!.contentType,
+  @UseGuards(AuthGuard('jwt'))
+  @Put('courses/edit/:id')
+  @ApiOperation({ summary: 'edit course information' })
+  @ApiResponse({
+    type: Object,
+    status: 200,
+    example: {
+      message: 'course edited',
+      url: 'https://parspack/asdkadi1123123.png',
+      fields: 'policy',
+    },
+  })
+  async updateCourse(
+    @Body() updateCourseDto: UpdateCourseDto,
+    @Param('id') id: string,
+    @Req() req: Request,
+  ) {
+    const { userId } = req.user as JwtUser;
+    const { course } = await this.courseService.findOneAndUpdate(
+      updateCourseDto,
+      id,
+      userId,
     );
-  course.thumbnail = fileKey;
-  await course.save();
-  return {message: 'course edited',url, fields}
-  }
-  
-  return {message: 'course edited'}
-}
-
-@UseGuards(AuthGuard('jwt'))
-@Get('course/structure/:id')
-@ApiOperation({summary: 'get course infos'})
-@ApiResponse({type: Object, status: 200, example:{
-  _id: 'asdoao1o231i',
-  chapters:{
-    _id:'asdasdi123123',
-    title:'what is nestJs2',
-    position:1,
-    lessons:{
-      _id: 'asdkj123jj12',
-      title: 'lesson 1',
-      position: 1
+    if (updateCourseDto.thumbNail) {
+      const { url, fileKey, fields } = await this.mediaService.createUploadUrl(
+        updateCourseDto.thumbNail!.originalName,
+        updateCourseDto.thumbNail!.contentType,
+      );
+      course.thumbnail = fileKey;
+      await course.save();
+      return { message: 'course edited', url, fields };
     }
-  }
-}})
-async getOneCourseStructure(@Param('id') id: string){
-  return this.courseService.findOneStructure(id)
-}
 
+    return { message: 'course edited' };
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('course/structure/:id')
+  @ApiOperation({ summary: 'get course infos' })
+  @ApiResponse({
+    type: Object,
+    status: 200,
+    example: {
+      _id: 'asdoao1o231i',
+      chapters: {
+        _id: 'asdasdi123123',
+        title: 'what is nestJs2',
+        position: 1,
+        lessons: {
+          _id: 'asdkj123jj12',
+          title: 'lesson 1',
+          position: 1,
+        },
+      },
+    },
+  })
+  async getOneCourseStructure(@Param('id') id: string) {
+    return this.courseService.findOneStructure(id);
+  }
 
   @UseGuards(AuthGuard('jwt'))
   @Get('course/view-url')
   async getViewUrl(@Query('fileKey') fileKey: string) {
     return this.mediaService.createViewUrl(fileKey);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Put('course/structure')
+  @ApiOperation({ summary: 'update all sent chapters and lessons' })
+  @ApiResponse({ type: Object, status: 200, example: { message: 'edited' } })
+  async update(@Body() structureDto: StructureDto) {
+    return this.chapterService.update(structureDto);
   }
 }

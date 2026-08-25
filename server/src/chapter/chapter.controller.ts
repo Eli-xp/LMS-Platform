@@ -31,13 +31,4 @@ export class ChapterController {
     await this.chapterService.create(createChapterDto);
     return { message: 'chapter created' };
   }
-
-  @UseGuards(AuthGuard('jwt'))
-  @Put('allUpdate')
-  @ApiOperation({summary: 'update all sent chapters and lessons'})
-  @ApiResponse({type:Object, status:200, example:{message:'edited'}})
-  async update(@Body() structureDto: StructureDto) {
-    await this.chapterService.update(structureDto);
-    return { message: 'edited' };
-  }
 }
