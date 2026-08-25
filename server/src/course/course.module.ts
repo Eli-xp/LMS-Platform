@@ -8,6 +8,7 @@ import { User, UserSchema } from 'src/users/schema/userSchema';
 import { UsersService } from 'src/users/users.service';
 import { Chapter, ChapterSchema } from 'src/chapter/schema/chapterSchema';
 import { Lesson, LessonSchema } from 'src/lesson/schema/lessonSchema';
+import { ChapterService } from 'src/chapter/chapter.service';
 
 
 @Module({
@@ -36,6 +37,7 @@ import { Lesson, LessonSchema } from 'src/lesson/schema/lessonSchema';
     CourseService,
     MediaService,
     UsersService,
+    ChapterService
   ],
 })
 export class CourseModule {}
