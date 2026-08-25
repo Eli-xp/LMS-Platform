@@ -6,7 +6,7 @@ const CourseStructureTab = async ({ courseId }: { courseId: string }) => {
 
   try {
     console.log("adminGetCourse_structure called");
-    const { data } = await adminGetCourse_structure(courseId);
+    const data = await adminGetCourse_structure(courseId);
     courseStructure = data;
     console.log(courseStructure);
   } catch (error) {

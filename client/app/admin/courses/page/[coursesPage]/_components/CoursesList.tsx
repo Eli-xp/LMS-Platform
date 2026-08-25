@@ -3,16 +3,20 @@ import AdminCourseCard from "./AdminCourseCard";
 import z from "zod";
 import CoursesPagination from "./CoursesPagination";
 
-export const CoursesList = async ({ currentPageNum }: { currentPageNum: number }) => {
+export const CoursesList = async ({
+  currentPageNum,
+}: {
+  currentPageNum: number;
+}) => {
   console.log(currentPageNum);
   console.log(typeof currentPageNum);
   let coursesData;
 
   try {
-    const { data }: z.infer<typeof adminGetCourses> =
+    const res: z.infer<typeof adminGetCourses> =
       await adminGetCourses(currentPageNum);
-    coursesData = data;
-    console.log(data);
+    console.log(res);
+    coursesData = res;
   } catch (error) {
     console.error(error);
   }

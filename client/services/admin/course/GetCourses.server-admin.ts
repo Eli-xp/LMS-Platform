@@ -1,6 +1,6 @@
 import { centralServerAPI } from "@/services/central/central.server-public&user";
 
-export const adminGetCourses = async (currentPageNum:number) => {
+export const adminGetCourses = async (currentPageNum: number) => {
   // Only admin API
 
   console.log("adminGetCourses ran");
@@ -12,16 +12,16 @@ export const adminGetCourses = async (currentPageNum:number) => {
 
   console.log(res);
 
-  if (!res.response.ok) {
+  if (!res.ok) {
     return res;
   }
 
-  if (!res.response.ok) {
-    throw new Error(`Faild to Get Courses: ${res.response.status}`);
+  if (!res.ok) {
+    throw new Error(`Faild to Get Courses: ${res.status}`);
   }
 
-  const data = await res.response.json();
+  const data = await res.json();
   console.log(data);
 
-  return { type: res.type, data: data };
+  return data;
 };
