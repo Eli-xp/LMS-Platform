@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsObject, IsNotEmpty, isObject, IsString, IsNumber } from "class-validator";
+import { IsObject, IsNotEmpty, IsString } from "class-validator";
 
 export class CreateLessonDto {
     @IsString()
