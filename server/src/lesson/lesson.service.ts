@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Chapter } from 'src/chapter/schema/chapterSchema';
 import { Lesson } from './schema/lessonSchema';
+import { DeleteLessonDto } from './dto/deleteLessonDto';
 
 @Injectable()
 export class LessonService {
@@ -23,14 +24,14 @@ export class LessonService {
     }
 
 
-    async delete(chapterId: string, lessonId: string){
-        const lesson = await this.LessonModel.findOne({_id: lessonId,chapterId: chapterId});
+    async delete(deleteLessonDto: DeleteLessonDto){
+        const lesson = await this.LessonModel.findOne({_id: deleteLessonDto.lessonId,chapterId: deleteLessonDto.chapterId});
         if(!lesson){
             throw new NotFoundException('lesson not found')
         }
         await Promise.all([
-            this.LessonModel.deleteOne({_id: lessonId,chapterId: chapterId}),
-            this.ChapterModel.updateOne({_id: chapterId},{$pull:{lessons:lessonId}})
+            this.LessonModel.deleteOne({_id: deleteLessonDto.lessonId,chapterId: deleteLessonDto.chapterId}),
+            this.ChapterModel.updateOne({_id: deleteLessonDto.chapterId},{$pull:{lessons:deleteLessonDto.lessonId}})
         ])
     }
 

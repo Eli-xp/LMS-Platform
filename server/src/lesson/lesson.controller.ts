@@ -14,6 +14,7 @@ import { UpdateLessonDto } from './dto/update-lesson.dto';
 import { MediaService } from 'src/media/media.service';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { DeleteLessonDto } from './dto/deleteLessonDto';
 
 @Controller('lesson')
 export class LessonController {
@@ -48,8 +49,8 @@ export class LessonController {
   @UseGuards(AuthGuard('jwt'))
   @Delete('delete')
   @ApiOperation({ summary: 'delete one lesson' })
-  async delete(@Body() chapterId: string, lessonId: string) {
-    return this.lessonService.delete(chapterId, lessonId);
+  async delete(@Body() deleteLessonDto: DeleteLessonDto) {
+    return this.lessonService.delete(deleteLessonDto);
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -62,6 +63,14 @@ export class LessonController {
   @UseGuards(AuthGuard('jwt'))
   @Put(':id')
   @ApiOperation({ summary: 'edit one lesson' })
+  @ApiResponse({
+    type: Object,
+    status: 201,
+    example: {
+      message: 'lesson updated',
+      url: 'https://parspack/1231/asdsad1515asd.net',
+    },
+  })
   async updateOne(
     @Param('id') id: string,
     @Body() updateLessonDto: UpdateLessonDto,
