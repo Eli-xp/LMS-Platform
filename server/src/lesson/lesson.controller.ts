@@ -33,4 +33,10 @@ export class LessonController {
     return this.lessonService.delete(chapterId, lessonId)
   }
   
+
+  @Get(':id')
+  @ApiOperation({summary: 'get one lesson'})
+  async findOne(@Param('id') id: string){
+    return this.lessonService.findOne(id);
+  }
 }
