@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateLessonDto } from './dto/create-lesson.dto';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -20,6 +20,18 @@ export class LessonService {
         // add lessons id to chapter lessons array
         await this.ChapterModel.findByIdAndUpdate(createLessonDto.chapterId, { $push: { lessons: newLesson._id } });
         return {newLesson};
+    }
+
+
+    async delete(chapterId: string, lessonId: string){
+        const lesson = await this.LessonModel.findOne({_id: lessonId,chapterId: chapterId});
+        if(!lesson){
+            throw new NotFoundException('lesson not found')
+        }
+        await Promise.all([
+            this.LessonModel.deleteOne({_id: lessonId,chapterId: chapterId}),
+            this.ChapterModel.updateOne({_id: chapterId},{$pull:{lessons:lessonId}})
+        ])
     }
   
 }

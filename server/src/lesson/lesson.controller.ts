@@ -25,5 +25,12 @@ export class LessonController {
     await newLesson.save();
     return { message: 'new lesson created', url, fields };
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('delete')
+  @ApiOperation({summary: 'delete one lesson'})
+  async delete(@Body() chapterId: string, lessonId: string){
+    return this.lessonService.delete(chapterId, lessonId)
+  }
   
 }
