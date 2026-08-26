@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateChapterDto } from './dto/create-chapter.dto';
 import { UpdateChapterDto } from './dto/update-chapter.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -67,5 +67,17 @@ export class ChapterService {
         })),
       ),
     ]);
+  }
+
+  async delete(courseId: string, chapterId: string){
+    const chapter = await this.ChapterModel.findOne({_id: chapterId, courseId: courseId});
+    if(!chapter){
+      throw new NotFoundException('chapter not found')
+    }
+    await Promise.all([
+      this.LessonModel.deleteMany({chapterId: chapterId}),
+      this.ChapterModel.deleteOne({_id: chapterId, courseId: courseId}),
+      this.CourseModel.updateOne({_id: courseId},{$pull:{chapters:chapterId}})
+    ])
   }
 }

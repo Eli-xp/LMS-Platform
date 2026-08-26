@@ -31,4 +31,11 @@ export class ChapterController {
     await this.chapterService.create(createChapterDto);
     return { message: 'chapter created' };
   }
+
+
+  @Delete('delete')
+  @ApiOperation({summary: 'delete a chapter and all lessons in it'})
+  async delete(@Body() courseId: string, chapterId: string){
+    return this.chapterService.delete(courseId,chapterId)
+  }
 }
