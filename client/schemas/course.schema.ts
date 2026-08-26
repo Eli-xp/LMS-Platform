@@ -1,3 +1,4 @@
+import { title } from "process";
 import { z } from "zod";
 
 export const courseLevels = ["Beginner", "Intermediate", "Advanced"];
@@ -195,4 +196,30 @@ export const adminGetCourses = z.object({
   courses: z.array(adminGetcourses_eachCourse),
   courseCount: z.number(),
   pageCount: z.number(),
+});
+
+export const lessonSchema = z.object({
+  title: z
+    .string()
+    .min(3, { error: "Title must be at least 3 characters long" }),
+  position: z.number().min(1, { error: "Invalid position number" }),
+  _id: z.string(),
+});
+
+export const getChapterSchema = z.object({
+  lessons: z.array(lessonSchema).optional(),
+  title: z
+    .string()
+    .min(3, { error: "Title must be at least 3 characters long" }),
+  position: z.number().min(1, { error: "Invalid position number" }),
+  _id: z.string(),
+});
+
+export const createChapterSchema = z.object({
+  title: z
+    .string()
+    .min(3, { error: "Title must be at least 3 characters long" }),
+  courseId: z
+    .string()
+    .min(3, { error: "course id must be at least 3 characters long" }),
 });
