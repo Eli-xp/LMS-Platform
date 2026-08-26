@@ -32,7 +32,7 @@ export class ChapterController {
     return { message: 'chapter created' };
   }
 
-
+  @UseGuards(AuthGuard('jwt'))
   @Delete('delete')
   @ApiOperation({summary: 'delete a chapter and all lessons in it'})
   async delete(@Body() courseId: string, chapterId: string){
