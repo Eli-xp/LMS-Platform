@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  UseGuards,
+  Put,
+} from '@nestjs/common';
 import { LessonService } from './lesson.service';
 import { CreateLessonDto } from './dto/create-lesson.dto';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
@@ -10,17 +19,27 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 export class LessonController {
   constructor(
     private readonly lessonService: LessonService,
-    private readonly mediaService: MediaService
+    private readonly mediaService: MediaService,
   ) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Post('create')
   @ApiOperation({ summary: 'create lesson' })
-  @ApiResponse({type: Object, status: 201, example:{message: 'new lesson created', url: 'https://parspack/1231/asdsad1515asd.net'}})
+  @ApiResponse({
+    type: Object,
+    status: 201,
+    example: {
+      message: 'new lesson created',
+      url: 'https://parspack/1231/asdsad1515asd.net',
+    },
+  })
   async create(@Body() createLessonDto: CreateLessonDto) {
     // getting thumbnail post url
     const { newLesson } = await this.lessonService.create(createLessonDto);
-    const { url,fields,fileKey } = await this.mediaService.createUploadUrl(createLessonDto.thumbnailObject.originalname, createLessonDto.thumbnailObject.contentType);
+    const { url, fields, fileKey } = await this.mediaService.createUploadUrl(
+      createLessonDto.thumbnailObject.originalname,
+      createLessonDto.thumbnailObject.contentType,
+    );
     newLesson.thumbnailKey = fileKey;
     await newLesson.save();
     return { message: 'new lesson created', url, fields };
@@ -28,15 +47,32 @@ export class LessonController {
 
   @UseGuards(AuthGuard('jwt'))
   @Delete('delete')
-  @ApiOperation({summary: 'delete one lesson'})
-  async delete(@Body() chapterId: string, lessonId: string){
-    return this.lessonService.delete(chapterId, lessonId)
+  @ApiOperation({ summary: 'delete one lesson' })
+  async delete(@Body() chapterId: string, lessonId: string) {
+    return this.lessonService.delete(chapterId, lessonId);
   }
-  
+
   @UseGuards(AuthGuard('jwt'))
   @Get(':id')
-  @ApiOperation({summary: 'get one lesson'})
-  async findOne(@Param('id') id: string){
+  @ApiOperation({ summary: 'get one lesson' })
+  async findOne(@Param('id') id: string) {
     return this.lessonService.findOne(id);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Put(':id')
+  @ApiOperation({ summary: 'edit one lesson' })
+  async updateOne(
+    @Param('id') id: string,
+    @Body() updateLessonDto: UpdateLessonDto,
+  ) {
+    const { lesson } = await this.lessonService.updateOne(id,updateLessonDto);
+    const { url, fileKey, fields } = await this.mediaService.createUploadUrl(
+      updateLessonDto.thumbnailObject!.originalname,
+      updateLessonDto.thumbnailObject!.contentType
+    )
+    lesson!.thumbnailKey = fileKey
+    await lesson!.save()
+    return { message: 'new lesson created', url, fields };
   }
 }

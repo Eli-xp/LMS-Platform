@@ -44,5 +44,14 @@ export class LessonService {
         }
         return lesson;
     }
+
+
+    async updateOne(id: string, updateLessonDto: UpdateLessonDto){
+        const lesson = await this.LessonModel.findOneAndUpdate(
+            {_id:id,chapterId:updateLessonDto.chapterId},
+            updateLessonDto,
+        );
+        return {lesson}
+    }
   
 }
