@@ -56,6 +56,18 @@ export class LessonController {
   @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   @ApiOperation({ summary: 'get one lesson' })
+  @ApiResponse({
+    type: Object,
+    status: 200,
+    example:{
+      title:'nestJs for back-end',
+      description:'this is a test desc',
+      thumbnailKey:'https://parspack/1231/asdsad1515asd.net',
+      videoKey:'https://parspack/1231/asdsad1515asd.net',
+      position:1,
+      chapterId:'asd9asd9a89d89ad98'
+    }
+  })
   async findOne(@Param('id') id: string) {
     const { lesson } = await this.lessonService.findOne(id);
     const [videoUrl, thumbnailUrl] = await Promise.all([
