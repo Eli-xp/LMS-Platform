@@ -16,7 +16,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { DeleteLessonDto } from './dto/deleteLessonDto';
 
-@Controller('lesson')
+@Controller('admin/lesson')
 export class LessonController {
   constructor(
     private readonly lessonService: LessonService,
