@@ -95,11 +95,12 @@ const VerifyRequestForm = ({ phone }: { phone: string }) => {
         </div>
 
         <Button
+          disabled={form.formState.isSubmitting}
           type="submit"
           id="otp-verification"
           className="w-full cursor-pointer"
         >
-          Verify Account
+          {form.formState.isSubmitting ? "Verifying..." : "Verify Account"}
         </Button>
       </FieldGroup>
     </form>
