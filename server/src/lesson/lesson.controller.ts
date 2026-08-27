@@ -70,12 +70,12 @@ export class LessonController {
   })
   async findOne(@Param('id') id: string) {
     const { lesson } = await this.lessonService.findOne(id);
-    const [videoUrl, thumbnailUrl] = await Promise.all([
-      this.mediaService.createViewUrl(lesson.videoKey),
-      this.mediaService.createViewUrl(lesson.thumbnailKey)
-    ])
-    lesson.videoKey = videoUrl.viewUrl;
-    lesson.thumbnailKey = thumbnailUrl.viewUrl;
+    // const [videoUrl, thumbnailUrl] = await Promise.all([
+    //   this.mediaService.createViewUrl(lesson.videoKey),
+    //   this.mediaService.createViewUrl(lesson.thumbnailKey)
+    // ])
+    // lesson.videoKey = videoUrl.viewUrl;
+    // lesson.thumbnailKey = thumbnailUrl.viewUrl;
     return lesson;
   }
 
