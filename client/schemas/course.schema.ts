@@ -1,4 +1,3 @@
-import { title } from "process";
 import { z } from "zod";
 
 export const courseLevels = ["Beginner", "Intermediate", "Advanced"];
@@ -223,3 +222,19 @@ export const createChapterSchema = z.object({
     .string()
     .min(3, { error: "course id must be at least 3 characters long" }),
 });
+
+export const createLessonSchema = z.object({
+  title: z
+    .string()
+    .min(3, { error: "Title must be at least 3 characters long" }),
+  description: z.string().min(3, { error: "short description" }),
+  thumbnailObject: z.object({
+    originalname: z.string().min(1, { error: "Invalid originalname" }),
+    contentType: z.string().min(1, { error: "Invalid originalname" }),
+  }),
+  chapterId: z
+    .string()
+    .min(3, { error: "course id must be at least 3 characters long" }),
+});
+
+export type createLessonSchemaType = z.infer<typeof createLessonSchema>;
