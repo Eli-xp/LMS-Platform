@@ -37,9 +37,7 @@ export class LessonService {
 
 
     async findOne(id: string){
-        console.time('find lesson');
         const lesson = await this.LessonModel.findById(id).select('-__v -createdAt -updatedAt').lean();
-        console.timeEnd('find lesson');
         if(!lesson){
             throw new NotFoundException('lesson not found')
         }
