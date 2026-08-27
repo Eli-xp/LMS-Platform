@@ -6,12 +6,14 @@ import { Model } from 'mongoose';
 import { Chapter } from 'src/chapter/schema/chapterSchema';
 import { Lesson } from './schema/lessonSchema';
 import { DeleteLessonDto } from './dto/deleteLessonDto';
+import { MediaService } from 'src/media/media.service';
 
 @Injectable()
 export class LessonService {
     constructor(
         @InjectModel(Chapter.name) private readonly ChapterModel: Model<Chapter>,
         @InjectModel(Lesson.name) private readonly LessonModel: Model<Lesson>,
+        private readonly mediaService: MediaService
     ) {}
 
     async create(createLessonDto: CreateLessonDto) {
@@ -30,6 +32,8 @@ export class LessonService {
             throw new NotFoundException('lesson not found')
         }
         await Promise.all([
+            this.mediaService.deleteUrl(lesson.videoKey),
+            this.mediaService.deleteUrl(lesson.thumbnailKey),
             this.LessonModel.deleteOne({_id: deleteLessonDto.lessonId,chapterId: deleteLessonDto.chapterId}),
             this.ChapterModel.updateOne({_id: deleteLessonDto.chapterId},{$pull:{lessons:deleteLessonDto.lessonId}})
         ])
