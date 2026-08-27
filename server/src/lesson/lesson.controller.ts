@@ -100,6 +100,10 @@ export class LessonController {
     @Body() updateLessonDto: UpdateLessonDto,
   ) {
     const { lesson } = await this.lessonService.updateOne(id, updateLessonDto);
+    await Promise.all([
+      updateLessonDto.videoObject ?  this.mediaService.deleteUrl(lesson!.videoKey) :null,
+      updateLessonDto.thumbnailObject ?  this.mediaService.deleteUrl(lesson!.thumbnailKey) :null
+    ])
     const { url, fileKey, fields } = await this.mediaService.createUploadUrl(
       updateLessonDto.thumbnailObject!.originalname,
       updateLessonDto.thumbnailObject!.contentType,

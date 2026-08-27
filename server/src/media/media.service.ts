@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, DeleteObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import { createPresignedPost } from '@aws-sdk/s3-presigned-post'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import config from 'config';
@@ -67,4 +67,16 @@ export class MediaService {
         const viewUrl = await getSignedUrl(this.s3,command,{expiresIn: 86400})
         return {viewUrl}
     }
+
+
+    async deleteUrl(fileKey: string){
+        await this.s3.send(
+            new DeleteObjectCommand({
+            Bucket: config.get<string>('server.aws.BUCKET'),
+            Key: fileKey
+        })
+        )
+    }
+
+
 }
