@@ -17,6 +17,13 @@ export class CreateLessonDto {
         originalname: string;
         contentType: string;
     }
+    @IsObject()
+    @IsOptional()
+    @ApiProperty({ type: Object,required: false, example: { originalname: "flower.mp4", contentType: "video/mp4" } })
+    videoObject?: {
+        originalname: string;
+        contentType: string;
+    }
     @IsString()
     @IsNotEmpty()
     @ApiProperty({ type: String, required: true, example: "114565asd5q55ws" })

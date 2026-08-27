@@ -80,8 +80,13 @@ export class LessonController {
       updateLessonDto.thumbnailObject!.originalname,
       updateLessonDto.thumbnailObject!.contentType
     )
-    lesson!.thumbnailKey = fileKey
+    const videoKey = await this.mediaService.createUploadUrl(
+      updateLessonDto.videoObject!.originalname,
+      updateLessonDto.videoObject!.contentType
+    )
+    lesson!.thumbnailKey = fileKey;
+    lesson!.videoKey = videoKey.fileKey
     await lesson!.save()
-    return { message: 'new lesson created', url, fields };
+    return { message: 'new lesson created', url, fields, videoKey };
   }
 }
