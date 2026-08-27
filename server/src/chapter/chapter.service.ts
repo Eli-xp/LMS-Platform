@@ -8,13 +8,15 @@ import { Chapter } from './schema/chapterSchema';
 import { StructureDto } from './dto/structureDto';
 import { Lesson } from 'src/lesson/schema/lessonSchema';
 import { DeleteChapterDto } from './dto/deleteChapterDto';
+import { MediaService } from 'src/media/media.service';
 
 @Injectable()
 export class ChapterService {
   constructor(
     @InjectModel(Course.name) private readonly CourseModel: Model<Course>,
     @InjectModel(Chapter.name) private readonly ChapterModel: Model<Chapter>,
-    @InjectModel(Lesson.name) private readonly LessonModel: Model<Lesson>
+    @InjectModel(Lesson.name) private readonly LessonModel: Model<Lesson>,
+    private readonly mediaService: MediaService
   ) {}
 
   async create(createChapterDto: CreateChapterDto) {
@@ -75,6 +77,16 @@ export class ChapterService {
     if(!chapter){
       throw new NotFoundException('chapter not found')
     }
+    const lessons = await this.LessonModel.find({chapterId: deleteChapterDto.chapterId}).select('videoKey thumbnailKey').lean();
+    const fileKeys = lessons.flatMap((lesson)=>[
+      lesson.videoKey,
+      lesson.thumbnailKey
+    ]);
+    await Promise.all(
+      fileKeys.map((fileKey)=>{
+        this.mediaService.deleteUrl(fileKey)
+      })
+    )
     await Promise.all([
       this.LessonModel.deleteMany({chapterId: deleteChapterDto.chapterId}),
       this.ChapterModel.deleteOne({_id: deleteChapterDto.chapterId, courseId: deleteChapterDto.courseId}),
