@@ -7,13 +7,11 @@ export class CreateLessonDto {
     @ApiProperty({ type: String, required: true, example: "Lesson 1" })
     title!: string;
     @IsString()
-    @IsNotEmpty()
-    @ApiProperty({ type: String, required: true, example: "this lesson is about OOP" })
-    description!: string;
+    @ApiProperty({ type: String, example: "this lesson is about OOP" })
+    description?: string;
     @IsObject()
-    @IsNotEmpty()
-    @ApiProperty({ type: Object, required: true, example: { originalname: "flower.png", contentType: "image/png" } })
-    thumbnailObject!: {
+    @ApiProperty({ type: Object, example: { originalname: "flower.png", contentType: "image/png" } })
+    thumbnailObject?: {
         originalname: string;
         contentType: string;
     }

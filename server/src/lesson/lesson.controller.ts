@@ -36,14 +36,14 @@ export class LessonController {
   })
   async create(@Body() createLessonDto: CreateLessonDto) {
     // getting thumbnail post url
-    const { newLesson } = await this.lessonService.create(createLessonDto);
-    const { url, fields, fileKey } = await this.mediaService.createUploadUrl(
-      createLessonDto.thumbnailObject.originalname,
-      createLessonDto.thumbnailObject.contentType,
-    );
-    newLesson.thumbnailKey = fileKey;
-    await newLesson.save();
-    return { message: 'new lesson created', url, fields };
+    return this.lessonService.create(createLessonDto);
+    // const { url, fields, fileKey } = await this.mediaService.createUploadUrl(
+    //   createLessonDto.thumbnailObject.originalname,
+    //   createLessonDto.thumbnailObject.contentType,
+    // );
+    // newLesson.thumbnailKey = fileKey;
+    // await newLesson.save();
+
   }
 
   @UseGuards(AuthGuard('jwt'))

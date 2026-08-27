@@ -6,8 +6,8 @@ import { Document, Types } from 'mongoose';
 export class Lesson extends Document{
     @Prop({ type: String, required: true })
     title!: string;
-    @Prop({ type: String, required: true })
-    description!: string;
+    @Prop({ type: String })
+    description?: string;
     @Prop({ type: String })
     thumbnailKey?: string;
     @Prop({ type: String })
