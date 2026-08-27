@@ -2,7 +2,7 @@ import { centralClientAPI } from "@/services/central/central.client-public&user"
 import { createChapterSchema } from "@/schemas/course.schema";
 import z from "zod";
 
-export const createChapter = async (
+export const PostChapter = async (
   values: z.infer<typeof createChapterSchema>,
 ) => {
   // only admin
