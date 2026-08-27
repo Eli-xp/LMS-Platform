@@ -7,6 +7,7 @@ import { Model } from 'mongoose';
 import { Chapter } from './schema/chapterSchema';
 import { StructureDto } from './dto/structureDto';
 import { Lesson } from 'src/lesson/schema/lessonSchema';
+import { DeleteChapterDto } from './dto/deleteChapterDto';
 
 @Injectable()
 export class ChapterService {
@@ -69,15 +70,15 @@ export class ChapterService {
     ]);
   }
 
-  async delete(courseId: string, chapterId: string){
-    const chapter = await this.ChapterModel.findOne({_id: chapterId, courseId: courseId});
+  async delete(deleteChapterDto: DeleteChapterDto){
+    const chapter = await this.ChapterModel.findOne({_id: deleteChapterDto.chapterId, courseId: deleteChapterDto.courseId});
     if(!chapter){
       throw new NotFoundException('chapter not found')
     }
     await Promise.all([
-      this.LessonModel.deleteMany({chapterId: chapterId}),
-      this.ChapterModel.deleteOne({_id: chapterId, courseId: courseId}),
-      this.CourseModel.updateOne({_id: courseId},{$pull:{chapters:chapterId}})
+      this.LessonModel.deleteMany({chapterId: deleteChapterDto.chapterId}),
+      this.ChapterModel.deleteOne({_id: deleteChapterDto.chapterId, courseId: deleteChapterDto.courseId}),
+      this.CourseModel.updateOne({_id: deleteChapterDto.courseId},{$pull:{chapters:deleteChapterDto.chapterId}})
     ])
   }
 }

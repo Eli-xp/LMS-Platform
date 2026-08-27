@@ -14,6 +14,7 @@ import { UpdateChapterDto } from './dto/update-chapter.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { StructureDto } from './dto/structureDto';
+import { DeleteChapterDto } from './dto/deleteChapterDto';
 
 @Controller('chapter')
 export class ChapterController {
@@ -35,7 +36,7 @@ export class ChapterController {
   @UseGuards(AuthGuard('jwt'))
   @Delete('delete')
   @ApiOperation({summary: 'delete a chapter and all lessons in it'})
-  async delete(@Body() courseId: string, chapterId: string){
-    return this.chapterService.delete(courseId,chapterId)
+  async delete(@Body() deleteChapterDto: DeleteChapterDto){
+    return this.chapterService.delete(deleteChapterDto)
   }
 }
