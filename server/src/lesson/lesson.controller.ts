@@ -43,7 +43,6 @@ export class LessonController {
     // );
     // newLesson.thumbnailKey = fileKey;
     // await newLesson.save();
-
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -59,23 +58,25 @@ export class LessonController {
   @ApiResponse({
     type: Object,
     status: 200,
-    example:{
-      title:'nestJs for back-end',
-      description:'this is a test desc',
-      thumbnailKey:'https://parspack/1231/asdsad1515asd.net',
-      videoKey:'https://parspack/1231/asdsad1515asd.net',
-      position:1,
-      chapterId:'asd9asd9a89d89ad98'
-    }
+    example: {
+      title: 'nestJs for back-end',
+      description: 'this is a test desc',
+      thumbnailKey: 'https://parspack/1231/asdsad1515asd.net',
+      videoKey: 'https://parspack/1231/asdsad1515asd.net',
+      position: 1,
+      chapterId: 'asd9asd9a89d89ad98',
+    },
   })
   async findOne(@Param('id') id: string) {
     const { lesson } = await this.lessonService.findOne(id);
-    // const [videoUrl, thumbnailUrl] = await Promise.all([
-    //   this.mediaService.createViewUrl(lesson.videoKey),
-    //   this.mediaService.createViewUrl(lesson.thumbnailKey)
-    // ])
-    // lesson.videoKey = videoUrl.viewUrl;
-    // lesson.thumbnailKey = thumbnailUrl.viewUrl;
+    if (lesson.videoKey && lesson.thumbnailKey) {
+      const [videoUrl, thumbnailUrl] = await Promise.all([
+        this.mediaService.createViewUrl(lesson.videoKey),
+        this.mediaService.createViewUrl(lesson.thumbnailKey),
+      ]);
+      lesson.videoKey = videoUrl.viewUrl;
+      lesson.thumbnailKey = thumbnailUrl.viewUrl;
+    }
     return lesson;
   }
 
@@ -89,25 +90,25 @@ export class LessonController {
       message: 'lesson updated',
       url: 'https://parspack/1231/asdsad1515asd.net',
       fields: {},
-      videoKey: {user: 'https://parspack/1231/asdsad1515asd.net', fields:{}}
+      videoKey: { user: 'https://parspack/1231/asdsad1515asd.net', fields: {} },
     },
   })
   async updateOne(
     @Param('id') id: string,
     @Body() updateLessonDto: UpdateLessonDto,
   ) {
-    const { lesson } = await this.lessonService.updateOne(id,updateLessonDto);
+    const { lesson } = await this.lessonService.updateOne(id, updateLessonDto);
     const { url, fileKey, fields } = await this.mediaService.createUploadUrl(
       updateLessonDto.thumbnailObject!.originalname,
-      updateLessonDto.thumbnailObject!.contentType
-    )
+      updateLessonDto.thumbnailObject!.contentType,
+    );
     const videoKey = await this.mediaService.createUploadUrl(
       updateLessonDto.videoObject!.originalname,
-      updateLessonDto.videoObject!.contentType
-    )
+      updateLessonDto.videoObject!.contentType,
+    );
     lesson!.thumbnailKey = fileKey;
-    lesson!.videoKey = videoKey.fileKey
-    await lesson!.save()
+    lesson!.videoKey = videoKey.fileKey;
+    await lesson!.save();
     return { message: 'new lesson created', url, fields, videoKey };
   }
 }
