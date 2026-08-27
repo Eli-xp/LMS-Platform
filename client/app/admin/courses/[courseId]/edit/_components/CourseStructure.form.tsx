@@ -26,6 +26,8 @@ import {
 } from "lucide-react";
 import { adminEditCourse_structure } from "@/services/admin/course/EditCourse.client-admin";
 import { toast } from "sonner";
+import CreateLessonModal from "./CreateLesson.modal";
+import CreateChapterModal from "./CreateChapter.modal";
 
 // types
 interface LessonState {
@@ -73,6 +75,7 @@ interface SortableLessonProps {
 }
 
 const CourseStructureForm = ({ courseStructure }: CourseStructureFormProps) => {
+  console.log(courseStructure);
   const { _id: courseId, chapters: initialChapters } = courseStructure;
 
   // initial changes
@@ -241,6 +244,7 @@ const CourseStructureForm = ({ courseStructure }: CourseStructureFormProps) => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between border-b border-border">
             <CardTitle>Chapters</CardTitle>
+            <CreateChapterModal courseId={courseId} />
           </CardHeader>
 
           <CardContent className="space-y-8">
@@ -355,9 +359,7 @@ function SortableCourse({
             ))}
 
             <div className="p-2">
-              <Button type="button" className="w-full" variant="outline">
-                Create New Lesson
-              </Button>
+              <CreateLessonModal chapterId={chapter._id} />
             </div>
           </div>
         </CollapsibleContent>
