@@ -15,6 +15,7 @@ import { MediaService } from 'src/media/media.service';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { DeleteLessonDto } from './dto/deleteLessonDto';
+import { SkipThrottle } from '@nestjs/throttler';
 
 @Controller('admin/lesson')
 export class LessonController {
@@ -53,6 +54,7 @@ export class LessonController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @SkipThrottle()
   @Get(':id')
   @ApiOperation({ summary: 'get one lesson' })
   @ApiResponse({
