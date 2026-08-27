@@ -92,7 +92,7 @@ export class LessonController {
       message: 'lesson updated',
       url: 'https://parspack/1231/asdsad1515asd.net',
       fields: {},
-      videoKey: { user: 'https://parspack/1231/asdsad1515asd.net', fields: {} },
+      videoKey: { url: 'https://parspack/1231/asdsad1515asd.net', fields: {} },
     },
   })
   async updateOne(
