@@ -16,7 +16,7 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { StructureDto } from './dto/structureDto';
 import { DeleteChapterDto } from './dto/deleteChapterDto';
 
-@Controller('chapter')
+@Controller('admin/chapter')
 export class ChapterController {
   constructor(private readonly chapterService: ChapterService) {}
 
