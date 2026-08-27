@@ -90,6 +90,10 @@ export class CourseService {
       .select('_id')
       .lean();
     const chapterIds = chapters.map((chapter) => chapter._id);
+    // find all lessons
+    const lessons = await this.LessonModel.find({chapterId:{$in:chapterIds}}).select('videoKey thumbnailKey').lean();
+    const fileKeys = lessons.flatMap((lesson) => [lesson.videoKey,lesson.thumbnailKey]);
+    course.fileKey ? fileKeys.push(course.fileKey): null
     // delete all lessons and chapters with promiseAll
     await Promise.all([
       this.LessonModel.deleteMany({
@@ -97,6 +101,9 @@ export class CourseService {
       }),
       this.ChapterModel.deleteMany({
         courseId: id,
+      }),
+      fileKeys.map((fileKey)=>{
+        this.mediaService.deleteUrl(fileKey)
       }),
     ]);
 
