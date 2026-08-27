@@ -43,7 +43,7 @@ export class LessonService {
         if(!lesson){
             throw new NotFoundException('lesson not found')
         }
-        return lesson;
+        return {lesson};
     }
 
 

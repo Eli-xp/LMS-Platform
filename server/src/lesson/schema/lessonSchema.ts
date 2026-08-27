@@ -9,9 +9,9 @@ export class Lesson extends Document{
     @Prop({ type: String })
     description?: string;
     @Prop({ type: String })
-    thumbnailKey?: string;
+    thumbnailKey!: string;
     @Prop({ type: String })
-    videoKey?: string;
+    videoKey!: string;
     @Prop({ type: Number, required: true })
     position!: number;
     @Prop({ type: Types.ObjectId, ref: 'Chapter', required: true })

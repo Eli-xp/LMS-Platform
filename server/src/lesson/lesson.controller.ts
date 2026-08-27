@@ -57,7 +57,14 @@ export class LessonController {
   @Get(':id')
   @ApiOperation({ summary: 'get one lesson' })
   async findOne(@Param('id') id: string) {
-    return this.lessonService.findOne(id);
+    const { lesson } = await this.lessonService.findOne(id);
+    const [videoUrl, thumbnailUrl] = await Promise.all([
+      this.mediaService.createViewUrl(lesson.videoKey),
+      this.mediaService.createViewUrl(lesson.thumbnailKey)
+    ])
+    lesson.videoKey = videoUrl.viewUrl;
+    lesson.thumbnailKey = thumbnailUrl.viewUrl;
+    return lesson;
   }
 
   @UseGuards(AuthGuard('jwt'))
