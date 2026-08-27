@@ -8,11 +8,11 @@ export class CreateLessonDto {
     title!: string;
     @IsString()
     @IsOptional()
-    @ApiProperty({ type: String, example: "this lesson is about OOP" })
+    @ApiProperty({ type: String,required: false, example: "this lesson is about OOP" })
     description?: string;
     @IsObject()
     @IsOptional()
-    @ApiProperty({ type: Object, example: { originalname: "flower.png", contentType: "image/png" } })
+    @ApiProperty({ type: Object,required: false, example: { originalname: "flower.png", contentType: "image/png" } })
     thumbnailObject?: {
         originalname: string;
         contentType: string;
