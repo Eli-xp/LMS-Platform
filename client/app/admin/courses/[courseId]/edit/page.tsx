@@ -6,15 +6,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { adminGetCourse } from "@/services/admin/course/GetCourse.server-admin";
-import CourseBasicForm from "./_components/CourseBasic.form";
-import CourseStructureForm from "./_components/CourseStructure.form";
 import CourseStructureTab from "./_components/CourseStructure.tab";
 import CourseBasicTab from "./_components/CourseBasic.tab";
 
 const courseEditPage = async ({ params }) => {
   const { courseId } = await params;
-  let courseData;
 
   return (
     <div>
