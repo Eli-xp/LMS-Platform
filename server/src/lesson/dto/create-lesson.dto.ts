@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsObject, IsNotEmpty, IsString, IsOptional } from "class-validator";
+import { IsObject, IsNotEmpty, IsString, IsOptional, IsIn } from "class-validator";
 
 export class CreateLessonDto {
     @IsString()
@@ -19,6 +19,12 @@ export class CreateLessonDto {
     }
     @IsObject()
     @IsOptional()
+    @IsIn([
+        'image/jpeg',
+        'image/png',
+        'image/jpg',
+        'image/webp'
+    ])
     @ApiProperty({ type: Object,required: false, example: { originalname: "flower.mp4", contentType: "video/mp4" } })
     videoObject?: {
         originalname: string;
