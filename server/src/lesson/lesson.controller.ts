@@ -116,7 +116,7 @@ export class LessonController {
         updateLessonDto.thumbnailObject!.originalname,
         updateLessonDto.thumbnailObject!.contentType,
       );
-      lesson!.thumbnailKey = fileKey;
+      lesson.thumbnailKey = fileKey;
       result.url = url
       result.fields = fields
     }
@@ -125,10 +125,10 @@ export class LessonController {
         updateLessonDto.videoObject!.originalname,
         updateLessonDto.videoObject!.contentType,
       );
-      lesson!.videoKey = videoKey.fileKey;
+      lesson.videoKey = videoKey.fileKey;
       result.videoKey = videoKey
     }
-    await lesson!.save();
+    await lesson.save();
     return {
       result
     }

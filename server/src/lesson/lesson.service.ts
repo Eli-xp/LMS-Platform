@@ -54,6 +54,9 @@ export class LessonService {
             {_id:id,chapterId:updateLessonDto.chapterId},
             updateLessonDto,
         );
+        if(!lesson){
+            throw new NotFoundException('lesson not found')
+        }
         return {lesson}
     }
   
