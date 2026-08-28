@@ -99,6 +99,9 @@ export class LessonController {
     @Param('id') id: string,
     @Body() updateLessonDto: UpdateLessonDto,
   ) {
+    let result: any = {
+      message: 'course updated'
+    }
     const { lesson } = await this.lessonService.updateOne(id, updateLessonDto);
     await Promise.all([
       updateLessonDto.videoObject && lesson?.videoKey
@@ -108,40 +111,26 @@ export class LessonController {
         ? this.mediaService.deleteUrl(lesson!.thumbnailKey)
         : null,
     ]);
-    if (updateLessonDto.thumbnailObject && !updateLessonDto.videoObject) {
+    if (updateLessonDto.thumbnailObject) {
       const { url, fileKey, fields } = await this.mediaService.createUploadUrl(
         updateLessonDto.thumbnailObject!.originalname,
         updateLessonDto.thumbnailObject!.contentType,
       );
       lesson!.thumbnailKey = fileKey;
-      await lesson!.save();
-      return {message: 'course updated', url, fields}
+      result.url = url
+      result.url = fields
     }
-    if (updateLessonDto.videoObject && !updateLessonDto.thumbnailObject) {
+    if (updateLessonDto.videoObject) {
       const videoKey = await this.mediaService.createUploadUrl(
         updateLessonDto.videoObject!.originalname,
         updateLessonDto.videoObject!.contentType,
       );
       lesson!.videoKey = videoKey.fileKey;
-      await lesson!.save();
-      return {message: 'course updated', videoKey}
+      result.videoKey = videoKey
     }
-    if(updateLessonDto.videoObject && updateLessonDto.thumbnailObject){
-      const { url, fileKey, fields } = await this.mediaService.createUploadUrl(
-        updateLessonDto.thumbnailObject!.originalname,
-        updateLessonDto.thumbnailObject!.contentType,
-      );
-      const videoKey = await this.mediaService.createUploadUrl(
-        updateLessonDto.videoObject!.originalname,
-        updateLessonDto.videoObject!.contentType,
-      );
-      lesson!.thumbnailKey = fileKey;
-      lesson!.videoKey = videoKey.fileKey;
-      await lesson!.save();
-      return {message: 'course created', url, fields, videoKey}
-    }
-    if(!updateLessonDto.videoObject && !updateLessonDto.thumbnailObject){
-      return {message: 'course created'}
+    await lesson!.save();
+    return {
+      result
     }
   }
 }
