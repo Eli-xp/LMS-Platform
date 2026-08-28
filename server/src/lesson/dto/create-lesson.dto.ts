@@ -25,6 +25,11 @@ export class CreateLessonDto {
     }
     @IsObject()
     @IsOptional()
+    @IsIn([
+        'video/mp4',
+        'video/webm',
+        'video/mov',
+    ])
     @ApiProperty({ type: Object,required: false, example: { originalname: "flower.mp4", contentType: "video/mp4" } })
     videoObject?: {
         originalname: string;
