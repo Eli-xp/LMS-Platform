@@ -10,7 +10,7 @@ export const PostChapter = async (
   console.log(values);
 
   // Request Validation
-  const res = await centralClientAPI(`/chapter/create`, {
+  const res = await centralClientAPI(`/admin/chapter/create`, {
     method: "POST",
     headers: { "Content-type": "application/json" },
     body: JSON.stringify(values),
