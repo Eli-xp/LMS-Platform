@@ -12,6 +12,12 @@ export class CreateLessonDto {
     description?: string;
     @IsObject()
     @IsOptional()
+    @IsIn([
+        'image/jpeg',
+        'image/png',
+        'image/jpg',
+        'image/webp'
+    ])
     @ApiProperty({ type: Object,required: false, example: { originalname: "flower.png", contentType: "image/png" } })
     thumbnailObject?: {
         originalname: string;
@@ -19,12 +25,6 @@ export class CreateLessonDto {
     }
     @IsObject()
     @IsOptional()
-    @IsIn([
-        'image/jpeg',
-        'image/png',
-        'image/jpg',
-        'image/webp'
-    ])
     @ApiProperty({ type: Object,required: false, example: { originalname: "flower.mp4", contentType: "video/mp4" } })
     videoObject?: {
         originalname: string;
