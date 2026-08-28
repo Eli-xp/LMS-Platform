@@ -33,17 +33,20 @@ interface FileMetadata {
 interface FileUploaderProps {
   onFileChange: (metadata: FileMetadata) => void;
 }
+type filTypeAccepted = "video" | "image";
 
 const FileUploader = ({
   initialURL,
   onFileChange,
+  filTypeAccepted,
 }: {
   initialURL: string;
   onFileChange: FileUploaderProps;
+  filTypeAccepted: filTypeAccepted;
 }) => {
   const [fileState, setFileState] = useState<UploaderState>({
     file: null,
-    fileType: "image",
+    fileType: filTypeAccepted,
     id: null,
     objectUrl: initialURL || null,
     progress: 0,
@@ -69,7 +72,7 @@ const FileUploader = ({
         // Reset client state and add new file info to state
         setFileState({
           file: file,
-          fileType: "image",
+          fileType: filTypeAccepted,
           id: "default",
           progress: 0,
           uploading: false,
@@ -85,7 +88,7 @@ const FileUploader = ({
         });
       }
     },
-    [onFileChange],
+    [onFileChange, filTypeAccepted],
   );
 
   // Error Handling
@@ -97,8 +100,8 @@ const FileUploader = ({
       // Reset and error: true
       setFileState({
         file: null,
-        fileType: "image",
-        id: "ff",
+        fileType: filTypeAccepted,
+        id: "default",
         objectUrl: undefined,
         progress: 0,
         uploading: false,
@@ -111,7 +114,11 @@ const FileUploader = ({
   // Drag'n'Drop Functionatlity
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { "image/*": [".png", ".jpg", ".jpeg"] },
+    accept:
+      filTypeAccepted === "image"
+        ? { "image/*": [".png", ".jpg", ".jpeg"] }
+        : { "video/*": [".mp4", ".webm", ".mov"] },
+
     maxFiles: 1,
     multiple: false,
     maxSize: 5 * 1024 * 1024, // 5mb calculation
@@ -135,6 +142,8 @@ const FileUploader = ({
   useEffect(() => {
     console.log(fileState);
   }, [fileState]);
+
+  // JSX
   return (
     <Card
       {...getRootProps()}
@@ -155,6 +164,7 @@ const FileUploader = ({
         ) : (
           <RenderUploadedState
             previewUrl={fileState.objectUrl}
+            fileType={fileState.fileType}
             setFileState={setFileState}
             onFileChange={onFileChange}
           />
