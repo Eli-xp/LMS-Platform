@@ -174,7 +174,7 @@ export class CourseController {
 
   @UseGuards(AuthGuard('jwt'))
   @Throttle({ default: { limit: 50, ttl: 60_000 } })
-  @Delete('courses/:id')
+  @Delete('course/:id')
   @ApiOperation({ summary: 'delete a course' })
   @ApiResponse({ type: Object, example: { message: 'course deleted' } })
   async deleteOneCourse(@Param('id') id: string, @Req() req: Request) {
