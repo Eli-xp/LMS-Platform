@@ -13,7 +13,7 @@ export const centralServerAPI = async (
   const cookieStore = await cookies();
 
   // request
-  let response = await fetch(`${API_URL}${endpoint}`, {
+  const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
     headers: { ...options.headers, Cookie: cookieStore.toString() },
   });
@@ -24,15 +24,8 @@ export const centralServerAPI = async (
   if (response.status === 401) {
     ////////
 
-    console.log("centralClientAPI - Before Rtry");
-    // if Refresh Token Valid - Retry original request
-    response = await fetch(`${API_URL}${endpoint}`, {
-    ...options,
-    headers: { ...options.headers, Cookie: cookieStore.toString() },
-    });
-
-    console.log("centralClientAPI - After Rtry");
     console.log(response);
+    console.log(`centralClientAPI - response.status ${response.status}`);
   }
 
   if (!response.ok) {
