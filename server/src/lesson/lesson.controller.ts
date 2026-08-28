@@ -101,20 +101,47 @@ export class LessonController {
   ) {
     const { lesson } = await this.lessonService.updateOne(id, updateLessonDto);
     await Promise.all([
-      updateLessonDto.videoObject && lesson?.videoKey ?  this.mediaService.deleteUrl(lesson!.videoKey) :null,
-      updateLessonDto.thumbnailObject && lesson?.thumbnailKey ?  this.mediaService.deleteUrl(lesson!.thumbnailKey) :null
-    ])
-    const { url, fileKey, fields } = await this.mediaService.createUploadUrl(
-      updateLessonDto.thumbnailObject!.originalname,
-      updateLessonDto.thumbnailObject!.contentType,
-    );
-    const videoKey = await this.mediaService.createUploadUrl(
-      updateLessonDto.videoObject!.originalname,
-      updateLessonDto.videoObject!.contentType,
-    );
-    lesson!.thumbnailKey = fileKey;
-    lesson!.videoKey = videoKey.fileKey;
-    await lesson!.save();
-    return { message: 'new lesson created', url, fields, videoKey };
+      updateLessonDto.videoObject && lesson?.videoKey
+        ? this.mediaService.deleteUrl(lesson!.videoKey)
+        : null,
+      updateLessonDto.thumbnailObject && lesson?.thumbnailKey
+        ? this.mediaService.deleteUrl(lesson!.thumbnailKey)
+        : null,
+    ]);
+    if (updateLessonDto.thumbnailObject && !updateLessonDto.videoObject) {
+      const { url, fileKey, fields } = await this.mediaService.createUploadUrl(
+        updateLessonDto.thumbnailObject!.originalname,
+        updateLessonDto.thumbnailObject!.contentType,
+      );
+      lesson!.thumbnailKey = fileKey;
+      await lesson!.save();
+      return {message: 'course updated', url, fields}
+    }
+    if (updateLessonDto.videoObject && !updateLessonDto.thumbnailObject) {
+      const videoKey = await this.mediaService.createUploadUrl(
+        updateLessonDto.videoObject!.originalname,
+        updateLessonDto.videoObject!.contentType,
+      );
+      lesson!.videoKey = videoKey.fileKey;
+      await lesson!.save();
+      return {message: 'course updated', videoKey}
+    }
+    if(updateLessonDto.videoObject && updateLessonDto.thumbnailObject){
+      const { url, fileKey, fields } = await this.mediaService.createUploadUrl(
+        updateLessonDto.thumbnailObject!.originalname,
+        updateLessonDto.thumbnailObject!.contentType,
+      );
+      const videoKey = await this.mediaService.createUploadUrl(
+        updateLessonDto.videoObject!.originalname,
+        updateLessonDto.videoObject!.contentType,
+      );
+      lesson!.thumbnailKey = fileKey;
+      lesson!.videoKey = videoKey.fileKey;
+      await lesson!.save();
+      return {message: 'course created', url, fields, videoKey}
+    }
+    if(!updateLessonDto.videoObject && !updateLessonDto.thumbnailObject){
+      return {message: 'course created'}
+    }
   }
 }
