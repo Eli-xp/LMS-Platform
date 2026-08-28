@@ -43,6 +43,7 @@ export const RenderErrorState = () => {
 
 export const RenderUploadedState = ({
   previewUrl,
+  fileType,
   setFileState,
   onFileChange,
 }) => {
@@ -80,15 +81,23 @@ export const RenderUploadedState = ({
       >
         <XIcon className="size-4" />
       </Button>
-      <Image
-        src={previewUrl || "/logo.svg"}
-        alt="Uploaded File"
-        width={250}
-        height={250}
-        className="object-contain p-2"
-        draggable={false}
-        unoptimized
-      />
+      {fileType === "image" ? (
+        <Image
+          src={previewUrl || "/logo.svg"}
+          alt="Uploaded File"
+          width={250}
+          height={250}
+          className="object-contain p-2"
+          draggable={false}
+          unoptimized
+        />
+      ) : (
+        <video
+          src={previewUrl}
+          controls
+          className="max-h-60 w-full rounded-md object-contain"
+        />
+      )}
     </div>
   );
 };
