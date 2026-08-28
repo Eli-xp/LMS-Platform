@@ -118,7 +118,7 @@ export class LessonController {
       );
       lesson!.thumbnailKey = fileKey;
       result.url = url
-      result.url = fields
+      result.fields = fields
     }
     if (updateLessonDto.videoObject) {
       const videoKey = await this.mediaService.createUploadUrl(
