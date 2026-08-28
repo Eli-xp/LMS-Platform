@@ -297,6 +297,7 @@ const CourseBasicForm = ({
               <FileUploader
                 initialURL={course.thumbnail}
                 onFileChange={field.onChange}
+                filTypeAccepted="image"
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
