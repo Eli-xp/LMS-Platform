@@ -104,17 +104,17 @@ export class LessonController {
     }
     const { lesson } = await this.lessonService.updateOne(id, updateLessonDto);
     await Promise.all([
-      updateLessonDto.videoObject && lesson?.videoKey
-        ? this.mediaService.deleteUrl(lesson!.videoKey)
+      updateLessonDto.videoObject && lesson.videoKey
+        ? this.mediaService.deleteUrl(lesson.videoKey)
         : null,
-      updateLessonDto.thumbnailObject && lesson?.thumbnailKey
-        ? this.mediaService.deleteUrl(lesson!.thumbnailKey)
+      updateLessonDto.thumbnailObject && lesson.thumbnailKey
+        ? this.mediaService.deleteUrl(lesson.thumbnailKey)
         : null,
     ]);
     if (updateLessonDto.thumbnailObject) {
       const { url, fileKey, fields } = await this.mediaService.createUploadUrl(
-        updateLessonDto.thumbnailObject!.originalname,
-        updateLessonDto.thumbnailObject!.contentType,
+        updateLessonDto.thumbnailObject.originalname,
+        updateLessonDto.thumbnailObject.contentType,
       );
       lesson.thumbnailKey = fileKey;
       result.url = url
@@ -122,8 +122,8 @@ export class LessonController {
     }
     if (updateLessonDto.videoObject) {
       const videoKey = await this.mediaService.createUploadUrl(
-        updateLessonDto.videoObject!.originalname,
-        updateLessonDto.videoObject!.contentType,
+        updateLessonDto.videoObject.originalname,
+        updateLessonDto.videoObject.contentType,
       );
       lesson.videoKey = videoKey.fileKey;
       result.videoKey = videoKey
