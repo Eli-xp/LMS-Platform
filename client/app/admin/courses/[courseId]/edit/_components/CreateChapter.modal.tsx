@@ -42,6 +42,9 @@ const CreateChapterModal = ({ courseId }: { courseId: string }) => {
 
   const handleOpenChange = (open: boolean) => {
     console.log(open);
+    if (!open) {
+      form.reset();
+    }
     setIsOpen(open);
   };
 
