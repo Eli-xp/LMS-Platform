@@ -28,6 +28,8 @@ import { adminEditCourse_structure } from "@/services/admin/course/EditCourse.cl
 import { toast } from "sonner";
 import CreateLessonModal from "./CreateLesson.modal";
 import CreateChapterModal from "./CreateChapter.modal";
+import DeleteChapterModal from "./DeleteChapter.modal";
+import DeleteLessonModal from "./DeleteLesson.modal";
 
 // types
 interface LessonState {
@@ -341,9 +343,7 @@ function SortableCourse({
             </p>
           </div>
 
-          <Button type="button" size="icon" variant="outline">
-            <Trash2 className="size-4" />
-          </Button>
+          <DeleteChapterModal chapterId={chapter._id} courseId={courseId} />
         </div>
 
         <CollapsibleContent>
@@ -415,10 +415,7 @@ function SortableLesson({
           {lesson.title}
         </Link>
       </div>
-
-      <Button type="button" variant="outline" size="icon">
-        <Trash2 className="size-4" />
-      </Button>
+      <DeleteLessonModal chapterId={chapterId} lessonId={lesson._id} />
     </div>
   );
 }
