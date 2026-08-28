@@ -214,6 +214,8 @@ export const getChapterSchema = z.object({
   _id: z.string(),
 });
 
+//// chapter
+
 export const createChapterSchema = z.object({
   title: z
     .string()
@@ -223,18 +225,76 @@ export const createChapterSchema = z.object({
     .min(3, { error: "course id must be at least 3 characters long" }),
 });
 
+export const deleteChapterSchema = z.object({
+  chapterId: z
+    .string()
+    .min(3, { error: "Chapter id must be at least 3 characters long" }),
+  courseId: z
+    .string()
+    .min(3, { error: "course id must be at least 3 characters long" }),
+});
+
+//// lesson
+
+export const getLessonSchema = z.object({
+  title: z
+    .string()
+    .min(3, { error: "Title must be at least 3 characters long" }),
+  description: z.string().min(3, { error: "short description" }).optional(),
+  thumbnailKey: z.string().min(3, { error: "Invalid thumbnailKey" }).optional(),
+  videoKey: z.string().min(3, { error: "Invalid videoKey" }).optional(),
+  position: z.number().min(1, { error: "Invalid position" }).optional(),
+  chapterId: z
+    .string()
+    .min(3, { error: "course id must be at least 3 characters long" }),
+  _id: z.string(),
+});
+
 export const createLessonSchema = z.object({
   title: z
     .string()
     .min(3, { error: "Title must be at least 3 characters long" }),
-  description: z.string().min(3, { error: "short description" }),
-  thumbnailObject: z.object({
-    originalname: z.string().min(1, { error: "Invalid originalname" }),
-    contentType: z.string().min(1, { error: "Invalid originalname" }),
-  }),
   chapterId: z
     .string()
     .min(3, { error: "course id must be at least 3 characters long" }),
 });
 
+export const deleteLessonSchema = z.object({
+  chapterId: z
+    .string()
+    .min(3, { error: "Chapter id must be at least 3 characters long" }),
+  lessonId: z
+    .string()
+    .min(3, { error: "Lesson id must be at least 3 characters long" }),
+});
+
+export const editMedia = z.union([
+  z.string().min(1, { error: "Invalid thumbNail URL" }),
+
+  z.object({
+    file: z.instanceof(File),
+    originalName: z.string().min(1, { error: "Invalid File Name" }),
+    contentType: z.string().min(1, { error: "Invalid File Type" }),
+    size: z.number().min(1, { error: "Invalid File Size" }),
+  }),
+]);
+
+export const updateLessonSchema = z.object({
+  title: z
+    .string()
+    .min(3, { error: "Title must be at least 3 characters long" }),
+  description: z.string().min(3, { error: "short description" }),
+  thumbnailObject: editMedia,
+  videoObject: editMedia,
+  chapterId: z
+    .string()
+    .min(3, { error: "course id must be at least 3 characters long" }),
+  _id: z.string(),
+});
+
+export type deleteChapterSchemaType = z.infer<typeof deleteChapterSchema>;
+
+export type getLessonSchemaType = z.infer<typeof getLessonSchema>;
 export type createLessonSchemaType = z.infer<typeof createLessonSchema>;
+export type updateLessonSchemaType = z.infer<typeof updateLessonSchema>;
+export type deleteLessonSchemaType = z.infer<typeof deleteLessonSchema>;
