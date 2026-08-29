@@ -1,6 +1,6 @@
 import { centralClientAPI } from "@/services/central/central.client-public&user";
 
-export const adminPutLesson = async ({changedValuesforserver, id}) => {
+export const adminPutLesson = async ({ changedValuesforserver, id }) => {
   // only admin
 
   console.log(changedValuesforserver);
