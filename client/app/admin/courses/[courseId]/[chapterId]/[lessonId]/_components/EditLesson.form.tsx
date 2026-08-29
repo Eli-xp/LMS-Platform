@@ -32,8 +32,7 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 const EditLessonForm = ({ data }: { data: getLessonSchemaType }) => {
-  const { courseId, chapterId } = useParams<{
-    courseId: string;
+  const { chapterId } = useParams<{
     chapterId: string;
   }>();
 
@@ -41,7 +40,6 @@ const EditLessonForm = ({ data }: { data: getLessonSchemaType }) => {
   const router = useRouter();
 
   console.log(data);
-  console.log(courseId);
   console.log(chapterId);
 
   // Define form
@@ -67,7 +65,7 @@ const EditLessonForm = ({ data }: { data: getLessonSchemaType }) => {
   });
   const { dirtyFields, isDirty } = form.formState;
 
-  // onSubmit Function
+  //// onSubmit Function
   const onSubmit = async (values: updateLessonSchemaType) => {
     console.log("onSubmit ran");
     console.log(dirtyFields);
@@ -85,213 +83,98 @@ const EditLessonForm = ({ data }: { data: getLessonSchemaType }) => {
     );
     console.log(changedValues);
 
-    // 0) if lesson's inputs changed & chapter id is available
-    if (Object.keys(changedValues).length > 0 && chapterId) {
+    //// Validation
+    if (!chapterId) {
+      toast.error("chapter ID is missing.");
+      return;
+    }
+    if (Object.keys(changedValues).length === 0) {
       console.log(changedValues);
-      setIsSubmitting(true);
+      toast.info("No Changes Spotted.");
+      return;
+    }
+    setIsSubmitting(true);
 
-      // 1) if thumbnail & video changed
-      if (
-        "thumbnailObject" in changedValues &&
-        "videoObject" in changedValues
-      ) {
-        // 1_1) edit course request
-        console.log("CourseEditForm API:: thumbnail and video changed");
-        try {
-          const { thumbnailObject, videoObject, ...rest } = changedValues;
-          const changedValuesforserver = {
-            ...rest,
-            thumbnailObject: {
-              originalname: thumbnailObject?.originalName,
-              contentType: thumbnailObject?.contentType,
-            },
-            videoObject: {
-              originalname: videoObject?.originalName,
-              contentType: videoObject?.contentType,
-            },
-            chapterId,
-          };
-          console.log(changedValuesforserver);
+    try {
+      //// Detect Changed Media
+      const thumbnailChanged = "thumbnailObject" in changedValues;
+      const videoChanged = "videoObject" in changedValues;
+      const hasMediaChange = thumbnailChanged || videoChanged;
 
-          toast.info("Lesson Edit Requested");
-          const editLessonRes = await adminPutLesson({
-            changedValuesforserver,
-            id: data._id,
-          });
-          console.log(editLessonRes);
+      //// Build sever paylaod
+      const { thumbnailObject, videoObject, ...rest } = changedValues;
+      const changedValuesforserver = {
+        ...rest,
+        chapterId,
+        ...(thumbnailChanged && {
+          thumbnailObject: {
+            originalname: thumbnailObject?.originalName,
+            contentType: thumbnailObject?.contentType,
+          },
+        }),
+        ...(videoChanged && {
+          videoObject: {
+            originalname: videoObject?.originalName,
+            contentType: videoObject?.contentType,
+          },
+        }),
+      };
 
-          console.log("adminPostCourseVerification called");
+      //// Update lesson
+      toast.info("Lesson Edit Requested.");
+      const editLessonRes = await adminPutLesson({
+        changedValuesforserver,
+        id: data._id,
+      });
+      console.log(editLessonRes);
 
-          // send thumbnail
-          const thumbnailPromisse = await adminCourseFileVerification({
-            link: editLessonRes.result,
-            file: values.thumbnailObject.file,
-          });
-
-          // send video
-          const videoPromisse = await adminCourseFileVerification({
-            link: editLessonRes.result.videoKey,
-            file: values.videoObject.file,
-          });
-
-          const [thumbnailVerification, videoVerification] = await Promise.all([
-            thumbnailPromisse,
-            videoPromisse,
-          ]);
-
-          console.log(thumbnailVerification);
-          console.log(videoVerification);
-
-          // if storage 204
-          if (
-            thumbnailVerification.status === 204 &&
-            videoVerification.status === 204
-          ) {
-            toast.success("Mission Successfull.");
-            // Reset for inputs
-            form.reset();
-            // Redirect to admin courses
-            router.replace("/admin/courses");
-            setIsSubmitting(false);
-          } else {
-            console.error(thumbnailVerification);
-            console.error(videoVerification);
-            setIsSubmitting(false);
-          }
-        } catch (error) {
-          console.error(error);
-          setIsSubmitting(false);
-        }
-      }
-
-      // 2) if only thumbnail changed
-      else if ("thumbnailObject" in changedValues) {
-        try {
-          // 2_1) edit course request
-          console.log("CourseEditForm API:: only thumbnail changed");
-
-          const { thumbnailObject, ...rest } = changedValues;
-          const changedValuesforserver = {
-            ...rest,
-            thumbnailObject: {
-              originalname: thumbnailObject?.originalName,
-              contentType: thumbnailObject?.contentType,
-            },
-            chapterId,
-          };
-
-          toast.info("Lesson Edit Requested");
-          const editLessonRes = await adminPutLesson({
-            changedValuesforserver,
-            id: data._id,
-          });
-          console.log(editLessonRes);
-
-          console.log("adminPostCourseVerification called");
-          const createCourseResverification = await adminCourseFileVerification(
-            {
+      //// Upload Changed media(if needed)
+      if (hasMediaChange) {
+        const uploadPromises: Promise<Response>[] = [];
+        if (thumbnailChanged && values.thumbnailObject.file) {
+          uploadPromises.push(
+            adminCourseFileVerification({
               link: editLessonRes.result,
               file: values.thumbnailObject.file,
-            },
+            }),
           );
-          console.log(createCourseResverification);
-
-          // if storage 204
-          if (createCourseResverification.status === 204) {
-            toast.success("Mission Successfull.");
-            // Reset for inputs
-            form.reset();
-            // Redirect to admin courses
-            router.replace("/admin/courses");
-            setIsSubmitting(false);
-          } else {
-            setIsSubmitting(false);
-          }
-        } catch (error) {
-          console.error(error);
-          setIsSubmitting(false);
         }
-      }
-
-      // 2) if only video changed
-      else if ("videoObject" in changedValues) {
-        try {
-          // 2_1) edit course request
-          console.log("CourseEditForm API:: only video changed");
-
-          const { videoObject, ...rest } = changedValues;
-          const changedValuesforserver = {
-            ...rest,
-            videoObject: {
-              originalname: videoObject?.originalName,
-              contentType: videoObject?.contentType,
-            },
-            chapterId,
-          };
-          console.log(changedValuesforserver);
-
-          toast.info("Lesson Edit Requested");
-          const editLessonRes = await adminPutLesson({
-            changedValuesforserver,
-            id: data._id,
-          });
-          console.log(editLessonRes);
-
-          console.log("adminPostCourseVerification called");
-          const createCourseResverification = await adminCourseFileVerification(
-            {
+        if (videoChanged && values.videoObject.file) {
+          uploadPromises.push(
+            adminCourseFileVerification({
               link: editLessonRes.result.videoKey,
               file: values.videoObject.file,
-            },
+            }),
           );
-          console.log(createCourseResverification);
+        }
 
-          // if storage 204
-          if (createCourseResverification.status === 204) {
-            toast.success("Mission Successfull.");
-            // Reset for inputs
-            form.reset();
-            // Redirect to admin courses
-            router.replace("/admin/courses");
-            setIsSubmitting(false);
-          } else {
-            setIsSubmitting(false);
-          }
-        } catch (error) {
-          console.error(error);
-          setIsSubmitting(false);
+        // All changed files upload in parallel.
+        const uploadResults = await Promise.all(uploadPromises);
+
+        //// Verify upload result
+        const uploadFailed = uploadResults.some(
+          (result) => result.status !== 204,
+        );
+        if (uploadFailed) {
+          console.error("Media upload failed", uploadResults);
+          toast.error("Some Files failed to upload");
+          return;
         }
       }
 
-      // 3) if media(thumbnail/video) did not change
-      else {
-        try {
-          console.log("CourseEditForm API:: non-media changes");
-          setIsSubmitting(true);
-
-          const changedValuesforserver = { ...changedValues, chapterId };
-          console.log(changedValuesforserver);
-          const editCourseRes = await adminPutLesson({
-            changedValuesforserver,
-            id: data._id,
-          });
-          console.log(editCourseRes);
-          toast.success("Course Edited Successfully");
-          setIsSubmitting(false);
-          router.replace("/admin/courses/");
-        } catch (error) {
-          console.error(error);
-          setIsSubmitting(false);
-        }
-      }
-
-      // if course had no change
-    } else {
-      toast.info("No change(s) spotted.");
+      ////  Success
+      toast.success("Lesson edited successfully");
+      router.replace("/admin/courses/page/1");
+    } catch (error) {
+      console.error("Edit lesson failed", error);
+      toast.error("Failed to edit lesson");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const CourseCancelEdit = () => {
+  //// cancel course edit
+  const handleCancelEdit = () => {
     form.reset();
     router.replace("/admin/courses/");
   };
@@ -416,7 +299,7 @@ const EditLessonForm = ({ data }: { data: getLessonSchemaType }) => {
                 variant={"destructive"}
                 type="button"
                 disabled={isSubmitting}
-                onClick={CourseCancelEdit}
+                onClick={handleCancelEdit}
                 className="cursor-pointer w-full"
               >
                 Cancel <X size={16} />
