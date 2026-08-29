@@ -20,7 +20,7 @@ export class PublicController {
     @ApiOperation({summary: 'return courses with Published status only'})
     async fineAll(@Query('page') page: number, @Query('limit') limit: number){
       const courses = await this.CourseModel.find({status: 'Published'}).select('title slug category smallDescription thumbnail price duration level').skip((page - 1) * limit).limit(limit).lean();
-      const courseCount = await this.CourseModel.countDocuments();
+      const courseCount = await this.CourseModel.countDocuments({status: 'Published'});
       const pageCount = Math.ceil(courseCount / limit);
       const coursesWithThumbnail = await Promise.all(
         courses.map(async (course) => {
