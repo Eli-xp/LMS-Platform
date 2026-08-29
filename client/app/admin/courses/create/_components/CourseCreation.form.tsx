@@ -123,6 +123,7 @@ const CourseCreationForm = () => {
 
         // if storage 204
         if (createCourseResverification.status === 204) {
+          toast.success("New Course Created");
           // Reset for inputs
           form.reset();
           // Redirect to admin courses
@@ -272,7 +273,10 @@ const CourseCreationForm = () => {
                       </span>
                     </span>
                   </FieldLabel>
-                  <FileUploader onFileChange={field.onChange} />
+                  <FileUploader
+                    onFileChange={field.onChange}
+                    filTypeAccepted="image"
+                  />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
