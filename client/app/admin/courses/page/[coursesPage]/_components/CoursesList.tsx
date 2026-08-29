@@ -22,19 +22,19 @@ export const CoursesList = async ({
   }
 
   return (
-    <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-7">
-        {coursesData?.courses?.length > 0 &&
-          coursesData.courses.map((course) => (
+    coursesData?.courses?.length > 0 && (
+      <>
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+          {coursesData.courses.map((course) => (
             <AdminCourseCard key={course._id} {...course} />
           ))}
-      </div>
+        </div>
 
-      {/*  courses pagination */}
-      <CoursesPagination
-        currentPage={currentPageNum}
-        totalPage={coursesData?.pageCount}
-      />
-    </>
+        <CoursesPagination
+          currentPage={currentPageNum}
+          totalPage={coursesData?.pageCount}
+        />
+      </>
+    )
   );
 };
