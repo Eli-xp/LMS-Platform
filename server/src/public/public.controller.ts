@@ -15,11 +15,11 @@ export class PublicController {
     private readonly mediaService: MediaService
   ) {}
 
-    @UseGuards(AuthGuard('jwt'))
+    // @UseGuards(AuthGuard('jwt'))
     @Get('courses')
     @ApiOperation({summary: 'return courses with Published status only'})
     async fineAll(@Query('page') page: number, @Query('limit') limit: number){
-      const courses = await this.CourseModel.find({status: 'Published'}).select('title slug category smallDescription thumbnail price duration level').skip((page - 1) * limit).limit(limit).lean();
+      const courses = await this.CourseModel.find({status: 'Published'}).select('title slug category smallDescription thumbnail price duration level').sort({createdAt: -1}).skip((page - 1) * limit).limit(limit).lean();
       const courseCount = await this.CourseModel.countDocuments({status: 'Published'});
       const pageCount = Math.ceil(courseCount / limit);
       const coursesWithThumbnail = await Promise.all(

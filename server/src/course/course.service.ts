@@ -30,6 +30,7 @@ export class CourseService {
       .select(
         'title smallDescription duration level status price thumbnail slug',
       )
+      .sort({createdAt: -1})
       .skip((page - 1) * limit)
       .limit(limit)
       .lean();
