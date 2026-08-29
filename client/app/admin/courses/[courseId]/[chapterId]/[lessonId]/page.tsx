@@ -1,14 +1,17 @@
 import { adminGetLesson } from "@/services/admin/course/lesson/GetLesson.server-admin";
 import EditLessonForm from "./_components/EditLesson.form";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
 
 type Params = Promise<{
-  courseId: string;
-  chapterId: string;
   lessonId: string;
+  courseId: string;
 }>;
 
 const LessonIdPage = async ({ params }: { params: Params }) => {
-  const { lessonId, courseId, chapterId } = await params;
+  const { lessonId, courseId } = await params;
+
   let lesson;
   try {
     lesson = await adminGetLesson(lessonId);
@@ -18,8 +21,17 @@ const LessonIdPage = async ({ params }: { params: Params }) => {
   }
 
   return (
-    <EditLessonForm data={lesson} courseId={courseId} chapterId={chapterId} />
+    <div>
+      <Link
+        className={buttonVariants({ variant: "outline", className: "mb-6 " })}
+        href={`/admin/courses/${courseId}/edit`}
+      >
+        <ArrowLeft className="size-4" />
+        <span>Go Back</span>
+      </Link>
+      <EditLessonForm data={lesson} />;
+    </div>
   );
 };
 
-export default LessonIdPage
+export default LessonIdPage;
