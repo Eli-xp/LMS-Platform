@@ -4,14 +4,16 @@ import {
   Body,
   Get,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Course } from 'src/course/schema/courseSchema';
 import { Model } from 'mongoose';
-import { CourseService } from 'src/course/course.service';
 import { MediaService } from 'src/media/media.service';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('users')
 export class UsersController {
@@ -26,7 +28,9 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get('courses')
+  @ApiOperation({summary: 'return courses with Published status only'})
   async fineAll(@Query('page') page: number, @Query('limit') limit: number){
     const courses = await this.CourseModel.find({status: 'Published'}).select('title slug category smallDescription thumbnail price duration level').skip((page - 1) * limit).limit(limit).lean();
     const courseCount = await this.CourseModel.countDocuments();
