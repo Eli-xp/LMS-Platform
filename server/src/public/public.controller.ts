@@ -15,7 +15,6 @@ export class PublicController {
     private readonly mediaService: MediaService
   ) {}
 
-    @UseGuards(AuthGuard('jwt'))
     @Get('courses')
     @ApiOperation({summary: 'return courses with Published status only'})
     async fineAll(@Query('page') page: number, @Query('limit') limit: number){
@@ -42,7 +41,6 @@ export class PublicController {
   
     }
 
-    @UseGuards(AuthGuard('jwt'))
     @SkipThrottle()
     @Get('course/:slug')
     @ApiOperation({summary: 'return one course '})
