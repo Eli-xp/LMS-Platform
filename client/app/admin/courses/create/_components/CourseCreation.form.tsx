@@ -31,7 +31,7 @@ import {
 import RichTextEditor from "@/components/rich-text-editor/Editor";
 import FileUploader from "@/components/file-uploader/FileUploader";
 import { Textarea } from "@/components/ui/textarea";
-import { adminPostCourse } from "@/services/admin/course/PostCourse.client-admin.api";
+import { adminPostCourse } from "@/services/admin/course/PostCourse.client.api";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
@@ -41,7 +41,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { adminCourseFileVerification } from "@/services/admin/course/CourseFileVerification.client-admin";
+import { adminCourseFileVerification } from "@/services/admin/course/CourseFileVerification.client";
 
 const CourseCreationForm = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);

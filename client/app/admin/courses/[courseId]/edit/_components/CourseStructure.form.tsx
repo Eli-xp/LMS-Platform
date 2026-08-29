@@ -23,7 +23,7 @@ import {
   FileText,
   GripVertical,
 } from "lucide-react";
-import { adminEditCourse_structure } from "@/services/admin/course/EditCourse.client-admin";
+import { adminEditCourse_structure } from "@/services/admin/course/EditCourse.client";
 import { toast } from "sonner";
 import CreateLessonModal from "./CreateLesson.modal";
 import CreateChapterModal from "./CreateChapter.modal";

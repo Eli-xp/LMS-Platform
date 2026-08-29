@@ -20,7 +20,7 @@ import {
   createLessonSchema,
   createLessonSchemaType,
 } from "@/schemas/course.schema";
-import { PostLesson } from "@/services/admin/course/lesson/PostLesson.client-admin";
+import { PostLesson } from "@/services/admin/course/lesson/PostLesson.client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus } from "lucide-react";
 import { useState } from "react";

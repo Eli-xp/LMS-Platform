@@ -1,4 +1,4 @@
-import { adminGetCourses } from "@/services/admin/course/GetCourses.server-admin";
+import { adminGetCourses } from "@/services/admin/course/GetCourses.server";
 import AdminCourseCard from "./AdminCourseCard";
 import z from "zod";
 import CoursesPagination from "./CoursesPagination";

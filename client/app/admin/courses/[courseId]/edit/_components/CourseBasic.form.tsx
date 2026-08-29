@@ -33,8 +33,8 @@ import FileUploader from "@/components/file-uploader/FileUploader";
 import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { adminEditCourse_basic } from "@/services/admin/course/EditCourse.client-admin";
-import { adminCourseFileVerification } from "@/services/admin/course/CourseFileVerification.client-admin";
+import { adminEditCourse_basic } from "@/services/admin/course/EditCourse.client";
+import { adminCourseFileVerification } from "@/services/admin/course/CourseFileVerification.client";
 
 const CourseBasicForm = ({
   course,

@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { toast } from "sonner";
 import { deleteLessonSchemaType } from "@/schemas/course.schema";
-import { DeleteLesson } from "@/services/admin/course/lesson/DeleteLesson.client-admin";
+import { DeleteLesson } from "@/services/admin/course/lesson/DeleteLesson.client";
 
 const DeleteLessonModal = ({ chapterId, lessonId }: deleteLessonSchemaType) => {
   console.log(chapterId);

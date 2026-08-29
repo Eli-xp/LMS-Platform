@@ -1,4 +1,4 @@
-import { adminGetCourse_structure } from "@/services/admin/course/GetCourse.server-admin";
+import { adminGetCourse_structure } from "@/services/admin/course/GetCourse.server";
 import CourseStructureForm from "./CourseStructure.form";
 
 const CourseStructureTab = async ({ courseId }: { courseId: string }) => {

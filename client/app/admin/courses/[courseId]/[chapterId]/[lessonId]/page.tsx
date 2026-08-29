@@ -1,4 +1,4 @@
-import { adminGetLesson } from "@/services/admin/course/lesson/GetLesson.server-admin";
+import { adminGetLesson } from "@/services/admin/course/lesson/GetLesson.server";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
