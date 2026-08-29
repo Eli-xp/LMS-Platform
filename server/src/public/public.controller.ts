@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation } from '@nestjs/swagger';
 import { SkipThrottle } from '@nestjs/throttler';
-import { options } from 'axios';
 import { Model } from 'mongoose';
 import { Course } from 'src/course/schema/courseSchema';
 import { MediaService } from 'src/media/media.service';
