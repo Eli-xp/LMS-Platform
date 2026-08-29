@@ -18,7 +18,7 @@ export class Course extends Document{
     category!: string;
     @Prop({ type: String, required: true})
     smallDescription!: string;
-    @Prop({ type: String, required: true, unique: true })
+    @Prop({ type: String, required: true })
     slug!: string;
     @Prop({type: String, required: true, enum: ['Draft', 'Published', 'Archived'], default: 'Draft'})
     status!: string;
@@ -33,3 +33,7 @@ export class Course extends Document{
 }
 
 export const CourseSchema = SchemaFactory.createForClass(Course);
+CourseSchema.index(
+  { slug: 1 },
+  { unique: true },
+);

@@ -1,7 +1,9 @@
-import { Controller, Get, Query,UseGuards } from '@nestjs/common';
+import { Controller, Get, NotFoundException, Param, Query,UseGuards } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation } from '@nestjs/swagger';
+import { SkipThrottle } from '@nestjs/throttler';
+import { options } from 'axios';
 import { Model } from 'mongoose';
 import { Course } from 'src/course/schema/courseSchema';
 import { MediaService } from 'src/media/media.service';
@@ -13,7 +15,7 @@ export class PublicController {
     private readonly mediaService: MediaService
   ) {}
 
-  @UseGuards(AuthGuard('jwt'))
+    @UseGuards(AuthGuard('jwt'))
     @Get('courses')
     @ApiOperation({summary: 'return courses with Published status only'})
     async fineAll(@Query('page') page: number, @Query('limit') limit: number){
@@ -38,5 +40,28 @@ export class PublicController {
       };
       
   
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @SkipThrottle()
+    @Get('course/:slug')
+    @ApiOperation({summary: 'return one course '})
+    async findOne(@Param('slug') slug: string){
+        const course = await this.CourseModel.findOne({slug: slug, status: 'Published'}).select('title category smallDescription thumbnail price duration level chapters').populate({
+          path: 'chapters',
+          select: 'title courseId lessons',
+          options: {sort:{position:1}},
+          populate:{
+            path:'lessons',
+            select:'title chapterId',
+            options:{sort:{position:1}}
+          }
+        }).lean();
+      if(!course){
+        throw new NotFoundException('course not found')
+      }
+      const { viewUrl } = await this.mediaService.createViewUrl(course.thumbnail);
+      course.thumbnail = viewUrl;
+      return course;
     }
 }
