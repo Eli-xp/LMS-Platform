@@ -3,6 +3,7 @@ import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { Suspense } from "react";
 import { CoursesList } from "./_components/CoursesList";
+import { CoursesPageSkeleton } from "./_components/CoursesPageSkeleton";
 
 const CoursesPage = async ({ params }) => {
   const { coursesPage } = await params;
@@ -24,7 +25,7 @@ const CoursesPage = async ({ params }) => {
         <span>Here you will see all of the courses</span>
       </div>
       {/* courses list */}
-      <Suspense fallback={<p>Loading product details...</p>}>
+      <Suspense fallback={<CoursesPageSkeleton />}>
         <CoursesList currentPageNum={currentPageNum} />
       </Suspense>
     </>
