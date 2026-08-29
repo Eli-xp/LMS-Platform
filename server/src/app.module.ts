@@ -14,6 +14,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { LessonModule } from './lesson/lesson.module';
 import { ChapterModule } from './chapter/chapter.module';
 import { PaymentModule } from './payment/payment.module';
+import { PublicModule } from './public/public.module';
 
 @Module({
   imports: [MongooseModule.forRoot(config.get<string>('server.database.URL')), UsersModule, AuthModule, RedisModule, SmsModule, CourseModule, MediaModule,ThrottlerModule.forRoot([
@@ -22,7 +23,7 @@ import { PaymentModule } from './payment/payment.module';
       ttl: 60_000,
       limit:10
     }
-  ]), LessonModule, ChapterModule, PaymentModule],
+  ]), LessonModule, ChapterModule, PaymentModule, PublicModule],
   controllers: [AppController],
   providers: [
     {
