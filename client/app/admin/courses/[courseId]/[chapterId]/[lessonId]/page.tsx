@@ -1,8 +1,8 @@
 import { adminGetLesson } from "@/services/admin/course/lesson/GetLesson.server-admin";
-import EditLessonForm from "./_components/EditLesson.form";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
+import EditLessonForm from "./_components/EditLesson.form";
 
 type Params = Promise<{
   lessonId: string;
@@ -29,7 +29,7 @@ const LessonIdPage = async ({ params }: { params: Params }) => {
         <ArrowLeft className="size-4" />
         <span>Go Back</span>
       </Link>
-      <EditLessonForm data={lesson} />;
+      <EditLessonForm data={lesson} />
     </div>
   );
 };

@@ -22,7 +22,6 @@ import {
   ChevronRight,
   FileText,
   GripVertical,
-  Trash2,
 } from "lucide-react";
 import { adminEditCourse_structure } from "@/services/admin/course/EditCourse.client-admin";
 import { toast } from "sonner";
