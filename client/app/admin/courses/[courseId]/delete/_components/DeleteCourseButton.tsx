@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { DeleteCourse } from "@/services/admin/course/lesson/DeleteCourse.client-admin";
+import { DeleteCourse } from "@/services/admin/course/lesson/DeleteCourse.client";
 import { Loader2, Trash2 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";

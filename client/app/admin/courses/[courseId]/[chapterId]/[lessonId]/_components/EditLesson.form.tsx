@@ -22,8 +22,8 @@ import {
   updateLessonSchema,
   updateLessonSchemaType,
 } from "@/schemas/course.schema";
-import { adminCourseFileVerification } from "@/services/admin/course/CourseFileVerification.client-admin";
-import { adminPutLesson } from "@/services/admin/course/lesson/PutLesson.client-admin";
+import { adminCourseFileVerification } from "@/services/admin/course/CourseFileVerification.client";
+import { adminPutLesson } from "@/services/admin/course/lesson/PutLesson.client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { X } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";

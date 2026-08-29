@@ -16,7 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { toast } from "sonner";
-import { DeleteChapter } from "@/services/admin/course/chapter/DeleteChapter.client-admin";
+import { DeleteChapter } from "@/services/admin/course/chapter/DeleteChapter.client";
 import { deleteChapterSchemaType } from "@/schemas/course.schema";
 
 const DeleteChapterModal = ({

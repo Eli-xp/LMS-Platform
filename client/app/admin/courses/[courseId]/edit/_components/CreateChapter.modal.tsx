@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { createChapterSchema } from "@/schemas/course.schema";
-import { PostChapter } from "@/services/admin/course/chapter/PostChapter.client-admin";
+import { PostChapter } from "@/services/admin/course/chapter/PostChapter.client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus } from "lucide-react";
