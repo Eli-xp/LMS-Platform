@@ -81,23 +81,29 @@ export const PublicGetSingleCourseType = z.object({
 
   _id: z.string().min(3, { error: "id must be at least 3 characters long" }),
 
-  chapters: z.object({
-    title: z
-      .string()
-      .min(3, { error: "Title must be at least 3 characters long" }),
-    chapterId: z
-      .string()
-      .min(3, { error: "course id must be at least 3 characters long" }),
-  }),
+  chapters: z.array(
+    z.object({
+      title: z
+        .string()
+        .min(3, { error: "Title must be at least 3 characters long" }),
 
-  lessons: z.object({
-    title: z
-      .string()
-      .min(3, { error: "Title must be at least 3 characters long" }),
-    lessonId: z
-      .string()
-      .min(3, { error: "course id must be at least 3 characters long" }),
-  }),
+      chapterId: z
+        .string()
+        .min(3, { error: "Chapter ID must be at least 3 characters long" }),
+
+      lessons: z.array(
+        z.object({
+          title: z
+            .string()
+            .min(3, { error: "Title must be at least 3 characters long" }),
+
+          lessonId: z
+            .string()
+            .min(3, { error: "Lesson ID must be at least 3 characters long" }),
+        }),
+      ),
+    }),
+  ),
 });
 
 export type PublicGetCourseType = z.infer<typeof PublicGetCourses>;
