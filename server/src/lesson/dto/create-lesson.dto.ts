@@ -3,7 +3,7 @@ import { IsObject, IsNotEmpty, IsString, IsOptional } from "class-validator";
 import { Transform } from "class-transformer";
 export function Trim() {
   return Transform(({ value }) =>
-    typeof value === 'string' ? value.trim() : value,
+    typeof value === 'string' ? value.trim().replace(/\s+/g, ' ') : value,
   );
 }
 
