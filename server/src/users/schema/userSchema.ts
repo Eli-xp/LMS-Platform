@@ -24,6 +24,8 @@ export class User extends Document {
   banReason!: string;
   @Prop({type: Date})
   banExpires!: Date;
+  @Prop({type: String})
+  profilePicture!: string
 
 }
 export const UserSchema = SchemaFactory.createForClass(User);
