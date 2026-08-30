@@ -1,14 +1,17 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum, IsNotEmpty, IsNumber, IsObject, IsString, Max } from "class-validator";
+import { Trim } from "src/lesson/dto/create-lesson.dto";
 
 
 export class CreateCourseDto {
     @IsString()
     @IsNotEmpty()
+    @Trim()
     @ApiProperty({type: String, required: true, example:'what is nestJs'})
     title!: string
     @IsString()
     @IsNotEmpty()
+    @Trim()
     @ApiProperty({type: String, required: true, example:'this course is about working with...'})
     description!: string;
     @IsNumber()
@@ -22,14 +25,17 @@ export class CreateCourseDto {
     level!: string
     @IsString()
     @IsNotEmpty()
+    @Trim()
     @ApiProperty({type: String, required: true, example: 'Programming'})
     category!: string
     @IsString()
     @IsNotEmpty()
+    @Trim()
     @ApiProperty({type: String, required: true, example: 'about js...'})
     smallDescription!: string
     @IsString()
     @IsNotEmpty()
+    @Trim()
     @ApiProperty({type: String, required: true})
     slug!: string
     @IsString()
