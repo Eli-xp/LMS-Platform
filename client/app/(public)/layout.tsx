@@ -4,7 +4,9 @@ const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
     <div>
       <Navbar />
-      <main className="container mx-auto">{children}</main>
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 mb-24">
+        {children}
+      </main>
     </div>
   );
 };
