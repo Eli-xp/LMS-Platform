@@ -6,7 +6,7 @@ import NavbarAuthCheck from "./NavbarAuthCheck";
 // sample data
 const nvaigationItems = [
   { name: "Home", href: "/" },
-  { name: "Courses", href: "/courses" },
+  { name: "Courses", href: "/courses/page/1" },
   { name: "Dashboard", href: "/dashboard" },
 ];
 
