@@ -44,7 +44,7 @@ export class PublicController {
     @Get('course/:slug')
     @ApiOperation({summary: 'return one course '})
     async findOne(@Param('slug') slug: string){
-        const course = await this.CourseModel.findOne({slug: slug, status: 'Published'}).select('title category smallDescription thumbnail price duration level chapters').populate({
+        const course = await this.CourseModel.findOne({slug: slug, status: 'Published'}).select('title category smallDescription thumbnail price duration level description chapters').populate({
           path: 'chapters',
           select: 'title courseId lessons',
           options: {sort:{position:1}},
