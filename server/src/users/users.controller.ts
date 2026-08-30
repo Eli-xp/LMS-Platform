@@ -14,6 +14,7 @@ import { Model } from 'mongoose';
 import { MediaService } from 'src/media/media.service';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation } from '@nestjs/swagger';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -24,7 +25,7 @@ export class UsersController {
   ) {}
 
   @Post('/createProfile')
-  createProfile(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  async completeProfile(@Body() updateUserDto: UpdateUserDto) {
+    const user = await this.usersService.completeProfile(updateUserDto)
   }
 }
