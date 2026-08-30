@@ -62,6 +62,7 @@ export const PublicGetSingleCourseType = z.object({
     .min(3, { error: "Title must be at least 3 characters long" })
     .max(100, { error: "Title must be at most 100 characters long" }),
   category: z.enum(courseCategories, { error: "Category is required" }),
+  description: z.string().min(3, { error: "short description" }),
   smallDescription: z
     .string()
     .min(3, { error: "Small Description must be at least 3 characters long" })
@@ -103,4 +104,6 @@ export type PublicGetCourseType = z.infer<typeof PublicGetCourses>;
 export type PublicGetCourses_EachCourseType = z.infer<
   typeof PublicGetCourses_EachCourse
 >;
-export type PublicGetSingleCourseType = z.infer<typeof PublicGetSingleCourseType>;
+export type PublicGetSingleCourseType = z.infer<
+  typeof PublicGetSingleCourseType
+>;
