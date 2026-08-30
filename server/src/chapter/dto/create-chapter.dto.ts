@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsString } from "class-validator";
-import { Trim } from "src/lesson/dto/create-lesson.dto";
+import { Trim } from "src/global/globalPipe";
 
 export class CreateChapterDto {
     @IsString()

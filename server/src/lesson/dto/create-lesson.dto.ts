@@ -1,11 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsObject, IsNotEmpty, IsString, IsOptional } from "class-validator";
-import { Transform } from "class-transformer";
-export function Trim() {
-  return Transform(({ value }) =>
-    typeof value === 'string' ? value.trim().replace(/\s+/g, ' ') : value,
-  );
-}
+import { Trim } from "src/global/globalPipe";
+
 
 export class CreateLessonDto {
     @IsString()
@@ -38,3 +34,5 @@ export class CreateLessonDto {
     chapterId!: string
     
 }
+export { Trim };
+
