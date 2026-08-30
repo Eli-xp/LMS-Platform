@@ -1,3 +1,4 @@
+import { error } from "console";
 import { z } from "zod";
 
 export const courseLevels = ["Beginner", "Intermediate", "Advanced"];
@@ -22,18 +23,22 @@ export const courseCategories = [
 export const courseCreateSchema = z.object({
   title: z
     .string()
+    .trim()
     .min(3, { error: "Title must be at least 3 characters long" })
     .max(100, { error: "Title must be at most 100 characters long" }),
   slug: z
     .string()
+    .trim()
     .min(3, { error: "Slug must be at least 3 characters long" })
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, { error: "Invalid Slug format" }),
   category: z.enum(courseCategories, { error: "Category is required" }),
   description: z
     .string()
+    .trim()
     .min(3, { error: "Description must be at least 3 characters long" }),
   smallDescription: z
     .string()
+    .trim()
     .min(3, { error: "Small Description must be at least 3 characters long" })
     .max(200, {
       error: "Small Description must be at most 200 characters long",
