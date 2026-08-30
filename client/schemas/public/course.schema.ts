@@ -87,7 +87,7 @@ export const PublicGetSingleCourseType = z.object({
         .string()
         .min(3, { error: "Title must be at least 3 characters long" }),
 
-      chapterId: z
+      _id: z
         .string()
         .min(3, { error: "Chapter ID must be at least 3 characters long" }),
 
@@ -97,7 +97,7 @@ export const PublicGetSingleCourseType = z.object({
             .string()
             .min(3, { error: "Title must be at least 3 characters long" }),
 
-          lessonId: z
+          _id: z
             .string()
             .min(3, { error: "Lesson ID must be at least 3 characters long" }),
         }),
