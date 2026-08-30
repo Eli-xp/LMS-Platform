@@ -120,7 +120,7 @@ const EditLessonForm = ({ data }: { data: getLessonSchemaType }) => {
         }),
       };
 
-      //// Update lesson
+      //// Update lesson - backend request
       toast.info("Lesson Edit Requested.");
       const editLessonRes = await adminPutLesson({
         changedValuesforserver,
@@ -269,7 +269,7 @@ const EditLessonForm = ({ data }: { data: getLessonSchemaType }) => {
                     <span className="text-destructive">
                       *{" "}
                       <span className="text-muted-foreground text-xs">
-                        (only 1 image max: 5mb - .png .jpg .jpeg )
+                        (only 1 video max: 5mb - .mp4 .webm .mov )
                       </span>
                     </span>
                   </FieldLabel>
