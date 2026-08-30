@@ -35,6 +35,7 @@ export class CreateCourseDto {
     smallDescription!: string
     @IsString()
     @IsNotEmpty()
+    @Trim()
     @ApiProperty({type: String, required: true})
     slug!: string
     @IsString()
