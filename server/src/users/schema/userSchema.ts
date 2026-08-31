@@ -25,7 +25,7 @@ export class User extends Document {
   @Prop({type: Date})
   banExpires!: Date;
   @Prop({type: String})
-  profilePicture!: string
+  profilePicture!: string;
   @Prop({type: [{type:Types.ObjectId, ref: 'Course'}]})
   paidCourses?: Types.ObjectId[];
 
