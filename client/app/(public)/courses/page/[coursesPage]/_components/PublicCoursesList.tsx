@@ -1,6 +1,6 @@
 import { PublicGetCourseType } from "@/schemas/public/course.schema";
 import { PublicGetCourses_API } from "@/services/public/course/GetCourses.server";
-import PublicCourseCard from "./PublicCourseCard";
+import PublicCourseCard from "../../../../../../components/course/PublicCourseCard";
 import PublicCoursesPagination from "./PublicCoursesPagination";
 
 export const PublicCoursesList = async ({
@@ -13,13 +13,16 @@ export const PublicCoursesList = async ({
   let coursesData;
 
   try {
-    const res: PublicGetCourseType = await PublicGetCourses_API(currentPageNum);
+    const res: PublicGetCourseType = await PublicGetCourses_API({
+      currentPageNum,
+      limit: 10,
+    });
     console.log(res);
     coursesData = res;
   } catch (error) {
     console.error(error);
   }
-console.log(coursesData)
+  console.log(coursesData);
   return (
     <>
       {coursesData?.courses?.length > 0 && (
