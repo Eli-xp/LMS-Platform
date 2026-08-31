@@ -26,6 +26,8 @@ export class User extends Document {
   banExpires!: Date;
   @Prop({type: String})
   profilePicture!: string
+  @Prop({type: [{type:Types.ObjectId, ref: 'Course'}]})
+  paidCourses?: Types.ObjectId[];
 
 }
 export const UserSchema = SchemaFactory.createForClass(User);
