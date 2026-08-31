@@ -39,12 +39,16 @@ export class UsersController {
   @Get('suggestion')
   @ApiOperation({ summary: 'return courses without pain ones' })
   async getUserSuggest(@Req() req: Request) {
+    // * get usersId from cookie
     const { userId } = req.user as JwtUser;
+    // * find user
     const user = await this.UserModel.findById(userId).lean();
     if (!user) {
       throw new NotFoundException('user not found');
     }
+    // ! if paidCourses is empty don't return null instead return []
     const paidCoursesId = user?.paidCourses ?? [];
+    // * find courses last 3 courses that not include in users paid courses
     const courses = await this.CourseModel.find({
       status: 'Published',
       _id: { $nin: paidCoursesId },
