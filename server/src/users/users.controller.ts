@@ -37,6 +37,7 @@ export class UsersController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('suggestion')
+  @ApiOperation({summary: 'return courses without pain ones'})
   async getUserSuggest(@Req() req: Request){
     const {userId} = req.user as JwtUser;
     const user = await this.UserModel.findById(userId).select('paidCourses').lean();
