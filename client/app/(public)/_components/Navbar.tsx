@@ -16,7 +16,7 @@ const Navbar = () => {
       <div className="container flex min-h-16 items-center mx-auto px-4 md:px-6 lg:px-8">
         <Link href="/" className="flex items-center space-x-2 mr-4">
           <Image src="/logo.svg" alt="Logo" width={36} height={36} />
-          <span className="font-bold">MarshalLms.</span>
+          <span className="font-bold">EliXp</span>
         </Link>
 
         {/* Desktop Navigation */}
