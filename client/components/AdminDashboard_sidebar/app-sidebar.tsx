@@ -15,7 +15,6 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import {
-  LayoutDashboardIcon,
   ListIcon,
   ChartBarIcon,
   FolderIcon,
@@ -25,6 +24,7 @@ import {
   Settings2Icon,
   CircleHelpIcon,
   SearchIcon,
+  Gauge,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -35,7 +35,7 @@ const data = {
     {
       title: "Dashboard",
       url: "/admin",
-      icon: <LayoutDashboardIcon />,
+      icon: <Gauge />,
       status: true,
     },
     {
