@@ -8,7 +8,9 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { CirclePlusIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function NavMain({
   items,
@@ -20,6 +22,8 @@ export function NavMain({
     status: boolean;
   }[];
 }) {
+  const pathname = usePathname();
+
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
@@ -43,11 +47,16 @@ export function NavMain({
                 render={
                   <Link
                     href={item.url}
-                    className={`${!item.status && "opacity-30"}`}
+                    className={cn(
+                      pathname === item.url &&
+                        "bg-accent text-accent-foreground",
+                    )}
                   />
                 }
               >
-                {item.icon}
+                <span className={cn(pathname === item.url && "text-primary")}>
+                  {item.icon}
+                </span>
                 <span>{item.title}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
