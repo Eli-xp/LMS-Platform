@@ -14,6 +14,7 @@ export class PublicController {
     private readonly mediaService: MediaService
   ) {}
 
+    @SkipThrottle()
     @Get('courses')
     @ApiOperation({summary: 'return courses with Published status only'})
     async fineAll(@Query('page') page: number, @Query('limit') limit: number){
