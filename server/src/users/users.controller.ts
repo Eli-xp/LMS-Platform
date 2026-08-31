@@ -57,7 +57,22 @@ export class UsersController {
       .sort({ createdAt: -1 })
       .select(
         'title slug category smallDescription thumbnail price duration level',
-      );
-    return courses;
+      )
+      .lean();
+    const coursesWithThumbnail = await Promise.all(
+      courses.map(async (course) => {
+        const thumbnailUrl = await this.mediaService.createViewUrl(
+          course.thumbnail,
+        );
+
+        return {
+          ...course,
+          thumbnail: thumbnailUrl,
+        };
+      }),
+    );
+    return {
+      courses: coursesWithThumbnail
+    }
   }
 }
