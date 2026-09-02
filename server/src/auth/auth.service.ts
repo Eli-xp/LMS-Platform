@@ -37,12 +37,12 @@ export class AuthService {
       user = await this.userService.create({ phone: otpVerify.phone });
     }
     // signing jwt token
-    const token = this.jwtService.sign({ sub: user._id, role: user.role }, { expiresIn: '60m' });
+    const token = this.jwtService.sign({ sub: user._id, role: user.role }, { expiresIn: '5m' });
     const refreshToken = this.jwtService.sign(
       { sub: user._id, role: user.role },
       {
         secret: config.get<string>('server.jwt.REFRESH_SECRET'),
-        expiresIn: '7d',
+        expiresIn: '10m',
       },
     );
     // hashing refresh token
@@ -79,7 +79,7 @@ export class AuthService {
       // signing new access token
       const token = this.jwtService.sign(
         { sub: user._id },
-        { expiresIn: '60m' },
+        { expiresIn: '5m' },
       );
       return  {token} ;
     } catch (error) {
