@@ -9,9 +9,7 @@ import config from 'config';
 import { JwtStrategy } from './strategies/jwt-strategy';
 import { RedisService } from 'src/redis/redis.service';
 import { SmsService } from 'src/sms/sms.service';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { HttpModule } from '@nestjs/axios';
-import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
