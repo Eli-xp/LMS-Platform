@@ -70,7 +70,8 @@ export class AuthController {
     return user;
   }
 
-  @Throttle({default:{limit:1,ttl:120_000}})
+  // @Throttle({default:{limit:1,ttl:120_000}})
+  @SkipThrottle()
   @Post('/sendOtp')
   @ApiOperation({ summary: 'Send OTP Code to Users phone number' })
   @ApiResponse({
