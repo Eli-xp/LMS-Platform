@@ -61,22 +61,22 @@ export class AuthService {
 
   async refresh(refreshToken: string) {
     try {
-      // verifying refresh token
+      //* verifying refresh token
       const payload = await this.jwtService.verifyAsync(refreshToken, {
         secret: config.get<string>('server.jwt.REFRESH_SECRET'),
       });
-      // finding user by id
+      //* finding user by id
       const user = await this.userService.findById(payload.sub);
-      // check if token valid
+      //* check if token valid
       if (!user || !user.refreshToken) {
         throw new UnauthorizedException('Invalid refresh token');
       }
-      // checking hashed token
+      //* checking hashed token
       const isValid = await bcrypt.compare(refreshToken, user.refreshToken);
       if (!isValid) {
         throw new UnauthorizedException('Invalid refresh token');
       }
-      // signing new access token
+      //* signing new access token
       const token = this.jwtService.sign(
         { sub: user._id },
         { expiresIn: '5m' },
