@@ -40,7 +40,7 @@ export class AuthService {
       { sub: user._id, role: user.role },
       {
         secret: config.get<string>('server.jwt.REFRESH_SECRET'),
-        expiresIn: '10m',
+        expiresIn: '1d',
       },
     );
     //* hashing refresh token
