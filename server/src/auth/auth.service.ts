@@ -36,18 +36,18 @@ export class AuthService {
     if (!user) {
       user = await this.userService.create({ phone: otpVerify.phone });
     }
-    // signing jwt token
+    //* signing jwt token
     const token = this.jwtService.sign({ sub: user._id, role: user.role }, { expiresIn: '5m' });
     const refreshToken = this.jwtService.sign(
       { sub: user._id, role: user.role },
       {
         secret: config.get<string>('server.jwt.REFRESH_SECRET'),
-        expiresIn: '60m',
+        expiresIn: '10m',
       },
     );
-    // hashing refresh token
+    //* hashing refresh token
     const refreshTokenHash = await bcrypt.hash(refreshToken, 10);
-    // saving refresh token in db
+    //* saving refresh token in db
     await this.userService.updateRefreshToken(user.id, refreshTokenHash);
     return { user, token, refreshToken };
   }
