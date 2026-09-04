@@ -1,6 +1,7 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 let refreshPromise: Promise<boolean> | null = null;
+let logoutPromise: Promise<void | Response> | null = null;
 
 // func - refreshAccessToken
 async function refreshAccessToken(): Promise<boolean> {
@@ -23,21 +24,32 @@ const refreshOnClient = async () => {
   return refreshPromise;
 };
 
-const handleAuthFailure = async () => {
-  try {
-    await fetch(`${API_URL}/auth/logout`, {
+// func - handleAuthFailure
+const handleAuthFailure = async (): Promise<void> => {
+  if (!logoutPromise) {
+    logoutPromise = fetch(`${API_URL}/auth/logout`, {
       method: "POST",
       credentials: "include",
-    });
-  } catch (error) {
-    console.error(error);
+    })
+      .catch((error) => {
+        console.error("Logout failed:", error);
+      })
+      .finally(() => {
+        logoutPromise = null;
+      });
   }
+
+  await logoutPromise;
+
+  // redirect
+  window.location.href = "/login";
 };
 
 interface centralClientAPIOptions extends RequestInit {
   auth?: boolean;
 }
 
+// main func - centralClientAPI
 export const centralClientAPI = async (
   endpoint: string,
   options: centralClientAPIOptions = {},
@@ -64,9 +76,9 @@ export const centralClientAPI = async (
   }
 
   //// if unauthorized (401) - Access Token Expired
-
   // Refresh Token Request
-  const refreshed = await refresh();
+  const refreshed = await refreshOnClient();
+  console.log(refreshed);
 
   // if Refresh Token Expired
   if (!refreshed) {
@@ -74,15 +86,15 @@ export const centralClientAPI = async (
     return;
   }
 
-  console.log("centralClientAPI - Before Rtry")
+  console.log("centralClientAPI - Before Rtry");
   // if Refresh Token Valid - Retry original request
   response = await fetch(`${API_URL}${endpoint}`, {
     ...fetchOptions,
     credentials: "include",
   });
 
-  console.log("centralClientAPI - After Rtry")
-  console.log(response)
+  console.log("centralClientAPI - After Rtry");
+  console.log(response);
 
   if (!response.ok) {
     console.error(response.status);
