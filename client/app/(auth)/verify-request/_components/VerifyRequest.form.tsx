@@ -43,7 +43,7 @@ const VerifyRequestForm = ({ phone }: { phone: string }) => {
       ResendOTP();
     }
   };
-  
+
   // func - ResendOTP
   const ResendOTP = async () => {
     try {
@@ -68,6 +68,8 @@ const VerifyRequestForm = ({ phone }: { phone: string }) => {
       const result = await otpVerify(data);
       toast.success("Login Successfully");
       console.log(result);
+
+      // set use info on redux
       dispatch(setUser(result));
       router.push("/");
     } catch (error) {
