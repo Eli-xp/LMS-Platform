@@ -8,6 +8,10 @@ export type DecodedJwtPayload = {
 
 // function - JWT Decode
 export function decodeJwtPayload(token: string): DecodedJwtPayload | null {
+
+console.log("💚decodeJwtPayload ran")
+console.log(token)
+
   try {
     const parts = token.split(".");
 
@@ -30,6 +34,9 @@ export function isTokenExpiringSoon(
 ): boolean {
   const payload = decodeJwtPayload(token);
 
+console.log("💚isTokenExpiringSoon ran")
+  console.log(payload);
+
   if (!payload?.exp) {
     return true;
   }
@@ -44,6 +51,10 @@ export function isTokenExpiringSoon(
 // function - Expiration Validation
 export function isTokenExpired(token: string): boolean {
   const payload = decodeJwtPayload(token);
+
+console.log("💚isTokenExpired ran")
+
+  console.log(payload)
 
   if (!payload?.exp) {
     return true;
