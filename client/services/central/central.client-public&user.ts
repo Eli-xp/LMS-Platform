@@ -47,6 +47,7 @@ const handleAuthFailure = async (): Promise<void> => {
 
 interface centralClientAPIOptions extends RequestInit {
   auth?: boolean;
+  redirectOnAuthFailure?: boolean;
 }
 
 // main func - centralClientAPI
@@ -56,7 +57,11 @@ export const centralClientAPI = async (
 ) => {
   console.log("centralClientAPI Called");
 
-  const { auth = true, ...fetchOptions } = options;
+  const {
+    auth = true,
+    redirectOnAuthFailure = true,
+    ...fetchOptions
+  } = options;
 
   let response = await fetch(`${API_URL}${endpoint}`, {
     ...fetchOptions,
@@ -82,8 +87,11 @@ export const centralClientAPI = async (
 
   // if Refresh Token Expired
   if (!refreshed) {
-    await handleAuthFailure();
-    return;
+    if (redirectOnAuthFailure) {
+      await handleAuthFailure();
+    }
+
+    return response;
   }
 
   console.log("centralClientAPI - Before Rtry");
