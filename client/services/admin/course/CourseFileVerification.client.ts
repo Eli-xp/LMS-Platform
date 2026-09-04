@@ -20,9 +20,5 @@ export const adminCourseFileVerification = async ({ link, file }) => {
   });
   console.log(res);
 
-  if (!res.ok) {
-    throw new Error(`Failed to post course as admin:${res.status}`);
-  }
-
   return res;
 };

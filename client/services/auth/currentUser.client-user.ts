@@ -7,11 +7,7 @@ export const getCurrentUserOnClient = async () => {
     method: "GET",
   });
 
-  if (!res.ok) {
-    console.error(res.status);
-  }
-
-  const data = await res.json();
+  const data = await res?.json();
   console.log(data);
   return data;
 };

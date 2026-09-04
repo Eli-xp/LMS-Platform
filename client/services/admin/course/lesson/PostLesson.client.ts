@@ -18,9 +18,5 @@ export const PostLesson = async (
 
   console.log(res);
 
-  if (!res?.ok) {
-    throw new Error(`Failed to edit course as admin:${res?.status}`);
-  }
-
-  return res.status;
+  return res?.status;
 };

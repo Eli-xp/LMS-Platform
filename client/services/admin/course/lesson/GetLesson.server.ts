@@ -13,10 +13,6 @@ export const adminGetLesson = async (id: string) => {
 
   console.log(res);
 
-  if (!res.ok) {
-    throw new Error(`Failed to Get lesson as admin:${res.status}`);
-  }
-
   const data = await res.json();
   return data;
 };

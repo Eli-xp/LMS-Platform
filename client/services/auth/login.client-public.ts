@@ -14,11 +14,7 @@ export const login = async (data: z.infer<typeof loginSchema>) => {
     auth: false,
   });
 
-  if (!res.ok) {
-    throw new Error("Failed to Login");
-  }
-
-  return await res.json();
+  return await res?.json();
 };
 
 // otpVerify
@@ -32,9 +28,5 @@ export const otpVerify = async (data: z.infer<typeof otpEntrySchema>) => {
     auth: false,
   });
 
-  if (!res.ok) {
-    throw new Error("Failde to Verify OTP");
-  }
-
-  return await res.json();
+  return await res?.json();
 };

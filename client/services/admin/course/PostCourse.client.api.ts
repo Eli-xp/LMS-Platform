@@ -16,10 +16,7 @@ export const adminPostCourse = async (
   });
 
   console.log(res);
-  if (!res.ok) {
-    throw new Error(`Failed to post course as admin:${res.status}`);
-  }
 
-  const data = await res.json();
+  const data = await res?.json();
   return data;
 };

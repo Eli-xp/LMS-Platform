@@ -12,14 +12,6 @@ export const adminGetCourses = async (currentPageNum: number) => {
 
   console.log(res);
 
-  if (!res.ok) {
-    return res;
-  }
-
-  if (!res.ok) {
-    throw new Error(`Faild to Get Courses: ${res.status}`);
-  }
-
   const data = await res.json();
   console.log(data);
 

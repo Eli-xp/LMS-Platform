@@ -13,11 +13,8 @@ export const adminPutLesson = async ({ changedValuesforserver, id }) => {
     body: JSON.stringify(changedValuesforserver),
   });
   console.log(res);
-  if (!res?.ok) {
-    throw new Error(`Failed to edit course as admin:${res?.status}`);
-  }
 
-  const data = await res.json();
+  const data = await res?.json();
   console.log(data);
 
   return data;

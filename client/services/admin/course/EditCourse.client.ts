@@ -17,11 +17,8 @@ export const adminEditCourse_basic = async (
     body: JSON.stringify(changedValuesforserver),
   });
   console.log(res);
-  if (!res?.ok) {
-    throw new Error(`Failed to edit course as admin:${res?.status}`);
-  }
 
-  const data = await res.json();
+  const data = await res?.json();
   console.log(data);
 
   return data;
@@ -40,9 +37,7 @@ export const adminEditCourse_structure = async (payload) => {
   });
   console.log(res);
   console.log(res?.status);
-  if (!res?.ok) {
-    throw new Error(`Failed to edit course as admin:${res?.status}`);
-  }
+
   // return response as boolean
   const data = res?.status === 200 ? true : false;
   return data;

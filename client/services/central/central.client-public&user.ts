@@ -71,6 +71,9 @@ export const centralClientAPI = async (
   console.log("centralClientAPI - After Rtry")
   console.log(response)
 
+  if (!response.ok) {
+    console.error(response.status);
+  }
 
   return response;
 };

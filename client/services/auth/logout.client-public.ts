@@ -10,13 +10,9 @@ export const logout = async () => {
     auth: false,
   });
 
-  if (!res.ok) {
-    throw new Error("Failed to Logout");
-  }
-
   console.log("logout api succesfully done!");
 
-  const data = res.json();
+  const data = res?.json();
   console.log(data);
   return data;
 };
