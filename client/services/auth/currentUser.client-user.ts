@@ -5,7 +5,13 @@ export const getCurrentUserOnClient = async () => {
 
   const res = await centralClientAPI("/auth/me", {
     method: "GET",
+    redirectOnAuthFailure: false,
   });
+
+  // Handle redirectOnAuthFailure
+  if (res.status === 401) {
+    return null;
+  }
 
   const data = await res?.json();
   console.log(data);
