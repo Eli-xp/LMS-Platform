@@ -5,7 +5,6 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
 import StoreProvider from "@/redux/StoreProvider";
-import { getCurrentUserOnServer } from "@/services/auth/currentUser.server-user";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -24,13 +23,11 @@ export const metadata: Metadata = {
   description: "Learning management System",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { user } = await getCurrentUserOnServer();
-
   return (
     <html
       lang="en"
@@ -51,7 +48,7 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <StoreProvider user={user}>{children}</StoreProvider>
+          <StoreProvider>{children}</StoreProvider>
 
           <Toaster richColors />
         </ThemeProvider>

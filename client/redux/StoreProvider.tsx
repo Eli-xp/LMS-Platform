@@ -3,13 +3,12 @@
 import { useEffect, useRef } from "react";
 import { Provider } from "react-redux";
 import { makeStore, AppStore } from "./store";
-import { clearUser, initializeUser, setUser } from "./slices/auth.slice";
+import { clearUser, initializeUser } from "./slices/auth.slice";
 import { useRouter } from "next/navigation";
 import { getCurrentUserOnClient } from "@/services/auth/currentUser.client-user";
 
 export default function StoreProvider({
   children,
-  user,
 }: {
   children: React.ReactNode;
 }) {
@@ -22,42 +21,36 @@ export default function StoreProvider({
   if (!storeRef.current) {
     console.log("STORE CREATED");
     storeRef.current = makeStore();
-
-    if (user !== null) {
-      console.log(`received user from server!${user}`);
-      storeRef.current.dispatch(initializeUser(user));
-    }
   }
 
   useEffect(() => {
-    if (user !== null) {
-      console.log("user was not null");
-      return;
-    }
-
-    console.log("StorePtovider:: Server user is null => handleRefresh ");
+    console.log("StorePtovider:: => handleRefresh ");
     const handleRefresh = async () => {
       try {
-        // refresh browser session use refresh token
         console.log("StorePtovider:: BERFORE refreshToken Call ");
 
+        // Get current user on client
         const res = await getCurrentUserOnClient();
         console.log(res);
+
         if (res.status === 401) {
           console.log("refreshToken is EXPIRED...");
+          // clear redux
           storeRef.current?.dispatch(clearUser());
           return;
         }
 
         console.log(`StorePtovider:: getCurrentUserOnClient ${res}`);
-        storeRef.current?.dispatch(setUser(res));
+        storeRef.current?.dispatch(initializeUser(res));
       } catch (error) {
         console.error(`StorePtovider:: Refresh Failed, CATCH=> ${error}`);
+        // clear redux
         storeRef.current?.dispatch(clearUser());
       }
     };
+
     handleRefresh();
-  }, [router, user]);
+  }, [router]);
 
   return <Provider store={storeRef.current}>{children}</Provider>;
 }
