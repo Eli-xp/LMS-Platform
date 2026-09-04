@@ -1,7 +1,7 @@
 import "server-only";
 
 import { cookies } from "next/headers";
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.API_URL;
 
 export const centralServerAPI = async (
   endpoint: string,
