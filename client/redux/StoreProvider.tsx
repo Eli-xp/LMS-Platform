@@ -24,26 +24,22 @@ export default function StoreProvider({
   }
 
   useEffect(() => {
-    console.log("StorePtovider:: => handleRefresh ");
+    console.log("StorePtovider ran ");
     const handleRefresh = async () => {
       try {
-        console.log("StorePtovider:: BERFORE refreshToken Call ");
-
         // Get current user on client
         const res = await getCurrentUserOnClient();
         console.log(res);
 
-        if (res.status === 401) {
-          console.log("refreshToken is EXPIRED...");
-          // clear redux
-          storeRef.current?.dispatch(clearUser());
-          return;
-        }
-
         console.log(`StorePtovider:: getCurrentUserOnClient ${res}`);
-        storeRef.current?.dispatch(initializeUser(res));
+        if (res) {
+          storeRef.current?.dispatch(initializeUser(res));
+        } else {
+          // if !res
+          storeRef.current?.dispatch(clearUser());
+        }
       } catch (error) {
-        console.error(`StorePtovider:: Refresh Failed, CATCH=> ${error}`);
+        console.log(`StorePtovider Failed:: => ${error}`);
         // clear redux
         storeRef.current?.dispatch(clearUser());
       }
