@@ -21,7 +21,7 @@ const verifyRequestPage = async ({
             Vertify your login{" "}
           </CardTitle>
           <CardDescription className="px-10 pt-2">
-            Enter verification code we sent to your <br /> phone number: {phone}
+            Enter verification code we sent to your <br /> Phone Number: {phone}
           </CardDescription>
         </CardHeader>
         {/* Form & Btn */}
