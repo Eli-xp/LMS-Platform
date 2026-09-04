@@ -1,7 +1,20 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 let refreshPromise: Promise<boolean> | null = null;
 
-const refresh = async () => {
+// func - refreshAccessToken
+async function refreshAccessToken(): Promise<boolean> {
+  const response = await fetch(`${API_URL}/auth/refresh`, {
+    method: "POST",
+    credentials: "include",
+  });
+
+  // boolean response
+  return response.ok;
+}
+
+// Prevent race condition
+const refreshOnClient = async () => {
   if (!refreshPromise) {
     refreshPromise = refreshAccessToken().finally(() => {
       refreshPromise = null;
