@@ -1,6 +1,5 @@
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -25,9 +24,8 @@ const verifyRequestPage = async ({
             Enter verification code we sent to your <br /> phone number: {phone}
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <VerifyRequestForm phone={phone} />
-        </CardContent>
+        {/* Form & Btn */}
+        <VerifyRequestForm phone={phone} />
       </Card>
     </div>
   );
