@@ -42,7 +42,9 @@ const handleAuthFailure = async (): Promise<void> => {
   await logoutPromise;
 
   // redirect
-  window.location.href = "/login";
+  if (window.location.pathname !== "/login") {
+    window.location.replace("/login");
+  }
 };
 
 interface centralClientAPIOptions extends RequestInit {
